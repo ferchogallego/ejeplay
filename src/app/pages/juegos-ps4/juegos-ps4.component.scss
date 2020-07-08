@@ -1,0 +1,96 @@
+.carga {
+    margin-top: 20rem;
+    .spinner-border {
+        color: #364d6a !important;
+        font-size: large;
+    }
+}
+
+.container {
+    margin-top: 14rem;
+    .sch {
+        width: 87%;
+    }
+    .btnshc {
+        background-color: #364d6a;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+        height: 37px;
+    }
+    .titulo {
+        color: rgb(68, 67, 67);
+    }
+    .rng {
+        background-color: #364d6a;
+    }
+    .izq {
+        input[type=range] {
+            -webkit-appearance: none;
+            background-color: rgb(79, 138, 206);
+            width: 100%;
+            height: 10px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            background-color: rgb(5, 35, 206);
+            width: 20px;
+            height: 25px;
+            border-radius: 50%;
+        }
+        .filtrar {
+            width: 50%;
+            border: none;
+            background-color: #364d6a;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .filtrar:hover {
+            background-color: #fff;
+            border: solid;
+            border-color: #364d6a;
+            color: #364d6a;
+        }
+    }
+    .games {
+        -webkit-box-shadow: 1px 3px 6px 2px rgba(138, 136, 138, 1);
+        -moz-box-shadow: 1px 3px 6px 2px rgba(138, 136, 138, 1);
+        box-shadow: 1px 3px 6px 2px rgba(138, 136, 138, 1);
+    }
+    .games:hover {
+        cursor: pointer;
+        border: solid;
+        border-width: 1px;
+        border-color: #364d6a;
+        transition: 600ms;
+        z-index: 10;
+    }
+    .compra {
+        width: 100%;
+        background-color: #364d6a;
+        color: #fff;
+        border-radius: 10px;
+        border: none;
+    }
+    .compra:hover {
+        background-color: #fff;
+        border: solid;
+        border-width: 1px;
+        border-color: #364d6a;
+        color: #364d6a;
+        border-radius: 5px;
+        transition: 500ms;
+    }
+    .notify-badge {
+        position: absolute;
+        right: -20px;
+        top: 10px;
+        background: red;
+        text-align: center;
+        border-radius: 30px 30px 30px 30px;
+        color: white;
+        font-weight: bold;
+        padding: 5px 10px;
+        font-size: 20px;
+    }
+}

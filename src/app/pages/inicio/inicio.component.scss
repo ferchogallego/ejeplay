@@ -1,0 +1,92 @@
+.ofertas {
+    background-color: rgb(202, 198, 198);
+}
+
+.slder {
+    margin-top: 7rem;
+    .slde {
+        border: solid;
+        background-color: #000c !important;
+        border-width: 1px;
+    }
+}
+
+.allview {
+    float: right;
+    text-decoration: none;
+    color: rgb(65, 63, 63);
+    font-size: 15px;
+}
+
+.slde2 {
+    border: solid;
+    border-radius: 50%;
+    background-color: #000c !important;
+    border-width: 1px;
+    font-size: 12px;
+    margin: 1rem;
+}
+
+.reds {
+    margin: 2px;
+}
+
+.pagos {
+    .card {
+        border: none;
+        background-color: #364d6a;
+        color: #fff;
+    }
+}
+
+.notify-badge {
+    position: absolute;
+    right: -20px;
+    top: 10px;
+    background: red;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 20px;
+}
+
+.games {
+    -webkit-box-shadow: 1px 3px 6px 2px rgba(138, 136, 138, 1);
+    -moz-box-shadow: 1px 3px 6px 2px rgba(138, 136, 138, 1);
+    box-shadow: 1px 3px 6px 2px rgba(138, 136, 138, 1);
+}
+
+.games:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    border: solid;
+    border-width: 2px;
+    border-color: #364d6a;
+    transition: 600ms;
+    z-index: 10;
+}
+
+.gameOffer:hover {
+    -webkit-box-shadow: 0px 17px 6px -6px rgba(117, 113, 117, 1);
+    -moz-box-shadow: 0px 17px 6px -6px rgba(117, 113, 117, 1);
+    box-shadow: 0px 17px 6px -6px rgba(117, 113, 117, 1);
+    transition: 600ms;
+    button {
+        cursor: pointer;
+        background-color: #fff;
+        border: solid;
+        border-color: #343a40;
+        color: #343a40;
+        border-width: 2px;
+    }
+}
+
+.carga {
+    margin-top: 20rem;
+    .spinner-border {
+        color: #364d6a !important;
+        font-size: large;
+    }
+}

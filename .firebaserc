@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ejeplay-7a38e": {
+      "hosting": {
+        "ejeplay": [
+          "ejeplay-7a38e"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ejeplay-7a38e"
+  }
+}

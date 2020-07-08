@@ -1,0 +1,28 @@
+.carga {
+    margin-top: 20rem;
+    .spinner-border {
+        color: #364d6a !important;
+        font-size: large;
+    }
+}
+
+.container {
+    margin-top: 14rem;
+    margin-bottom: 5rem;
+    .pregunta {
+        button {
+            text-decoration: none;
+        }
+        h5 {
+            color: rgb(49, 47, 47) !important;
+        }
+    }
+}
+
+footer {
+    .card {
+        background-color: #364d6a;
+        border: none;
+        color: #fff;
+    }
+}

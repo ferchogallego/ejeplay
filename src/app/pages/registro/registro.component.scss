@@ -1,0 +1,39 @@
+.container {
+    margin-top: 8rem;
+    margin-bottom: 3rem;
+}
+
+.pass {
+    width: 80%;
+    margin-left: 15px;
+}
+
+.viewPass {
+    float: right;
+    color: #364d6a;
+}
+
+.forgotPass {
+    text-decoration: none;
+    color: #364d6a;
+}
+
+.spn {
+    margin-left: 15px;
+    color: red;
+}
+
+.eml {
+    color: red;
+}
+
+.rgt {
+    background-color: #364d6a !important;
+    border-color: #364d6a !important;
+}
+
+.rgt:hover {
+    background-color: #f1f1f1 !important;
+    border-color: #364d6a !important;
+    color: #364d6a !important;
+}

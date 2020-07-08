@@ -1,0 +1,18 @@
+.pago {
+    width: 30%;
+    height: 45px;
+    border-radius: 5px;
+    background-color: #364d6a;
+    border: solid;
+    border-color: #364d6a;
+    color: #fff;
+    transition: 600ms;
+}
+
+.pago:hover {
+    border: solid;
+    border-color: #364d6a;
+    background-color: #fff;
+    color: #364d6a;
+    transition: 600ms;
+}

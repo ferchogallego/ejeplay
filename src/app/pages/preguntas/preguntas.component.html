@@ -1,0 +1,180 @@
+<app-navbar></app-navbar>
+<div *ngIf="!load">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center carga">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <img src="../../../assets/img/logo.png" alt="" width="100">
+        </div>
+    </div>
+</div>
+<div *ngIf="load">
+    <div class="container">
+        <div class="col-lg-12">
+            <h3>
+                <img src="../../../assets/img/pre.png" width="50" class="img-fluid" alt="Responsive image"> EjePlay resuelve las preguntas mas frecuentes:</h3>
+            <hr>
+            <h4>COMPRA</h4>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <h5><i class="fa fa-chevron-down"></i> ¿Qué es “Cuenta Principal” y “Cuenta Secundaria”?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Cuenta Principal (Ppal): El juego queda en tu consola y juegas desde tu perfil, no requiere conexión a Internet para jugar. La licencia es para 1 Consola PS4. Cuenta Secundaria (Sec): El juego queda en tu consola y juegas desde el perfil asignado, requiere
+                            conexión a Internet para jugar. La licencia es para 1 Consola PS4.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <h5><i class="fa fa-chevron-down"></i> ¿Son juegos originales?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Si, los juegos son 100% originales y con licencia oficial, se descargan directamente en tu consola accediendo a la tienda Oficial de PlayStation y cuentan con garantía del fabricante.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingthree">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
+                            <h5><i class="fa fa-chevron-down"></i> ¿El Juego es completo?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapsethree" class="collapse" aria-labelledby="headingthree" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Si, los juegos digitales incluyen las mismas funciones que un juego físico (CD), es decir que traen todos los modos de juego y características, al igual que un juego físico.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingfour">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+                            <h5><i class="fa fa-chevron-down"></i> ¿Puedo jugar online?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapsefour" class="collapse" aria-labelledby="headingfour" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Si, los juegos digitales se pueden jugar online. En PS4 para jugar online se necesita pagar la suscripción de PS PLUS.
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <h4>PAGO</h4>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="heading1">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                            <h5><i class="fa fa-chevron-down"></i> ¿Qué medios de pagos manejan?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>Las compras se realizan mediante PayU</p>
+                            <p>Efectivo: SuRed, Efecty, Baloto</p>
+                            <p>Tarjetas Crédito: VISA, American Express, Master Card, Diners Club</p>
+                            <p>Debito: Pagos PSE Bancos: Banco de Bogotá, Bancolombia, Davivienda</p>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <h4>ENTREGA DEL JUEGO</h4>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="heading2">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            <h5><i class="fa fa-chevron-down"></i> ¿Cómo y cuándo envían los juegos?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Una vez hecha la compra se debe hacer envío del comprobante de pago vía Whatsapp (310 589 8578). Después de validar la compra, se envía al correo electrónico los datos para la descarga y el paso a paso de instalación. La entrega se realiza aproximadamente
+                            en 60 minutos después de verificado el pago y por orden de compra.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="heading3">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            <h5><i class="fa fa-chevron-down"></i> ¿Qué horario de atención manejan?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>Lunes a Sábado: 10:00 AM – 07:00 PM</p>
+                            <p>Domingos y Festivos: 10:00 AM – 4:00PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <h4>GARANTÍA</h4>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="heading4">
+                        <h2 class="mb-0 pregunta">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            <h5><i class="fa fa-chevron-down"></i> ¿Cuánto tiempo de garantía tiene el juego?</h5>
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Tienes garantía ilimitada siempre y cuando sigas las instrucciones y recomendaciones previamente dichas en la entrega del juego.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="card-group mt-3 ftr">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="../../../assets/img/logo.png" width="60%" class="img-fluid" alt="Responsive image">
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Regístrate</h5>
+                    <p class="card-text">Al tener tu cuenta en Eje Play puedes acceder a la comunidad gamer del eje cafetero, ganar bonos de descuentos y grandes promociones.</p>
+                    <button class="btn btn-lg btn-outline-light btn-block" [routerLink]="['/registro']" routerLinkActive="router-link-active">Crear cuenta</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Contáctanos</h5>
+                    <p class="card-text"><i class="fa fa-phone" aria-hidden="true"></i> (057) 313 4473385 - 318 8723228</p>
+                    <p class="card-text"><i class="fa fa-envelope" aria-hidden="true"></i> info@ejeplay.com</p>
+                    <a href="#" class="btn btn-outline-light reds"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-outline-light reds"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-outline-light reds"><i class="fa fa-whatsapp fa-lg" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

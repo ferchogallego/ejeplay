@@ -1,0 +1,80 @@
+.row {
+    margin-top: 11rem;
+    margin-bottom: 4rem;
+    padding: 2rem;
+}
+
+.liquid {
+    text-align: right;
+    font-weight: bold;
+    width: 60%;
+    border: 0;
+}
+
+.liquid2 {
+    text-align: left;
+    width: 60%;
+    border: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+.blok {
+    width: 40%;
+}
+
+.blok1 {
+    font-size: 25px;
+    width: 40%;
+}
+
+.liquid1 {
+    text-align: right;
+    font-weight: bold;
+    color: red;
+    width: 60%;
+    border: 0;
+    font-size: 25px;
+}
+
+.img-fluid {
+    width: 80px;
+    height: 80px;
+}
+
+.endShop {
+    width: 100%;
+    border-radius: 5px;
+    border: solid;
+    border-color: #364d6a;
+    background-color: #364d6a;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.endShop:hover {
+    background-color: #fff;
+    border: solid;
+    border-color: #364d6a;
+    color: #364d6a;
+    transition: 600ms;
+}
+
+.shop {
+    width: 100%;
+    border-radius: 5px;
+    background-color: #fff;
+    border: solid;
+    border-color: #364d6a;
+    color: #364d6a;
+    transition: 600ms;
+}
+
+.shop:hover {
+    border: solid;
+    border-color: #364d6a;
+    background-color: #364d6a;
+    color: #fff;
+    margin-bottom: 5px;
+    transition: 600ms;
+}

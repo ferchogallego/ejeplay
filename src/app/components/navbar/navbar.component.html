@@ -1,0 +1,111 @@
+<div class="fijo">
+    <div class="row">
+        <div class="col-lg-2" id="logo">
+            <a [routerLink]="['/home']" routerLinkActive="router-link-active"><img src="../../../assets/img/logo.png" id="log"></a>
+        </div>
+
+        <div class="col-lg-6 mt-3 text-center search">
+            <form *ngIf="buscador" id="buscar" [formGroup]="searchForm" class="form-inline" (ngSubmit)="OnSearch(searchForm.value.palabra)">
+                <input type="text" name="buscar" value="" class="form-control" placeholder="Buscar" formControlName="palabra" />
+                <button type="submit" class="btn btn-light"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </form>
+        </div>
+
+        <div class="col-lg-4 mt-1 carro">
+            <select name="moneda" class="slect" (change)="onDivisa($event.target.value)">
+              <option [value]="valor" selected>{{valor}}</option>
+              <option *ngIf="valor == 'USD'" value="COP">COP</option>
+              <option *ngIf="valor == 'COP'"value="USD">USD</option>
+            </select>
+            <button *ngIf="!dolar" class="btn btn-light"><img src="../../../assets/img/co.png" alt="" width="30"></button>
+            <button *ngIf="dolar" class="btn btn-light"><img src="../../../assets/img/us.png" alt="" width="30"></button>
+            <button *ngIf="pedidos > 0" class="btn btn-primary car" [routerLink]="['/solicitudes']" routerLinkActive="router-link-active">
+                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                <span class="badge badge-warning intermitente">{{pedidos}}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- --------------------------este es el menú ----------------------->
+    <nav class="navbar navbar-expand-md navbar-dark" id="menu">
+        <a class="navbar-brand" href="#">
+            <img src="img/separador.png" width="150" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.php">
+                        <img src="img/home.png" width="20" alt="">
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/catalogo']" routerLinkActive="router-link-active">Juegos PS4</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="openGamesForOffer()">Ofertas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/preguntas']" routerLinkActive="router-link-active">Preguntas Frecuentes</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Contáctanos</a>
+                    <div class="dropdown-menu desplegable" aria-labelledby="dropdown03">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">
+                                Contáctanos
+                            </a>
+                        <a class="dropdown-item" href="#">
+                                Politicas de Seguridad
+                            </a>
+                        <a class="dropdown-item" href="#">
+                                Terminos y Condiciones
+                            </a>
+                    </div>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-basket"></i> Mis compras</a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a href="#" class="nav-link" (click)="onLogout()"> <i class="fa fa-sign-out"></i> Salir</a>
+                </li>
+            </ul>
+        </div>
+        <div class="user" *ngIf="user$ | async as user;else showLogin">
+            <a class="btn btn-primary" routerLinkActive="router-link-active">{{user.email}}</a>
+        </div>
+        <ng-template #showLogin>
+            <a routerLink="/login" routerLinkActive="active">
+                <a class="btn btn-primary" [routerLink]="['/login']" routerLinkActive="router-link-active">INGRESAR</a>
+            </a>
+        </ng-template>
+    </nav>
+</div>
+
+<!-- -----------------------Modal ------------------------>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eje Play Pereira</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../../assets/img/logo.png" class="img-fluid" alt="Responsive image">
+                </div>
+                <h3><i class="fa fa-whatsapp fa-2x" aria-hidden="true"></i> 310 5898578</h3>
+                <h3><i class="fa fa-envelope fa-2x" aria-hidden="true"></i> info@ejeplaypereira.com</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a href="https://api.whatsapp.com/send?phone=3105898578&text=Eje%20Play." target="_blank" class="btn btn-success"><i class="fa fa-whatsapp fa-lg" aria-hidden="true"></i>&nbsp; Whatsapp</a>
+            </div>
+        </div>
+    </div>
+</div>
