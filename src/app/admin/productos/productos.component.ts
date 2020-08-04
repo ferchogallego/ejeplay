@@ -39,12 +39,20 @@ export class ProductosComponent implements OnInit {
   get descripcionNoValido() {
     return this.newProductForm.get('descripcion').invalid && this.newProductForm.get('descripcion').touched;
   }
+  get cantPpalNoValido() {
+    return this.newProductForm.get('cantPpal').invalid && this.newProductForm.get('cantPpal').touched;
+  }
+  get cantSecNoValido() {
+    return this.newProductForm.get('cantSec').invalid && this.newProductForm.get('cantSec').touched;
+  }
 
   newProductForm = new FormGroup({
     nombre: new FormControl('', Validators.required),
     tipo: new FormControl('Ps4', Validators.required),
     precio: new FormControl('', Validators.required),
+    cantPpal: new FormControl('0', Validators.required),
     preciosec: new FormControl('', Validators.required),
+    cantSec: new FormControl('0', Validators.required),
     categoria: new FormControl('Accion', Validators.required),
     peso: new FormControl('', Validators.required),
     idioma: new FormControl('Multi Idioma', Validators.required),

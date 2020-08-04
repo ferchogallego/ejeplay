@@ -4,6 +4,8 @@ export interface Producto {
     tipo: string;
     oferta: number;
     precio: number;
+    cantPpal: number;
+    cantSec: number;
     preciosec: number;
     categoria: string;
     peso: string;

@@ -25,16 +25,20 @@
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Tipo</th>
+                    <th scope="col">Principal</th>
+                    <th scope="col">Secundario</th>
                     <th scope="col">$ Precio</th>
                     <th scope="col">% Oferta</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
                 <tr *ngFor="let producto of juegos  | filter:filterProducto">
                     <td><img [src]="producto.imageProd" class="img-fluid img-thumbnail" alt="..."> </td>
                     <td>{{producto.nombre}}</td>
                     <td>{{producto.tipo}}</td>
+                    <td>{{producto.cantPpal}}</td>
+                    <td>{{producto.cantSec}}</td>
                     <td>{{producto.precio | currency}}</td>
                     <td>{{producto.oferta}}%</td>
                     <td>

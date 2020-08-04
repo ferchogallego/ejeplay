@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
+import { auth } from 'firebase';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { ProductsService } from '../../services/products.service';
 })
 export class LoginComponent implements OnInit {
 
-  passwordView = true;
+  passwordView = false;
   load = false;
 
   loginForm = new FormGroup ({
@@ -35,11 +37,56 @@ export class LoginComponent implements OnInit {
       const user = this.authSvc.login(email, password);
       if (user) {
         this.productoSvc.userActive = true;
-        this.router.navigate(['/home']);
+        this.onLoginRedirect();
       }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  onLoginFacebook(){
+    this.authSvc.loginFacebook().then(resp => {
+      const id = resp.user.uid;
+      const datos = {
+                  id: resp.user.uid,
+                  email: resp.user.email
+                };
+      this.authSvc.verifyUser(id)
+                  .subscribe(usr => {
+                    if (usr.length === 0) {
+                      this.authSvc.createUserData(id, datos)
+                                  .then (save => this.onLoginRedirect());
+                    }
+                    if (usr.length > 0) {
+                      this.onLoginRedirect();
+                    }
+                  });
+    }).catch(err => console.log('Error', err.message));
+  }
+
+  onLoginGoogle(){
+    this.authSvc.loginGoogle().then(resp => {
+      const id = resp.user.uid;
+      const datos = {
+                  id: resp.user.uid,
+                  email: resp.user.email
+                };
+      this.authSvc.verifyUser(id)
+                  .subscribe(usr => {
+                    if (usr.length === 0) {
+                      this.authSvc.createUserData(id, datos)
+                                  .then (save => this.onLoginRedirect());
+                    }
+                    if (usr.length > 0) {
+                      this.onLoginRedirect();
+                    }
+                  });
+      this.onLoginRedirect();
+    }).catch(err => console.log('Error', err.message));
+  }
+
+  onLoginRedirect(){
+    this.router.navigate(['/home']);
   }
 
   viewPassActive(){

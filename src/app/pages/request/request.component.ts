@@ -130,6 +130,8 @@ export class RequestComponent implements OnInit {
     const refer = this.reference.toString();
     this.productoSvc.sailProcesss(refer, this.idUser, this.liquidacion,
                                   fecha, medio, estado).then(res => {
+      this.productoSvc.saleProcessReference(this.idUser, this.reference.toString())
+                      .subscribe();
       Swal.fire({
         title: 'Realizar pago',
         icon: 'info',

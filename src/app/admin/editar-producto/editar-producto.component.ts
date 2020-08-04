@@ -23,19 +23,21 @@ export class EditarProductoComponent implements OnInit {
               private router: Router) { }
 
     editProductForm = new FormGroup({
-    id: new FormControl('', Validators.required),
-    nombre: new FormControl('', Validators.required),
-    tipo: new FormControl('Ps4', Validators.required),
-    precio: new FormControl('', Validators.required),
-    preciosec: new FormControl('', Validators.required),
-    categoria: new FormControl('', Validators.required),
-    peso: new FormControl('', Validators.required),
-    idioma: new FormControl('', Validators.required),
-    oferta: new FormControl('', Validators.required),
-    fechaCreacion: new FormControl(new Date().getTime()),
-    imageProd: new FormControl('', Validators.required),
-    descripcion: new FormControl('', Validators.required)
-  });
+      id: new FormControl('', Validators.required),
+      nombre: new FormControl('', Validators.required),
+      tipo: new FormControl('Ps4', Validators.required),
+      precio: new FormControl('', Validators.required),
+      cantPpal: new FormControl('0', Validators.required),
+      preciosec: new FormControl('', Validators.required),
+      cantSec: new FormControl('0', Validators.required),
+      categoria: new FormControl('', Validators.required),
+      peso: new FormControl('', Validators.required),
+      idioma: new FormControl('', Validators.required),
+      oferta: new FormControl('', Validators.required),
+      fechaCreacion: new FormControl(new Date().getTime()),
+      imageProd: new FormControl('', Validators.required),
+      descripcion: new FormControl('', Validators.required)
+    });
 
   get nombreNoValido() {
     return this.editProductForm.get('nombre').invalid && this.editProductForm.get('nombre').touched;
@@ -55,6 +57,12 @@ export class EditarProductoComponent implements OnInit {
   get descripcionNoValido() {
     return this.editProductForm.get('descripcion').invalid && this.editProductForm.get('descripcion').touched;
   }
+  get cantPpalNoValido() {
+    return this.editProductForm.get('cantPpal').invalid && this.editProductForm.get('cantPpal').touched;
+  }
+  get cantSecNoValido() {
+    return this.editProductForm.get('cantSec').invalid && this.editProductForm.get('cantSec').touched;
+  }
 
   private initValuesForm(){
     this.editProductForm.patchValue({
@@ -63,13 +71,15 @@ export class EditarProductoComponent implements OnInit {
       tipo: this.producto.tipo,
       oferta: this.producto.oferta,
       precio: this.producto.precio,
+      cantPpal: this.producto.cantPpal,
       preciosec: this.producto.preciosec,
+      cantSec: this.producto.cantSec,
       categoria: this.producto.categoria,
       peso: this.producto.peso,
       idioma: this.producto.idioma,
       imageProd: this.producto.imageProd,
       fechaCreacion: this.producto.fechaCreacion,
-      descripcion: this.producto.descripcion
+      descripcion: this.producto.descripcion,
     });
   }
 
@@ -81,7 +91,7 @@ export class EditarProductoComponent implements OnInit {
                       this.producto.id = id;
                       this.image = this.producto.imageProd;
                       this.imageOriginal = this.producto.imageProd;
-                      console.log('Producto: ', this.producto);
+                      console.log('Producto: ', this.producto.descripcion);
                       this.initValuesForm();
                     });
   }

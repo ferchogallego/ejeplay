@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
 import { ProductosComponent } from './admin/productos/productos.component';
 import { InventarioComponent } from './admin/inventario/inventario.component';
 
@@ -28,6 +28,7 @@ import { ResponsePayuComponent } from './pages/response-payu/response-payu.compo
 import { OffersComponent } from './pages/offers/offers.component';
 import { PreguntasComponent } from './pages/preguntas/preguntas.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
+import { VentasComponent } from './admin/ventas/ventas.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { PurchasesComponent } from './pages/purchases/purchases.component';
     ResponsePayuComponent,
     OffersComponent,
     PreguntasComponent,
-    PurchasesComponent
+    PurchasesComponent,
+    VentasComponent
   ],
   imports: [
     BrowserModule,
@@ -61,8 +63,8 @@ import { PurchasesComponent } from './pages/purchases/purchases.component';
     ReactiveFormsModule,
   ],
   providers: [
-    { provide: BUCKET, useValue: 'gs://ejeplay-7a38e.appspot.com'
-  }
+    {provide: BUCKET, useValue: 'gs://ejeplay-7a38e.appspot.com'},
+    AngularFireAuth
   ],
   bootstrap: [AppComponent]
 })

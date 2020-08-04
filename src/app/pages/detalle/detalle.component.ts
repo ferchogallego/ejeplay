@@ -11,6 +11,10 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DetalleComponent implements OnInit {
 
+  prim = false;
+  secund = false;
+  activa = false;
+
   load = false;
   dolar = false;
   precioDolar: any;
@@ -27,6 +31,8 @@ export class DetalleComponent implements OnInit {
   categoria: string;
   descripcion: string;
   tipo: string;
+  cantP: number;
+  cantS: number;
   relacionados: any;
 
   public user = this.authSvc.afAuth.user;
@@ -49,6 +55,7 @@ export class DetalleComponent implements OnInit {
               private authSvc: AuthService) { }
 
   ngOnInit(): void {
+    this.productoSvc.search = true;
     const id = this.route.snapshot.paramMap.get('id');
     setTimeout(() => {
       this.load = true;
@@ -68,7 +75,8 @@ export class DetalleComponent implements OnInit {
                       this.categoria = this.game.categoria;
                       this.descripcion = this.game.descripcion;
                       this.tipo = this.game.tipo;
-                      this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.precio);
+                      this.cantP = this.game.cantPpal;
+                      this.cantS = this.game.cantSec;
                       this.productoSvc.loadGamesByCategory(this.categoria)
                                       .subscribe(cat => {
                                         this.relacionados = cat;
@@ -123,7 +131,7 @@ export class DetalleComponent implements OnInit {
       this.perfilUser = resp;
       this.solicitud.idJuego = idGame;
       this.solicitud.usuario = this.perfilUser.uid;
-      // console.log(this.solicitud);
+      console.log(this.solicitud);
       this.productoSvc.cargarPedido(this.solicitud);
     });
     this.router.navigate(['/solicitudes']);
@@ -144,5 +152,41 @@ export class DetalleComponent implements OnInit {
     this.ficha = false;
     this.comentarios = true;
    }
+  }
+  activateSale(slot: string){
+    if (slot === 'primario') {
+      if (this.cantP > 0) {
+        this.prim = true;
+        this.secund = false;
+        this.activa = true;
+        const primaria = 'Primaria';
+        this.solicitud.compra = [];
+        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.precio, primaria);
+      }
+      if (this.cantP === 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops',
+          text: 'No contamos con inventario, pronto tendremos este título',
+        });
+      }
+    }
+    if (slot === 'secundario') {
+      if (this.cantS > 0) {
+        this.prim = false;
+        this.secund = true;
+        this.activa = true;
+        const secundaria = 'Secundaria';
+        this.solicitud.compra = [];
+        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.preciosec, secundaria);
+      }
+      if (this.cantS === 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops',
+          text: 'No contamos con inventario, pronto tendremos este título',
+        });
+      }
+    }
   }
 }

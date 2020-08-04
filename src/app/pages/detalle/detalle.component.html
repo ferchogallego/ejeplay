@@ -27,9 +27,16 @@
                 <p><i class="fa fa-check-circle fa-lg"></i>&nbsp;Juego completamente original</p>
                 <p>- Entrega inmediata</p>
                 <p>- Tutorial paso a paso</p>
-                <p>- Descarga directa</p>
+                <label for=""><b>Seleccionar slot:</b> </label>
+                <p>
+                    <button (click)="activateSale('primario')" class="btn btn-primary">Cuenta Principal</button>&nbsp;
+                    <button (click)="activateSale('secundario')" class="btn btn-primary">Cuenta Secundaria</button>
+                </p>
+                <h4 *ngIf="secund">{{preciosec | currency}} <small>COP</small></h4>
+                <h4 *ngIf="prim">{{precio | currency}} <small>COP</small></h4>
                 <hr>
-                <button class="btn btn-dark btn-block" (click)="request(idGame)"><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
+                <button *ngIf="!activa" class="btn btn-dark btn-block" disabled><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
+                <button *ngIf="activa" class="btn btn-dark btn-block" (click)="request(idGame)"><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
             </div>
             <div class="col-lg-3">
                 <br>

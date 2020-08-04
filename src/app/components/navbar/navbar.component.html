@@ -69,7 +69,7 @@
                     <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-basket"></i> Mis compras</a>
                 </li>
                 <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
-                    <a href="#" class="nav-link" (click)="onLogout()"> <i class="fa fa-sign-out"></i> Salir</a>
+                    <a class="nav-link" (click)="onLogout()"> <i class="fa fa-sign-out"></i> Salir</a>
                 </li>
             </ul>
         </div>

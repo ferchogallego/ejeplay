@@ -63,37 +63,13 @@
     </section>
 
     <section id="ps4" class="destacados">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3" style="padding-top: 1%;">
 
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-                <div class="col-lg-3" style="padding-top: 2%;">
-                    Mostrando 1–36 de 45 resultados
-                </div>
-                <div class="col-lg-3" style="padding-top: 1%;">
-                    <select name="orderby" class="form-control">
-                        <option value="menu_order" selected="selected">Orden alfabético</option>
-                        <option value="popularity">Ordenar por popularidad</option>
-                        <option value="date">Ordenar por las últimas</option>
-                        <option value="price">Ordenar por precio: bajo a alto</option>
-                        <option value="price-desc">Ordenar por precio: alto a bajo</option>
-                    </select>
-                </div>
-                <div class="col-lg-1">
-
-                </div>
-            </div>
-        </div>
         <!-----------------------titulo ----------------->
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 mt-5">
                     <h4><i class="fa fa-star" aria-hidden="true"></i> JUEGOS DESTACADOS
-                        <a href="#" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
+                        <a [routerLink]="['/catalogo']" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
                     </h4>
                     <hr>
 
@@ -124,7 +100,7 @@
             <div class="row">
                 <div class="col-lg-12 mt-5">
                     <h4><i class="fa fa-briefcase"></i> JUEGOS EN OFERTA
-                        <a href="#" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
+                        <a [routerLink]="['/ofertas']" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
                     </h4>
                     <hr>
                 </div>

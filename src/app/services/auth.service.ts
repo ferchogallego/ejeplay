@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { User } from 'firebase';
+import { User, auth } from 'firebase';
 import { first } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -30,6 +30,12 @@ export class AuthService {
     return this.db.collection<User>('users').doc(id).set(user);
   }
 
+  verifyUser(idUser: string){
+    return this.db.collection('users', ref => ref
+                  .where('id', '==', idUser))
+                  .valueChanges();
+  }
+
   login(email: string, password: string){
     try{
       return this.afAuth.signInWithEmailAndPassword(email, password);
@@ -37,6 +43,13 @@ export class AuthService {
       console.log(error);
     }
   }
+   loginGoogle(){
+    return this.afAuth.signInWithPopup(new auth.GoogleAuthProvider());
+   }
+
+   loginFacebook(){
+    return this.afAuth.signInWithPopup(new auth.FacebookAuthProvider());
+   }
 
   logout(){
     try {

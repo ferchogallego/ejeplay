@@ -15,6 +15,7 @@ import { ResponsePayuComponent } from './pages/response-payu/response-payu.compo
 import { OffersComponent } from './pages/offers/offers.component';
 import { PreguntasComponent } from './pages/preguntas/preguntas.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
+import { VentasComponent } from './admin/ventas/ventas.component';
 
 
 
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'ofertas', component: OffersComponent},
   { path: 'preguntas', component: PreguntasComponent},
   { path: 'detalle/:id', component: DetalleComponent},
+  { path: 'ventas', component: VentasComponent},
   { path: 'info', component: PurchasesComponent, canActivate: [AuthGuard]},
   { path: 'solicitudes', component: RequestComponent, canActivate: [AuthGuard]},
   { path: 'confirmacion', component: ResponsePayuComponent, canActivate: [AuthGuard]},

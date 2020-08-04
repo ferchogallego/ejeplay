@@ -193,7 +193,9 @@ export class ProductsService {
       nombre: producto.nombre,
       tipo: producto.tipo,
       precio: producto.precio,
+      cantPpal: producto.cantPpal,
       preciosec: producto.preciosec,
+      cantSec: producto.cantSec,
       oferta: producto.oferta,
       categoria: producto.categoria,
       peso: producto.peso,
@@ -294,10 +296,46 @@ export class ProductsService {
     });
   }
 
+  saleProcessReference(userId: string, referencia: any){
+    return this.db.collection('carShop/', ref => ref
+                  .where('estado', '==', 'Pendiente')
+                  .where('usuario', '==', userId)).snapshotChanges()
+                  .pipe(
+                    map(actions =>
+                      actions.map(resp => {
+                        const data = resp.payload.doc.data();
+                        const id = resp.payload.doc.id;
+                        let conIf = 0;
+                        this.db.collection('carShop/').doc(id).update({
+                          RefCompra: referencia
+                        }).then(result => {
+                            conIf++;
+                            // tslint:disable-next-line: no-string-literal
+                            if (conIf === data['docs']['length']){
+                                return(conIf);
+                              }
+                          });
+                      }))
+                  );
+  }
+
   validateSale(userId: string, referencia: string){
     return this.db.collection('sales/', ref => ref
                   .where('reference', '==', referencia)
                   .where('state', '==', 'Procesandose')
+                  .where('comprador', '==', userId)).snapshotChanges()
+                  .pipe(
+                   map(actions =>
+                    actions.map(resp => {
+                    const data = resp.payload.doc.data() as SaleI;
+                    const id = resp.payload.doc.id;
+                    return {id, ...data};
+                    }))
+                   );
+  }
+  updateSale(userId: string, referencia: string){
+    return this.db.collection('sales/', ref => ref
+                  .where('reference', '==', referencia)
                   .where('comprador', '==', userId)).snapshotChanges()
                   .pipe(
                    map(actions =>
@@ -319,7 +357,7 @@ export class ProductsService {
 
   pedidos(userId: string, referencia: string){
     return this.db.collection('carShop/', ref => ref
-                  .where('estado', '==', 'Pendiente')
+                  .where('RefCompra', '==', referencia)
                   .where('usuario', '==', userId)).snapshotChanges()
                   .pipe(
                     map(actions =>
@@ -329,7 +367,6 @@ export class ProductsService {
                         let conIf = 0;
                         this.db.collection('carShop/').doc(id).update({
                           estado : 'Venta',
-                          RefCompra: referencia
                         }).then(result => {
                             conIf++;
                             // tslint:disable-next-line: no-string-literal
@@ -340,6 +377,10 @@ export class ProductsService {
                       }))
                   );
   }
+  pedidosCancelados(idSale: string){
+    return this.db.collection('sales').doc(idSale).delete();
+  }
+
   cantPedidos(userId: string){
     return this.db.collection('carShop/', ref => ref
     .where('estado', '==', 'Pendiente')
@@ -353,5 +394,25 @@ export class ProductsService {
    loadSaleByReference(compra: string){
     return this.db.collection('carShop/', ref => ref
     .where('RefCompra', '==', compra)).valueChanges();
+   }
+   loadSalesAdmin(){
+     return this.db.collection('sales')
+                   .snapshotChanges()
+                   .pipe(
+                     map(actions =>
+                      actions.map(resp => {
+                      const data = resp.payload.doc.data() as any;
+                      const id = resp.payload.doc.id;
+                      return {id, ...data};
+                      }))
+                     );
+   }
+   loadSalesAdminByState(estado: string){
+    return this.db.collection('sales/', ref => ref
+    .where('state', '==', estado)).valueChanges();
+   }
+   loadSalesAdminByReference(rfce: string){
+    return this.db.collection('sales/', ref => ref
+    .where('reference', '==', rfce)).valueChanges();
    }
 }
