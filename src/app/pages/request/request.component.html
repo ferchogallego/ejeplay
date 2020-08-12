@@ -59,7 +59,7 @@
                     <input type="text" class="liquid1" readonly [value]='liquidacion |currency'>
                 </p>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
                         Acepto términos y condiciones, términos y condiciones de EjePlay y autorizo el tratamiento de mis datos personales con las siguientes condiciones.
                     </label>

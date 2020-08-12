@@ -11,27 +11,30 @@ import { JuegosPS4Component } from './pages/juegos-ps4/juegos-ps4.component';
 import { DetalleComponent } from './pages/detalle/detalle.component';
 import { RequestComponent } from './pages/request/request.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { ResponsePayuComponent } from './pages/response-payu/response-payu.component';
 import { OffersComponent } from './pages/offers/offers.component';
 import { PreguntasComponent } from './pages/preguntas/preguntas.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
 import { VentasComponent } from './admin/ventas/ventas.component';
+import { AccessComponent } from './admin/access/access.component';
 
 
 
 const routes: Routes = [
   { path: 'home', component: InicioComponent},
-  { path: 'administrador', component: InventarioComponent},
-  { path: 'producto/:id', component: ProductosComponent},
-  { path: 'editar/:id', component: EditarProductoComponent},
-  { path: 'slider', component: UpdateSliderComponent},
+  { path: 'administrador', component: InventarioComponent, canActivate: [AdminGuard]},
+  { path: 'producto/:id', component: ProductosComponent, canActivate: [AdminGuard]},
+  { path: 'editar/:id', component: EditarProductoComponent, canActivate: [AdminGuard]},
+  { path: 'slider', component: UpdateSliderComponent, canActivate: [AdminGuard]},
+  { path: 'admin', component: AccessComponent},
   { path: 'login', component: LoginComponent},
   { path: 'registro', component: RegistroComponent},
   { path: 'catalogo', component: JuegosPS4Component},
   { path: 'ofertas', component: OffersComponent},
   { path: 'preguntas', component: PreguntasComponent},
   { path: 'detalle/:id', component: DetalleComponent},
-  { path: 'ventas', component: VentasComponent},
+  { path: 'ventas', component: VentasComponent, canActivate: [AdminGuard]},
   { path: 'info', component: PurchasesComponent, canActivate: [AuthGuard]},
   { path: 'solicitudes', component: RequestComponent, canActivate: [AuthGuard]},
   { path: 'confirmacion', component: ResponsePayuComponent, canActivate: [AuthGuard]},
@@ -39,7 +42,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

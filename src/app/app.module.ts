@@ -29,6 +29,7 @@ import { OffersComponent } from './pages/offers/offers.component';
 import { PreguntasComponent } from './pages/preguntas/preguntas.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
 import { VentasComponent } from './admin/ventas/ventas.component';
+import { AccessComponent } from './admin/access/access.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { VentasComponent } from './admin/ventas/ventas.component';
     OffersComponent,
     PreguntasComponent,
     PurchasesComponent,
-    VentasComponent
+    VentasComponent,
+    AccessComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-nav',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminNavComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authSvc: AuthService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
+
+  async onLogout(){
+    try {
+      await this.authSvc.logout();
+      this.router.navigate(['/admin']);
+    } catch (error) {
+      console.log(error);
+    }
+   }
 
 }

@@ -3,7 +3,6 @@ import { ProductsService } from '../../services/products.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Md5 } from 'md5-typescript';
-import { SaleI } from '../../shared/sale.interface';
 
 @Component({
   selector: 'app-request',
@@ -11,6 +10,9 @@ import { SaleI } from '../../shared/sale.interface';
   styleUrls: ['./request.component.scss']
 })
 export class RequestComponent implements OnInit {
+
+  checkOn = false;
+  cont = 0;
 
   load = false;
   dolar = false;
@@ -102,6 +104,7 @@ export class RequestComponent implements OnInit {
   }
 
   payu(){
+    if (this.checkOn) {
     this.reference = Math.ceil(Math.random() * 987524);
     const signature = Md5.init(`${this.apiKey}~${this.merchantid}~${this.reference}~${this.liquidacion}~COP`);
     const pasarela = `
@@ -118,7 +121,7 @@ export class RequestComponent implements OnInit {
       <input name="signature" type="hidden" value="${signature}">
       <input name="test" type="hidden" value="1">
       <input name="buyerEmail" type="hidden" value="${this.email}">
-      <input name="responseUrl" type="hidden" value="http://localhost:4200/confirmacion">
+      <input name="responseUrl" type="hidden" value="https://ejeplay-7a38e.web.app/#/confirmacion">
       <input name="confirmationUrl" type="hidden" value="http://www.test.com/confirmation">
       <button type="submit" class="pago">
           <i class="fa fa-credit-card" aria-hidden="true"> Aceptar </i>
@@ -149,6 +152,25 @@ export class RequestComponent implements OnInit {
         showCloseButton: true
       });
     });
+  }  else {
+    Swal.fire({
+      title: 'Error...',
+      text: 'Debes aceptar términos y condiciones para la compra',
+      icon: 'error',
+      allowOutsideClick: false,
+      showCloseButton: true
+      });
+  }
+}
+
+  check(event: any){
+    if (this.cont === 0) {
+      this.cont++;
+      this.checkOn = true;
+    } else if (this.cont > 0) {
+      this.cont--;
+      this.checkOn = false;
+    }
   }
 
 }

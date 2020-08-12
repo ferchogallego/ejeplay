@@ -31,7 +31,13 @@ export class ResponsePayuComponent implements OnInit {
       const refer = this.referencia.toString();
       // console.log('prueba: ', refer);
       if (this.activatedRoute.snapshot.queryParams.transactionState === '4'){
-        console.log('Se vendió');
+        Swal.fire({
+          title: 'Venta Aprobada...',
+          text: 'El pedido se envió exitosamente',
+          icon: 'success',
+          allowOutsideClick: false,
+          showCloseButton: true
+        });
         this.productoSvc.validateSale(this.idUser, refer).subscribe(res => {
            this.resultado = res;
            const id = this.resultado[0].id;
