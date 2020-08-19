@@ -36,3 +36,13 @@
         border-radius: 5px;
     }
 }
+
+.relacionados {
+    .card {
+        cursor: pointer;
+    }
+    .card:hover {
+        transition: 700ms;
+        transform: scale(1.1);
+    }
+}

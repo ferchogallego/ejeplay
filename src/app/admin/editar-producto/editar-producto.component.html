@@ -16,7 +16,7 @@
                             <label>Tipo de juego</label>
                             <select class="form-control" formControlName="tipo" name="tipo" required>                      
                               <option value="Ps4">Ps4</option>
-                              <option value="Ps3">Ps3</option>
+                              <option value="Ps3">Ps5</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -26,7 +26,7 @@
                         <div class="form-group">
                             <label>Categoria:</label>
                             <select class="form-control" formControlName="categoria" name="categoria" required>                      
-                              <option value="Accion">Acción</option>
+                              <option value="Acción">Acción</option>
                               <option value="Deportes">Deportes</option>
                               <option value="Rol">Rol</option>
                               <option value="Infantil">Infantil</option>
@@ -89,11 +89,11 @@
                             <img *ngIf="imgLoad == false" [src]="image" class="imgSrc" alt="">
                         </div>
                     </div>
-                    <!--  <div class="col-md-12">
+                    <div class="col-md-12">
                         <label>Descripción del juego:</label>
                         <textarea class="form-control" formControlName="descripcion" name="descripcion" [class.is-invalid]="descripcionNoValido" cols="30" rows="5"></textarea>
                         <small *ngIf="descripcionNoValido" class="text-danger">Debe ingresar la descripción del juego min 30 caracteres</small>
-                    </div> -->
+                    </div>
 
                 </div>
                 <div class="form-group text-center mt-3">

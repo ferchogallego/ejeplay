@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
@@ -20,7 +20,8 @@ export class ResponsePayuComponent implements OnInit {
 
   constructor( private activatedRoute: ActivatedRoute,
                private productoSvc: ProductsService,
-               private authSvc: AuthService) { }
+               private authSvc: AuthService,
+               private router: Router) { }
 
   ngOnInit(): void {
     this.user.subscribe(resp => {
@@ -74,4 +75,9 @@ export class ResponsePayuComponent implements OnInit {
     }
     });
   }
+
+  openCatalogoAll(){
+    this.productoSvc.ofertas = false;
+    this.router.navigate(['/catalogo']);
+   }
 }

@@ -18,6 +18,7 @@ import { PreguntasComponent } from './pages/preguntas/preguntas.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
 import { VentasComponent } from './admin/ventas/ventas.component';
 import { AccessComponent } from './admin/access/access.component';
+import { DollarComponent } from './admin/dollar/dollar.component';
 
 
 
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'preguntas', component: PreguntasComponent},
   { path: 'detalle/:id', component: DetalleComponent},
   { path: 'ventas', component: VentasComponent, canActivate: [AdminGuard]},
+  { path: 'dolar', component: DollarComponent, canActivate: [AdminGuard]},
   { path: 'info', component: PurchasesComponent, canActivate: [AuthGuard]},
   { path: 'solicitudes', component: RequestComponent, canActivate: [AuthGuard]},
   { path: 'confirmacion', component: ResponsePayuComponent, canActivate: [AuthGuard]},

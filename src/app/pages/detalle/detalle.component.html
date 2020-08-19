@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-5 info">
                 <h2>{{juego}}</h2>
-                <H4>{{preciosec | currency}} <small>COP</small> {{precio | currency}} <small>COP</small></H4>
+                <H4>{{precio | currency}} <small>COP</small> {{preciosec | currency}} <small>COP</small></H4>
                 <hr>
                 <p><i class="fa fa-language fa-lg"></i> &nbsp;{{idioma}}</p>
                 <p><i class="fa fa-calculator fa-lg"></i>&nbsp;Peso: <b>{{peso}}</b></p>
@@ -29,8 +29,8 @@
                 <p>- Tutorial paso a paso</p>
                 <label for=""><b>Seleccionar tipo de cuenta:</b> </label>
                 <p>
-                    <button (click)="activateSale('primario')" class="btn btn-primary">Cuenta Principal</button>&nbsp;
-                    <button (click)="activateSale('secundario')" class="btn btn-primary">Cuenta Secundaria</button>
+                    <button (click)="activateSale('primario', oferta)" class="btn btn-primary">Cuenta Principal</button>&nbsp;
+                    <button (click)="activateSale('secundario', oferta)" class="btn btn-primary">Cuenta Secundaria</button>
                 </p>
                 <h4 *ngIf="secund">{{preciosec | currency}} <small>COP</small></h4>
                 <h4 *ngIf="prim">{{precio | currency}} <small>COP</small></h4>
@@ -42,12 +42,26 @@
                 <br>
                 <h5>Juegos relacionados</h5>
                 <hr>
-                <div class="row row-cols-1 row-cols-md-2">
-                    <div class="col mb-4" *ngFor="let juego of relacionados" (click)="openGame(juego.id)">
-                        <div class="card">
-                            <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                <div class="d-none d-lg-block d-xl-block">
+                    <div class="row row-cols-1 row-cols-md-2 relacionados">
+                        <div class="col mb-4" *ngFor="let juego of relacionados" (click)="openGame(juego.id)">
+                            <div class="card">
+                                <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="row row-cols-1 row-cols-md-2 relacionados">
+                    <div class="col-12 mvl d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+                        <div class="row">
+                            <div class="col-6 mb-2" *ngFor="let juego of relacionados">
+                                <div class="card h-100 games" (click)="openGame(juego.id)">
+                                    <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -84,7 +98,7 @@
                 <p><img src="../../../assets/img/detalle/ps4.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Categoría: <b>{{categoria}}</b></p>
                 <p><img src="../../../assets/img/detalle/deaf.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Idioma: <b>{{idioma}}</b></p>
                 <p><img src="../../../assets/img/detalle/hard-disk-drive.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Peso: <b>{{peso}}</b></p>
-                <p><img src="../../../assets/img/detalle/ps4logo.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Tipo: <b>{{tipo}}</b></p>
+                <p><img src="../../../assets/img/detalle/ps4logo.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Tipo: <b>{{tipo | uppercase}}</b></p>
             </div>
         </div>
         <!---------------------COMENTARIOS----------------------->

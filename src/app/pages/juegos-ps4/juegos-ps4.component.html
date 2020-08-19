@@ -12,7 +12,7 @@
     </div>
 </div>
 <div *ngIf="load">
-    <div class="container">
+    <div class="container ppal d-none d-lg-block d-xl-block">
         <div class="col-lg-12">
             <h3 class="titulo">Catálogo de juegos PS4</h3>
             <hr>
@@ -24,8 +24,9 @@
                     </form>
                     <h5 class="titulo mt-3">Filtrar por categoría</h5>
                     <button (click)="loadAllgames()" class="btn btn-primary btn-block">Todos</button>
+                    <button (click)="loadOffergames()" class="btn btn-primary btn-block">Ofertas</button>
                     <button (click)="btnSearch('Deportes')" class="btn btn-primary btn-block">Deportes</button>
-                    <button (click)="btnSearch('Accion')" class="btn btn-primary btn-block">Acción</button>
+                    <button (click)="btnSearch('Acción')" class="btn btn-primary btn-block">Acción</button>
                     <button (click)="btnSearch('Rol')" class="btn btn-primary btn-block">Rol</button>
                     <button (click)="btnSearch('Infantil')" class="btn btn-primary btn-block">Infantil</button>
                     <button (click)="btnSearch('Aventura')" class="btn btn-primary btn-block">Aventura</button>
@@ -41,20 +42,77 @@
                     </form>
                 </div>
                 <div class="col-lg-9">
-                    <div class="row row-cols-1 row-cols-md-4">
-                        <div class="col mb-3" *ngFor="let juego of juegos | filter:filterProducto">
-                            <div class="card games" (click)="openGame(juego.id)">
-                                <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% OFF</span>
-                                <img [src]="juego.imageProd" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-title">{{juego.nombre | titlecase}}</p>
-                                    <p *ngIf="!dolar" class="card-text"><b>{{juego.precio | currency}} COP </b></p>
-                                    <p *ngIf="dolar" class="card-text"><b>{{(juego.precio)/usd | currency}} USD</b></p>
-                                    <p *ngIf="!dolar" class="card-text"><b>{{juego.preciosec | currency}} COP </b></p>
-                                    <p *ngIf="dolar" class="card-text"><b>{{(juego.preciosec)/usd | currency}} USD</b></p>
-                                    <button class="compra"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
+                    <div>
+                        <div class="row row-cols-1 row-cols-md-4">
+                            <div class="col mb-3" *ngFor="let juego of juegos | filter:filterProducto">
+                                <div class="card h-100 games" (click)="openGame(juego.id)">
+                                    <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                                    <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% OFF</span>
+                                    <div class="card-body">
+                                        <p class="card-title">{{juego.nombre | titlecase}}</p>
+                                        <p *ngIf="!dolar" class="card-text"><b>{{juego.precio | currency}} COP </b></p>
+                                        <p *ngIf="dolar" class="card-text"><b>{{(juego.precio)/usd | currency}} USD</b></p>
+                                        <p *ngIf="!dolar" class="card-text"><b>{{juego.preciosec | currency}} COP </b></p>
+                                        <p *ngIf="dolar" class="card-text"><b>{{(juego.preciosec)/usd | currency}} USD</b></p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="compra"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container d-xs-block d-sm-block d-md-block d-lg-none d-xl-none movil">
+        <h3 class="titulo">Catálogo de juegos PS4</h3>
+        <hr>
+        <div class="col-lg-3 izq">
+            <form class="form-inline">
+                <input class="form-control sch" [(ngModel)]="filterProducto" name="filterProducto" type="search" placeholder="Buscar juego..." aria-label="Search">
+                <button class="btnshc"><i class="fa fa-search-plus fa-lg"></i></button>
+            </form>
+            <h5 class="titulo mt-3">Filtrar por categoría</h5>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6">
+                        <button (click)="loadOffergames()" class="btn btn-primary btn-block">Ofertas</button>
+                        <button (click)="btnSearch('Deportes')" class="btn btn-primary btn-block">Deportes</button>
+                        <button (click)="btnSearch('Acción')" class="btn btn-primary btn-block">Acción</button>
+                    </div>
+                    <div class="col-6">
+                        <button (click)="btnSearch('Rol')" class="btn btn-primary btn-block">Rol</button>
+                        <button (click)="btnSearch('Infantil')" class="btn btn-primary btn-block">Infantil</button>
+                        <button (click)="btnSearch('Aventura')" class="btn btn-primary btn-block">Aventura</button>
+                    </div>
+                </div>
+                <button (click)="loadAllgames()" class="btn btn-primary btn-block mt-2">Todos</button>
+            </div>
+            <form class="mt-3">
+                <div class="form-group">
+                    <label for="formControlRange"><h5 class="titulo">Filtrar precio</h5></label>
+                    <input type="range" id="slider" class="form-control-range rng" min="0" max="300000" step="1000" value="0" (change)="value($event.target.value)">
+                    <div class="text-right mt-3">
+                        <label><h5>Selección: <b>{{rango | currency}}</b></h5></label>
+                        <button class="filtrar" (click)="findPrice(rango)">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-6 mb-2" *ngFor="let juego of juegos | filter:filterProducto">
+                    <div class="card h-100 games" (click)="openGame(juego.id)">
+                        <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% OFF</span>
+                        <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
+                            <p *ngIf="!dolar" class="card-text"><b>{{juego.precio | currency}} COP</b></p>
+                            <p *ngIf="dolar" class="card-text"><b>{{(juego.precio)/usd | currency}} USD</b></p>
+                            <p *ngIf="!dolar" class="card-text"><b>{{juego.preciosec | currency}} COP</b></p>
+                            <p *ngIf="dolar" class="card-text"><b>{{(juego.preciosec)/usd | currency}} USD</b></p>
                         </div>
                     </div>
                 </div>

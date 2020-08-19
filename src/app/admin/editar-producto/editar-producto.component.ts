@@ -77,7 +77,6 @@ export class EditarProductoComponent implements OnInit {
       categoria: this.producto.categoria,
       peso: this.producto.peso,
       idioma: this.producto.idioma,
-      imageProd: this.producto.imageProd,
       fechaCreacion: this.producto.fechaCreacion,
       descripcion: this.producto.descripcion,
     });

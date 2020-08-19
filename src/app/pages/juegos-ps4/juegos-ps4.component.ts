@@ -21,6 +21,7 @@ export class JuegosPS4Component implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
+    this.productoSvc.catalogo = true;
     this.productoSvc.search = false;
     setTimeout(() => {
       this.load = true;
@@ -35,6 +36,15 @@ export class JuegosPS4Component implements OnInit {
         this.juegos = resp;
         // console.log(this.juegos);
       });
+
+    if (this.productoSvc.ofertas === true) {
+      this.productoSvc.termino = '';
+      this.juegos = '';
+      this.productoSvc.loadGamesForOffer()
+                    .subscribe(res => {
+                      this.juegos = res;
+                    });
+    }
 
     if (this.productoSvc.divisa === 'USD') {
       this.dolar = true;
@@ -56,6 +66,8 @@ export class JuegosPS4Component implements OnInit {
   }
 
   findPrice(valor: string){
+    this.productoSvc.termino = '';
+    this.filterProducto = '';
     // tslint:disable-next-line: radix
     const cantidad = parseInt(valor);
     this.juegos = '';
@@ -91,6 +103,8 @@ export class JuegosPS4Component implements OnInit {
 
   btnSearch(cate: string){
     // console.log(cate);
+    this.productoSvc.termino = '';
+    this.filterProducto = '';
     this.juegos = '';
     this.productoSvc.loadByCategory(cate)
                     .subscribe(res => {
@@ -98,12 +112,24 @@ export class JuegosPS4Component implements OnInit {
                     });
   }
   loadAllgames(){
+    this.productoSvc.termino = '';
     this.juegos = '';
+    this.filterProducto = '';
     this.productoSvc.cargarProductos()
     .subscribe (resp => {
       this.juegos = resp;
       // console.log(this.juegos);
     });
+  }
+
+  loadOffergames(){
+    this.filterProducto = '';
+    this.productoSvc.termino = '';
+    this.juegos = '';
+    this.productoSvc.loadGamesForOffer()
+                  .subscribe(res => {
+                    this.juegos = res;
+                  });
   }
 
 }

@@ -34,6 +34,7 @@ export class DetalleComponent implements OnInit {
   cantP: number;
   cantS: number;
   relacionados: any;
+  descuento: number;
 
   public user = this.authSvc.afAuth.user;
   perfilUser: any;
@@ -55,6 +56,8 @@ export class DetalleComponent implements OnInit {
               private authSvc: AuthService) { }
 
   ngOnInit(): void {
+    this.productoSvc.termino = '';
+    this.productoSvc.catalogo = false;
     this.productoSvc.search = true;
     const id = this.route.snapshot.paramMap.get('id');
     setTimeout(() => {
@@ -62,9 +65,8 @@ export class DetalleComponent implements OnInit {
     }, 2000);
     this.productoSvc.loadGameById(id)
                     .subscribe(res => {
-                      // console.log(res);
                       this.game = res;
-                      this.idGame = this.game.id;
+                      this.idGame = id;
                       this.juego = this.game.nombre;
                       this.imagen = this.game.imageProd ;
                       this.idioma = this.game.idioma;
@@ -153,15 +155,16 @@ export class DetalleComponent implements OnInit {
     this.comentarios = true;
    }
   }
-  activateSale(slot: string){
+  activateSale(slot: string, desc: number){
+    this.descuento = desc;
     if (slot === 'primario') {
       if (this.cantP > 0) {
         this.prim = true;
         this.secund = false;
         this.activa = true;
-        const primaria = 'Primaria';
+        const primaria = 'Principal';
         this.solicitud.compra = [];
-        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.precio, primaria);
+        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.precio, this.descuento, primaria);
       }
       if (this.cantP === 0) {
         Swal.fire({
@@ -178,7 +181,7 @@ export class DetalleComponent implements OnInit {
         this.activa = true;
         const secundaria = 'Secundaria';
         this.solicitud.compra = [];
-        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.preciosec, secundaria);
+        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.preciosec, this.descuento, secundaria);
       }
       if (this.cantS === 0) {
         Swal.fire({

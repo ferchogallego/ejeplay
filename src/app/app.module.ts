@@ -30,6 +30,7 @@ import { PreguntasComponent } from './pages/preguntas/preguntas.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
 import { VentasComponent } from './admin/ventas/ventas.component';
 import { AccessComponent } from './admin/access/access.component';
+import { DollarComponent } from './admin/dollar/dollar.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AccessComponent } from './admin/access/access.component';
     PreguntasComponent,
     PurchasesComponent,
     VentasComponent,
-    AccessComponent
+    AccessComponent,
+    DollarComponent
   ],
   imports: [
     BrowserModule,

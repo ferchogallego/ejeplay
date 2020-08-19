@@ -26,6 +26,7 @@ export class RequestComponent implements OnInit {
   game: any;
   subtotal: number;
   liquidacion: number;
+  descuento: number;
   descripcion: string;
   apiKey = '4Vj8eK4rloUd272L48hsrarnUA';
   merchantid = '508029';
@@ -39,6 +40,8 @@ export class RequestComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
+    this.productoSvc.termino = '';
+    this.productoSvc.catalogo = false;
     setTimeout(() => {
       this.load = true;
     }, 2000);
@@ -52,15 +55,18 @@ export class RequestComponent implements OnInit {
                         this.compras = res;
                         // console.log(this.compras);
                         let saldo = 0;
+                        let desc = 0;
                         // tslint:disable-next-line: forin
                         for (const key in this.compras){
                           // tslint:disable-next-line: radix
                           saldo = parseInt(this.compras[key].compra[3]) + saldo;
+                          // tslint:disable-next-line: radix
+                          desc =  ((parseInt(this.compras[key].compra[3]) * parseInt (this.compras[key].compra[4])) / 100) + desc;
                         }
                         this.subtotal = saldo;
-                        this.liquidacion = saldo;
+                        this.liquidacion = saldo - desc;
                         this.descripcion = this.idUser;
-                        console.log(this.cifrado);
+                        this.descuento = desc;
                       });
     });
   }

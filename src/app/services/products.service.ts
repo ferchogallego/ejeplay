@@ -24,6 +24,12 @@ export class ProductsService {
   termino: string;
   search: boolean;
 
+  // catalogo en ofertas
+  ofertas: boolean;
+
+  // opciones de menu catalogo
+  catalogo: boolean;
+
   constructor(private db: AngularFirestore,
               private storage: AngularFireStorage) {
    this.productosCollection = db.collection<Producto>('productos');
@@ -414,5 +420,24 @@ export class ProductsService {
    loadSalesAdminByReference(rfce: string){
     return this.db.collection('sales/', ref => ref
     .where('reference', '==', rfce)).valueChanges();
+   }
+
+   loadDollarPrice(){
+     return this.db.collection('divisa')
+                   .snapshotChanges()
+                   .pipe(
+                     map(actions =>
+                      actions.map(resp => {
+                      const data = resp.payload.doc.data() as any;
+                      const id = resp.payload.doc.id;
+                      return {id, ...data};
+                      }))
+                     );
+   }
+
+   changeDollarPrice(id: string, precio: number){
+     return this.db.collection('divisa').doc(id).update({
+       dolar: precio
+     });
    }
 }

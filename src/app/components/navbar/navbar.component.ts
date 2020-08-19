@@ -24,6 +24,8 @@ export class NavbarComponent implements OnInit {
   idUser: string;
   pedidos: any;
 
+  catalogo = false;
+
   searchForm = new FormGroup ({
     palabra: new FormControl('')
   });
@@ -33,6 +35,9 @@ export class NavbarComponent implements OnInit {
               private productoSvc: ProductsService) { }
 
   ngOnInit(): void {
+    if (this.productoSvc.catalogo === true) {
+      this.catalogo = true;
+    }
     this.buscador = this.productoSvc.search;
     this.user.subscribe(resp => {
       this.perfilUser = resp;
@@ -78,7 +83,14 @@ export class NavbarComponent implements OnInit {
       this.router.navigate(['/catalogo']);
     }
    }
-   openGamesForOffer(){
-      this.router.navigate(['/ofertas']);
+
+   openCatalogInOffer(){
+     this.productoSvc.ofertas = true;
+     this.router.navigate(['/catalogo']);
    }
-}
+
+   openCatalogoAll(){
+    this.productoSvc.ofertas = false;
+    this.router.navigate(['/catalogo']);
+   }
+  }

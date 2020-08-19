@@ -16,6 +16,7 @@ export class InicioComponent implements OnInit {
   imagen2: string;
   imagen3: string;
   juegos: any;
+  ofertas: any;
   ofertas1: any;
   ofertas2: any;
 
@@ -29,6 +30,8 @@ export class InicioComponent implements OnInit {
   selectCurrency: string;
 
   ngOnInit(): void {
+    this.productoSvc.termino = '';
+    this.productoSvc.catalogo = false;
     this.productoSvc.search = true;
     setTimeout(() => {
       this.load = true;
@@ -48,6 +51,11 @@ export class InicioComponent implements OnInit {
     .subscribe (resp => {
       this.juegos = resp;
       console.log(this.juegos);
+    });
+
+    this.productoSvc.loadGamesForOffer()
+    .subscribe(res => {
+      this.ofertas = res;
     });
 
     this.productoSvc.loadStarterOffers2()
@@ -97,4 +105,13 @@ export class InicioComponent implements OnInit {
   openGame(juego: string){
     this.router.navigate([`/detalle/${juego}`]);
   }
+
+  openCatalogInOffer(){
+    this.productoSvc.ofertas = true;
+    this.router.navigate(['/catalogo']);
+  }
+  openCatalogoAll(){
+    this.productoSvc.ofertas = false;
+    this.router.navigate(['/catalogo']);
+   }
 }

@@ -19,6 +19,8 @@ export class PurchasesComponent implements OnInit {
               private authSvc: AuthService) { }
 
   ngOnInit(): void {
+    this.productoSvc.termino = '';
+    this.productoSvc.catalogo = false;
     setTimeout(() => {
       this.load = true;
     }, 2000);

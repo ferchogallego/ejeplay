@@ -18,32 +18,34 @@
                 <img src="../../../assets/img/money.png" width="70" class="img-fluid" alt="Responsive image"> Información de transacciones
             </h3>
             <hr>
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Medio</th>
-                        <th scope="col">Ref. pago</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of lista">
-                        <td>{{item.comprado | date}}</td>
-                        <td>{{item.medio}}</td>
-                        <td>{{item.reference}}</td>
-                        <td>{{item.state}}</td>
-                        <td>{{item.precio}}</td>
-                        <td>
-                            <button type="button" class="btn btn-success" (click)="openModal(item.reference)" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
-                                <i class="fa fa-list" aria-hidden="true"></i>
-                              </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Medio</th>
+                            <th scope="col">Ref. pago</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lista">
+                            <td>{{item.comprado | date}}</td>
+                            <td>{{item.medio}}</td>
+                            <td>{{item.reference}}</td>
+                            <td>{{item.state}}</td>
+                            <td>{{item.precio | currency}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success" (click)="openModal(item.reference)" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                  </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
