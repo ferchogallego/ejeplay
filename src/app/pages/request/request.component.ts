@@ -28,9 +28,9 @@ export class RequestComponent implements OnInit {
   liquidacion: number;
   descuento: number;
   descripcion: string;
-  apiKey = '4Vj8eK4rloUd272L48hsrarnUA';
-  merchantid = '508029';
-  accountId = '512321';
+  apiKey = 'uo855KDPGSSnTX2UJd79KrXCAG';
+  merchantid = '851420';
+  accountId = '858956';
   cifrado: string;
   moneda: 'COP';
   reference: number;
@@ -115,7 +115,7 @@ export class RequestComponent implements OnInit {
     const signature = Md5.init(`${this.apiKey}~${this.merchantid}~${this.reference}~${this.liquidacion}~COP`);
     const pasarela = `
     <img src="../../../assets/img/logo_payu.png" alt="" width="90">
-    <form method="post" action="https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/">
+    <form method="post" action="https://checkout.payulatam.com/ppp-web-gateway-payu/">
       <input name="merchantId" type="hidden" value="${this.merchantid}">
       <input name="accountId" type="hidden" value="${this.accountId}">
       <input name="description" type="hidden" value="Pago PAYU EjePlay Pereira">
@@ -125,9 +125,9 @@ export class RequestComponent implements OnInit {
       <input name="taxReturnBase" type="hidden" value="0">
       <input name="currency" type="hidden" value="COP">
       <input name="signature" type="hidden" value="${signature}">
-      <input name="test" type="hidden" value="1">
+      <input name="test" type="hidden" value="0">
       <input name="buyerEmail" type="hidden" value="${this.email}">
-      <input name="responseUrl" type="hidden" value="https://ejeplay-7a38e.web.app/#/confirmacion">
+      <input name="responseUrl" type="hidden" value="https://www.ejeplaypereira.com/#/confirmacion">
       <input name="confirmationUrl" type="hidden" value="http://www.test.com/confirmation">
       <button type="submit" class="pago">
           <i class="fa fa-credit-card" aria-hidden="true"> Aceptar </i>

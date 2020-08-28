@@ -92,8 +92,8 @@
                             <th scope="col">Juego</th>
                             <th scope="col"></th>
                             <th scope="col">Cuenta</th>
-                            <th scope="col">Cant</th>
-                            <th scope="col">Desc</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Descuento</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Total</th>
                             <th scope="col">Acciones</th>
@@ -110,8 +110,8 @@
                             <td>{{item.compra[5]}}</td>
                             <td>1</td>
                             <td>{{item.compra[4]}}%</td>
-                            <td>{{item.compra[3] | currency}}</td>
-                            <td>{{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | currency}}</td>
+                            <td>{{item.compra[3] | number}}</td>
+                            <td>{{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | number}}</td>
                             <td>
                                 <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(item)">
                             <i class="fa fa-trash"></i>

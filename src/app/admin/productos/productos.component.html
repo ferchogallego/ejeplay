@@ -51,7 +51,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Precio Principal:</label>
-                                    <input type="text" formControlName="precio" class="form-control" name="precio" placeholder="Ingrese el precio" [class.is-invalid]="precioNoValido">
+                                    <input type="number" formControlName="precio" class="form-control" name="precio" placeholder="Ingrese el precio" [class.is-invalid]="precioNoValido">
                                     <small *ngIf="precioNoValido" class="text-danger">Debe ingresar el precio principal</small>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Precio Secundario:</label>
-                                    <input type="text" formControlName="preciosec" class="form-control" name="preciosec" placeholder="Ingrese el precio secundario" [class.is-invalid]="preciosecNoValido">
+                                    <input type="number" formControlName="preciosec" class="form-control" name="preciosec" placeholder="Ingrese el precio secundario" [class.is-invalid]="preciosecNoValido">
                                     <small *ngIf="preciosecNoValido" class="text-danger">Debe ingresar el precio secundario</small>
                                 </div>
                             </div>
