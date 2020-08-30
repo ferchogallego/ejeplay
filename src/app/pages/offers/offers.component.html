@@ -19,7 +19,7 @@
             <div class="row row-cols-1 row-cols-md-4">
                 <div class="col mb-4" *ngFor="let item of ofertas">
                     <div class="card" (click)="openGame(item.id)">
-                        <span class="notify-badge">-{{item.oferta}}% OFF</span>
+                        <span class="notify-badge">-{{item.oferta}}% 0FF</span>
                         <img [src]="item.imageProd" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{item.nombre | titlecase}}</h5>

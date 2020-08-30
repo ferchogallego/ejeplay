@@ -103,7 +103,7 @@
             <div class="row">
                 <div class="col-6 mb-2" *ngFor="let juego of juegos | filter:filterProducto">
                     <div class="card h-100 games" (click)="openGame(juego.id)">
-                        <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% OFF</span>
+                        <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
                         <img [src]="juego.imageProd" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{juego.nombre | titlecase}}</h5>

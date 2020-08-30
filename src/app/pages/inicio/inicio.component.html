@@ -171,7 +171,7 @@
                                 <div class="mb-3">
                                     <div class="card h-100 gameOffer" (click)="openGame(oferta2.id)">
                                         <a href="#">
-                                            <span class="notify-badge">-{{oferta2.oferta}}% OFF</span>
+                                            <span class="notify-badge">-{{oferta2.oferta}}% 0FF</span>
                                             <img [src]="oferta2.imageProd" class="card-img-top" alt="...">
                                         </a>
                                         <div class="card-body">
@@ -196,7 +196,7 @@
                                 <div class="mb-3">
                                     <div class="card h-100 gameOffer" (click)="openGame(oferta1.id)">
                                         <a href="#">
-                                            <span class="notify-badge">-{{oferta1.oferta}}% OFF</span>
+                                            <span class="notify-badge">-{{oferta1.oferta}}% 0FF</span>
                                             <img [src]="oferta1.imageProd" class="card-img-top" alt="...">
                                         </a>
                                         <div class="card-body">
@@ -231,7 +231,7 @@
             <div class="row">
                 <div class="col-6 mb-2" *ngFor="let item of ofertas">
                     <div class="card h-100 games" (click)="openGame(item.id)">
-                        <span *ngIf="item.oferta > 0" class="notify-badge">-{{item.oferta}}% OFF</span>
+                        <span *ngIf="item.oferta > 0" class="notify-badge">-{{item.oferta}}% 0FF</span>
                         <img [src]="item.imageProd" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{item.nombre | titlecase}}</h5>

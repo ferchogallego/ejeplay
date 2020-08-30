@@ -15,7 +15,7 @@
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-4 text-center">
-                <span *ngIf="oferta > 0" class="notify-badge" translate="no">-{{oferta}}% OFF</span>
+                <span *ngIf="oferta > 0" class="notify-badge" translate="no">-{{oferta}}% 0FF</span>
                 <img [src]="imagen" alt="" width="93%">
             </div>
             <div class="col-lg-5 info">
@@ -28,10 +28,14 @@
                 <p>- Entrega inmediata</p>
                 <p>- Tutorial paso a paso</p>
                 <label for=""><b>Seleccionar tipo de cuenta:</b> </label>
-                <p>
-                    <button (click)="activateSale('primario', oferta)" class="btn btn-primary">Cuenta Principal</button>&nbsp;
-                    <button (click)="activateSale('secundario', oferta)" class="btn btn-primary">Cuenta Secundaria</button>
-                </p>
+                <div class="row">
+                    <div class="col-6">
+                        <button (click)="activateSale('primario', oferta)" class="btn btn-primary btn-block">Cuenta Principal</button>
+                    </div>
+                    <div class="col-6">
+                        <button (click)="activateSale('secundario', oferta)" class="btn btn-primary btn-block">Cuenta Secundaria</button>
+                    </div>
+                </div>
                 <div *ngIf="oferta == 0">
                     <h4 translate="no" *ngIf="secund">${{preciosec | number}} <small>COP</small></h4>
                     <h4 translate="no" *ngIf="prim">${{precio | number}} <small>COP</small></h4>
