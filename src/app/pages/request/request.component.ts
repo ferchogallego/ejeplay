@@ -49,11 +49,9 @@ export class RequestComponent implements OnInit {
       this.perfilUser = resp;
       this.idUser = this.perfilUser.uid;
       this.email =  this.perfilUser.email;
-      // console.log('Usuario: ', this.perfilUser);
       this.productoSvc.cargarCompras(this.idUser)
                       .subscribe(res => {
                         this.compras = res;
-                        // console.log(this.compras);
                         let saldo = 0;
                         let desc = 0;
                         // tslint:disable-next-line: forin
@@ -80,12 +78,9 @@ export class RequestComponent implements OnInit {
                         this.precioDolar = res;
                         // tslint:disable-next-line: radix
                         this.usd = parseInt(this.precioDolar.dolar);
-                        // console.log(this.usd);
-                        // console.log(this.dolar);
                       });
     } else {
       this.dolar = false;
-      // console.log(this.dolar);
     }
   }
 
@@ -137,27 +132,37 @@ export class RequestComponent implements OnInit {
     const medio = 'PayU';
     const estado = 'Procesandose';
     const refer = this.reference.toString();
-    this.productoSvc.sailProcesss(refer, this.idUser, this.liquidacion,
-                                  fecha, medio, estado).then(res => {
-      this.productoSvc.saleProcessReference(this.idUser, this.reference.toString())
-                      .subscribe();
-      Swal.fire({
-        title: 'Realizar pago',
-        icon: 'info',
-        html: pasarela,
-        showConfirmButton: false,
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-      });
-    }).catch(err => {
-      Swal.fire({
-        title: 'Error...',
-        text: 'Algo salió mal!!!',
-        icon: 'error',
-        allowOutsideClick: false,
-        showCloseButton: true
-      });
-    });
+    this.productoSvc.sailProcesss(refer, this.idUser, this.liquidacion, fecha, medio, estado)
+                    .then(res => {
+                      this.productoSvc.saleProcessReference(this.idUser, this.reference.toString())
+                    .subscribe(venta => {
+                      if (venta) {
+                          Swal.fire({
+                          title: 'Realizar pago',
+                          icon: 'info',
+                          html: pasarela,
+                          showConfirmButton: false,
+                          showCancelButton: true,
+                          cancelButtonColor: '#d33',
+                          cancelButtonText: 'Cancelar'
+                        }).then(result => {
+                            if (result.dismiss) {
+                              this.productoSvc.cancelSaleProcess(this.idUser, refer)
+                                              .subscribe(cancelSale => {
+                                                if (cancelSale) {
+                                                  this.productoSvc.deleteCarByReference(this.idUser, refer)
+                                                                  .subscribe(nullCar => {
+                                                                    if (nullCar) {
+                                                                      location.reload();
+                                                                    }
+                                                                  });
+                                                }
+                                              });
+                            }
+                        });
+                      }
+                    });
+                  });
   }  else {
     Swal.fire({
       title: 'Error...',
@@ -169,7 +174,7 @@ export class RequestComponent implements OnInit {
   }
 }
 
-  check(event: any){
+check(event: any){
     if (this.cont === 0) {
       this.cont++;
       this.checkOn = true;
@@ -177,6 +182,10 @@ export class RequestComponent implements OnInit {
       this.cont--;
       this.checkOn = false;
     }
-  }
+}
+
+cancel(){
+  location.reload();
+}
 
 }

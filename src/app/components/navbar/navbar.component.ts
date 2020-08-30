@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-navbar',
@@ -56,13 +57,30 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  async onLogout(){
-    try {
-      await this.authSvc.logout();
-      this.router.navigate(['/home']);
-    } catch (error) {
-      console.log(error);
-    }
+  onLogout(){
+    Swal.fire({
+      title: 'Salir de Eje Play?',
+      text: 'Vas a cerrar tu sesión?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, cerrar'
+    }).then((result) => {
+      if (result.value) {
+        try {
+          this.authSvc.logout();
+          this.router.navigate(['/home']);
+        } catch (error) {
+          console.log(error);
+        }
+        Swal.fire(
+          'Sesión finalizada!',
+          'Te esperamos de nuevo.',
+          'success'
+        );
+      }
+    });
    }
 
    onDivisa(event: string){

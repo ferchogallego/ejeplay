@@ -37,12 +37,9 @@ export class OffersComponent implements OnInit {
                         this.precioDolar = res;
                         // tslint:disable-next-line: radix
                         this.usd = parseInt(this.precioDolar.dolar);
-                        // console.log(this.usd);
-                        // console.log(this.dolar);
                       });
     } else {
       this.dolar = false;
-      // console.log(this.dolar);
     }
   }
 

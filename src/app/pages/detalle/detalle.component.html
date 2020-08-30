@@ -15,12 +15,12 @@
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-4 text-center">
-                <span *ngIf="oferta > 0" class="notify-badge">-{{oferta}}% OFF</span>
+                <span *ngIf="oferta > 0" class="notify-badge" translate="no">-{{oferta}}% OFF</span>
                 <img [src]="imagen" alt="" width="93%">
             </div>
             <div class="col-lg-5 info">
                 <h2>{{juego}}</h2>
-                <H4>{{precio | currency}} <small>COP</small> {{preciosec | currency}} <small>COP</small></H4>
+                <H4 translate="no">${{precio | number}} <small>COP</small> ${{preciosec | number}} <small>COP</small></H4>
                 <hr>
                 <p><i class="fa fa-language fa-lg"></i> &nbsp;{{idioma}}</p>
                 <p><i class="fa fa-calculator fa-lg"></i>&nbsp;Peso: <b>{{peso}}</b></p>
@@ -32,8 +32,14 @@
                     <button (click)="activateSale('primario', oferta)" class="btn btn-primary">Cuenta Principal</button>&nbsp;
                     <button (click)="activateSale('secundario', oferta)" class="btn btn-primary">Cuenta Secundaria</button>
                 </p>
-                <h4 *ngIf="secund">{{preciosec | currency}} <small>COP</small></h4>
-                <h4 *ngIf="prim">{{precio | currency}} <small>COP</small></h4>
+                <div *ngIf="oferta == 0">
+                    <h4 translate="no" *ngIf="secund">${{preciosec | number}} <small>COP</small></h4>
+                    <h4 translate="no" *ngIf="prim">${{precio | number}} <small>COP</small></h4>
+                </div>
+                <div *ngIf="oferta > 0">
+                    <h4 translate="no" *ngIf="secund"><s>${{preciosec | number}}</s> - ${{costosec | number}} <small>COP</small></h4>
+                    <h4 translate="no" *ngIf="prim"><s>${{precio | number}}</s> - ${{costopri | number}} <small>COP</small></h4>
+                </div>
                 <hr>
                 <button *ngIf="!activa" class="btn btn-dark btn-block" disabled><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
                 <button *ngIf="activa" class="btn btn-dark btn-block" (click)="request(idGame)"><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
@@ -87,7 +93,7 @@
         <div *ngIf="descrip" class="row" id="galeria">
             <div class="col-lg-8">
                 <h4>
-                    <img src="../../../assets/img/detalle/product-description.png" width="50" class="img-fluid" alt="Responsive image"> DESCRIPCIÓN: <small><b>{{juego | titlecase}}</b></small></h4>
+                    <img src="../../../assets/img/detalle/product-description.png" width="50" class="img-fluid" alt="Responsive image"> DESCRIPCIÓN: <small><b>{{juego | uppercase}}</b></small></h4>
                 <p>{{descripcion}}</p>
             </div>
         </div>

@@ -25,8 +25,8 @@ export class DetalleComponent implements OnInit {
   imagen: string;
   idioma: string;
   peso: string;
-  precio: string;
-  preciosec: string;
+  precio: any;
+  preciosec: any;
   oferta: number;
   categoria: string;
   descripcion: string;
@@ -35,6 +35,8 @@ export class DetalleComponent implements OnInit {
   cantS: number;
   relacionados: any;
   descuento: number;
+  costopri: any;
+  costosec: any;
 
   public user = this.authSvc.afAuth.user;
   perfilUser: any;
@@ -82,8 +84,8 @@ export class DetalleComponent implements OnInit {
                       this.productoSvc.loadGamesByCategory(this.categoria)
                                       .subscribe(cat => {
                                         this.relacionados = cat;
-                                        // console.log(this.relacionados);
                                       });
+                      this.offerCalculate();
                     });
   }
 
@@ -96,19 +98,15 @@ export class DetalleComponent implements OnInit {
                         this.precioDolar = res;
                         // tslint:disable-next-line: radix
                         this.usd = parseInt(this.precioDolar.dolar);
-                        // console.log(this.usd);
-                        // console.log(this.dolar);
                       });
     } else {
       this.dolar = false;
-      // console.log(this.dolar);
     }
   }
   openGame(juego: string){
     this.game = '';
     this.productoSvc.loadGameById(juego)
                     .subscribe(res => {
-                      console.log(res);
                       this.game = res;
                       this.juego = this.game.nombre;
                       this.imagen = this.game.imageProd ;
@@ -123,9 +121,15 @@ export class DetalleComponent implements OnInit {
                       this.productoSvc.loadGamesByCategory(this.categoria)
                                       .subscribe(cat => {
                                         this.relacionados = cat;
-                                        // console.log(this.relacionados);
                                       });
                     });
+  }
+
+  offerCalculate(){
+    if (this.oferta > 0) {
+      this.costopri = this.precio - ((this.precio * this.oferta) / 100);
+      this.costosec = this.preciosec - ((this.preciosec * this.oferta) / 100);
+    }
   }
 
   request(idGame: string){
@@ -133,7 +137,6 @@ export class DetalleComponent implements OnInit {
       this.perfilUser = resp;
       this.solicitud.idJuego = idGame;
       this.solicitud.usuario = this.perfilUser.uid;
-      console.log(this.solicitud);
       this.productoSvc.cargarPedido(this.solicitud);
     });
     this.router.navigate(['/solicitudes']);

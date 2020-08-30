@@ -27,7 +27,7 @@
                             <th scope="col">Referedencia de pago</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Precio</th>
-                            <th scope="col">acciones</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +36,7 @@
                             <td>{{item.medio}}</td>
                             <td>{{item.reference}}</td>
                             <td>{{item.state}}</td>
-                            <td>{{item.precio | currency}}</td>
+                            <td>${{item.precio | number}}</td>
                             <td>
                                 <button type="button" class="btn btn-success" (click)="openModal(item.reference)" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
                                     <i class="fa fa-list" aria-hidden="true"></i>
@@ -66,6 +66,7 @@
                         <tr>
                             <th scope="col">Juego</th>
                             <th scope="col"></th>
+                            <th scope="col">Cuenta</th>
                             <th scope="col">Precio</th>
                         </tr>
                     </thead>
@@ -75,7 +76,8 @@
                             <td>
                                 <h5>{{juego.compra[1] | titlecase}}</h5>
                             </td>
-                            <td>{{juego.compra[3] | currency}}</td>
+                            <td>{{juego.compra[5] | titlecase}}</td>
+                            <td>${{juego.compra[3] | number}}</td>
                         </tr>
                     </tbody>
                 </table>

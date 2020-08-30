@@ -44,13 +44,11 @@ export class InicioComponent implements OnInit {
                      this.imagen1 = this.slider.imagen1;
                      this.imagen2 = this.slider.imagen2;
                      this.imagen3 = this.slider.imagen3;
-                     console.log(this.imagen1);
                    });
 
     this.productoSvc.loadStarterGames()
     .subscribe (resp => {
       this.juegos = resp;
-      console.log(this.juegos);
     });
 
     this.productoSvc.loadGamesForOffer()
@@ -61,13 +59,11 @@ export class InicioComponent implements OnInit {
     this.productoSvc.loadStarterOffers2()
     .subscribe (res => {
       this.ofertas2 = res;
-      console.log(this.ofertas2);
     });
 
     this.productoSvc.loadStarterOffers1()
     .subscribe (res => {
       this.ofertas1 = res;
-      console.log(this.ofertas1);
     });
 
     if (this.productoSvc.divisa === 'USD') {
@@ -77,8 +73,6 @@ export class InicioComponent implements OnInit {
                         this.precioDolar = res;
                         // tslint:disable-next-line: radix
                         this.usd = parseInt(this.precioDolar.dolar);
-                        console.log(this.usd);
-                        console.log(this.dolar);
                       });
     } else {
       this.dolar = false;
@@ -94,12 +88,9 @@ export class InicioComponent implements OnInit {
                         this.precioDolar = res;
                         // tslint:disable-next-line: radix
                         this.usd = parseInt(this.precioDolar.dolar);
-                        console.log(this.usd);
-                        console.log(this.dolar);
                       });
     } else {
       this.dolar = false;
-      console.log(this.dolar);
     }
   }
   openGame(juego: string){

@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
+import Swal from 'sweetalert2';
 import { auth } from 'firebase';
 
 @Component({
@@ -36,11 +37,49 @@ export class LoginComponent implements OnInit {
     try {
       const user = this.authSvc.login(email, password);
       if (user) {
-        this.productoSvc.userActive = true;
-        this.onLoginRedirect();
+        user.then(usr => {
+          if (!usr.user.emailVerified) {
+            Swal.fire({
+              title: email,
+              text: 'El correo ingresado no ha sido verificado',
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Enviar nuevo correo de verificación'
+            }).then((result) => {
+              this.authSvc.sendEmailVerification();
+              if (result.value) {
+                Swal.fire(
+                  'Se ha enviado un nuevo correo de verificación',
+                  'Ve a tu cuenta, confirma e ingresa a Eje Play :)',
+                  'success'
+                );
+              }
+            });
+          }
+          if (usr.user.emailVerified) {
+            this.productoSvc.userActive = true;
+            this.onLoginRedirect();
+            Swal.fire({
+              title: 'Bienvendo',
+              text: 'Gracias por visitar Eje Play',
+              icon: 'success',
+              allowOutsideClick: false,
+              showCloseButton: true
+            });
+          }
+        }).catch(err => {
+          Swal.fire({
+            title: 'Error...',
+            text: 'Email o contraseña inválidos, verifique',
+            icon: 'error',
+            allowOutsideClick: false,
+            showCloseButton: true
+          });
+        });
       }
     } catch (error) {
-      console.log(error);
     }
   }
 
@@ -86,17 +125,15 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginRedirect(){
-    this.router.navigate(['/home']);
+    this.router.navigate(['/catalogo']);
   }
 
   viewPassActive(){
     this.passwordView = true;
-    console.log(this.passwordView);
   }
 
   viewPassInActive(){
     this.passwordView = false;
-    console.log(this.passwordView);
   }
 
   get emailNoValido() {

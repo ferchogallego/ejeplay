@@ -8,7 +8,7 @@
                     <div class="card-header text-right">EjePlay</div>
                     <div class="card-body text-dark">
                         <h4 class="card-title text-center">Crear Cuenta</h4>
-                        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+                        <form [formGroup]="registerForm" (ngSubmit)="onRegister(registerForm.value)">
                             <div class="form-group">
                                 <label for="email">E-mail</label>
                                 <input type="email" class="form-control" placeholder="Ingrese su email" formControlName="email" [class.is-invalid]="emailNoValido">
@@ -18,12 +18,12 @@
                                 <label for="password">Contraseña</label>
                                 <div class="row" *ngIf="passwordView == false">
                                     <input type="password" class="form-control pass" formControlName="password" [class.is-invalid]="passwordNoValido">
-                                    <button class="btn btn-light viewPass" (click)="viewPassActive()"><i class="fa fa-eye fa-lg"></i></button>
+                                    <button type="button" class="btn btn-light viewPass" (click)="viewPassActive()"><i class="fa fa-eye fa-lg"></i></button>
                                     <small class="spn" *ngIf="passwordNoValido">La contraseña debe ser de 8 caracteres mínimo.</small>
                                 </div>
                                 <div class="row" *ngIf="passwordView == true">
                                     <input type="text" class="form-control pass" formControlName="password" [class.is-invalid]="passwordNoValido">
-                                    <button class="btn btn-light viewPass" (click)="viewPassInActive()"><i class="fa fa-eye-slash fa-lg"></i></button>
+                                    <button type="button" class="btn btn-light viewPass" (click)="viewPassInActive()"><i class="fa fa-eye-slash fa-lg"></i></button>
                                     <small class="spn" *ngIf="passwordNoValido">La contraseña debe ser de 8 caracteres mínimo.</small>
                                 </div>
                             </div>

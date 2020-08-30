@@ -120,7 +120,7 @@ export class ProductsService {
   }
 
   loadStarterGames(){
-    return this.db.collection('productos', ref => ref.orderBy('nombre').limit(8))
+    return this.db.collection('productos', ref => ref.orderBy('nombre').limit(10))
                   .snapshotChanges()
                   .pipe(
                     map(actions =>
@@ -314,6 +314,45 @@ export class ProductsService {
                         let conIf = 0;
                         this.db.collection('carShop/').doc(id).update({
                           RefCompra: referencia
+                        }).then(result => {
+                            conIf++;
+                            // tslint:disable-next-line: no-string-literal
+                            if (conIf === data['docs']['length']){
+                                return(conIf);
+                              }
+                          });
+                      }))
+                  );
+  }
+
+  cancelSaleProcess(userId: string, referencia: any){
+    return this.db.collection('sales/', ref => ref
+                  .where('state', '==', 'Procesandose')
+                  .where('reference', '==', referencia)
+                  .where('comprador', '==', userId)).snapshotChanges()
+                  .pipe(
+                    map(actions =>
+                      actions.map(resp => {
+                        const data = resp.payload.doc.data();
+                        const id = resp.payload.doc.id;
+                        this.db.collection('sales/').doc(id).delete();
+                      }))
+                  );
+  }
+
+  deleteCarByReference(userId: string, referencia: any){
+    return this.db.collection('carShop/', ref => ref
+                  .where('estado', '==', 'Pendiente')
+                  .where('RefCompra', '==', referencia)
+                  .where('usuario', '==', userId)).snapshotChanges()
+                  .pipe(
+                    map(actions =>
+                      actions.map(resp => {
+                        const data = resp.payload.doc.data();
+                        const id = resp.payload.doc.id;
+                        let conIf = 0;
+                        this.db.collection('carShop/').doc(id).update({
+                          RefCompra: null
                         }).then(result => {
                             conIf++;
                             // tslint:disable-next-line: no-string-literal

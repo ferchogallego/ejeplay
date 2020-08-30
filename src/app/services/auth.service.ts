@@ -18,10 +18,14 @@ export class AuthService {
     this.userData$ = afAuth.authState;
   }
 
-  register(email: string, password: string){
+  async sendEmailVerification(): Promise<void>{
+    return (await this.afAuth.currentUser).sendEmailVerification();
+  }
+
+ register(email: string, password: string){
     try {
       return this.afAuth.createUserWithEmailAndPassword(email, password);
-    } catch (error) {
+     } catch (error) {
       console.log(error);
     }
   }
@@ -33,6 +37,12 @@ export class AuthService {
   verifyUser(idUser: string){
     return this.db.collection('users', ref => ref
                   .where('id', '==', idUser))
+                  .valueChanges();
+  }
+
+  verifyUserByEmail(email: string){
+    return this.db.collection('users', ref => ref
+                  .where('email', '==', email))
                   .valueChanges();
   }
 

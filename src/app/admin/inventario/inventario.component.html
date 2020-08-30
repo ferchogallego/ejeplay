@@ -39,7 +39,7 @@
                     <td>{{producto.tipo}}</td>
                     <td>{{producto.cantPpal}}</td>
                     <td>{{producto.cantSec}}</td>
-                    <td>{{producto.precio | currency}}</td>
+                    <td>${{producto.precio | number}}</td>
                     <td>{{producto.oferta}}%</td>
                     <td>
                         <button class="btn btn-info mr-1" title="Editar" [routerLink]="['/editar', producto.id]">

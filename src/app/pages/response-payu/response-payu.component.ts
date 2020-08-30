@@ -30,7 +30,6 @@ export class ResponsePayuComponent implements OnInit {
       // tslint:disable-next-line: radix
       this.referencia = this.activatedRoute.snapshot.queryParams.referenceCode;
       const refer = this.referencia.toString();
-      // console.log('prueba: ', refer);
       if (this.activatedRoute.snapshot.queryParams.transactionState === '4'){
         Swal.fire({
           title: 'Venta Aprobada...',
@@ -44,7 +43,6 @@ export class ResponsePayuComponent implements OnInit {
            const id = this.resultado[0].id;
            this.productoSvc.updateSaleAccepted(id).then( resultado => {
              this.productoSvc.pedidos(this.idUser, refer).subscribe(car => {
-               console.log(car);
              });
            }).catch(err => {
             Swal.fire({
@@ -57,9 +55,7 @@ export class ResponsePayuComponent implements OnInit {
           });
         });
     } else if (this.activatedRoute.snapshot.queryParams.transactionState === '6') {
-      console.log('Rechazado');
       this.productoSvc.validateSale(this.idUser, refer).subscribe(res => {
-        console.log(res);
         this.resultado = res;
         const id = this.resultado[0].id;
         this.productoSvc.updateSaleRejected(id).then(resultado => {

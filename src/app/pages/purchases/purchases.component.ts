@@ -34,10 +34,8 @@ export class PurchasesComponent implements OnInit {
     });
   }
   openModal(ref: string){
-    console.log(ref);
     this.productoSvc.loadSaleByReference(ref)
                     .subscribe(res => {
-                      console.log(res);
                       this.juegos = res;
                     });
   }

@@ -87,7 +87,7 @@
 
     <section id="ps4" class="destacados">
         <!-----------------------titulo ----------------->
-        <div class="container">
+        <div class="container-xl">
             <div class="row">
                 <div class="col-lg-12 mt-5">
                     <h4><i class="fa fa-star" aria-hidden="true"></i> JUEGOS DESTACADOS
@@ -99,20 +99,19 @@
             </div>
             <!----------------------lista de juegos ------------------->
             <div class="d-none d-lg-block d-xl-block">
-                <div class="row row-cols-1 row-cols-md-4">
+                <div class="row row-cols-1 row-cols-md-5">
                     <div class="col mb-3" *ngFor="let juego of juegos">
                         <div class="card h-100 games" (click)="openGame(juego.id)">
-                            <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% OFF</span>
+                            <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
                             <img [src]="juego.imageProd" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
-                                <p *ngIf="!dolar" class="card-text"><b>{{juego.precio | currency}} COP</b></p>
-                                <p *ngIf="dolar" class="card-text"><b>{{(juego.precio)/usd | currency}} USD</b></p>
-                                <p *ngIf="!dolar" class="card-text"><b>{{juego.preciosec | currency}} COP</b></p>
-                                <p *ngIf="dolar" class="card-text"><b>{{(juego.preciosec)/usd | currency}} USD</b></p>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-lg btn-dark btn-block slde"><i class="fa fa-shopping-cart" aria-hidden="true"></i> ¡Lo quiero!</button>
+                            <div class="card-footer" style="border: none;">
+                                <div class="text-center">
+                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P - ${{juego.preciosec | number}} C0P</b></p>
+                                    <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD - ${{(juego.preciosec)/usd | number}} USD</b></p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -123,14 +122,16 @@
             <div class="row">
                 <div class="col-6 mb-2" *ngFor="let juego of juegos">
                     <div class="card h-100 games" (click)="openGame(juego.id)">
-                        <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% OFF</span>
+                        <span *ngIf="juego.oferta > 0" class="notify-badge" translate="no">-{{juego.oferta}}% 0FF</span>
                         <img [src]="juego.imageProd" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
-                            <p *ngIf="!dolar" class="card-text"><b>{{juego.precio | currency}} COP</b></p>
-                            <p *ngIf="dolar" class="card-text"><b>{{(juego.precio)/usd | currency}} USD</b></p>
-                            <p *ngIf="!dolar" class="card-text"><b>{{juego.preciosec | currency}} COP</b></p>
-                            <p *ngIf="dolar" class="card-text"><b>{{(juego.preciosec)/usd | currency}} USD</b></p>
+                        </div>
+                        <div class="card-footer" style="border: none;">
+                            <div class="text-center">
+                                <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,17 +169,19 @@
                         <div class="carousel-item active">
                             <div class="col-md-3" style="float:left" *ngFor="let oferta2 of ofertas2">
                                 <div class="mb-3">
-                                    <div class="card gameOffer" (click)="openGame(oferta2.id)">
+                                    <div class="card h-100 gameOffer" (click)="openGame(oferta2.id)">
                                         <a href="#">
                                             <span class="notify-badge">-{{oferta2.oferta}}% OFF</span>
                                             <img [src]="oferta2.imageProd" class="card-img-top" alt="...">
                                         </a>
                                         <div class="card-body">
                                             <h5 class="card-title">{{oferta2.nombre | titlecase}}</h5>
-                                            <p *ngIf="!dolar" class="card-text"><b>{{oferta2.precio | currency}} COP</b></p>
-                                            <p *ngIf="dolar" class="card-text"><b>{{(oferta2.precio)/usd | currency}} USD</b></p>
-                                            <p *ngIf="!dolar" class="card-text"><b>{{oferta2.preciosec | currency}} COP</b></p>
-                                            <p *ngIf="dolar" class="card-text"><b>{{(oferta2.preciosec)/usd | currency}} USD</b></p>
+                                        </div>
+                                        <div class="card-footer" style="border: none;">
+                                            <div class="text-center">
+                                                <p *ngIf="!dolar" class="card-text"><b>${{oferta2.precio | number}} C0P <br> ${{oferta2.preciosec | number}} C0P</b></p>
+                                                <p *ngIf="dolar" class="card-text"><b>${{(oferta2.precio)/usd | number}} USD <br> ${{(oferta2.preciosec)/usd | number}} USD</b></p>
+                                            </div><br>
                                             <button class="btn btn-lg btn-dark btn-block slde"><i class="fa fa-shopping-cart" aria-hidden="true"></i> ¡Lo quiero!</button>
                                         </div>
                                     </div>
@@ -191,17 +194,19 @@
                         <div class="carousel-item">
                             <div class="col-md-3" style="float:left" *ngFor="let oferta1 of ofertas1">
                                 <div class="mb-3">
-                                    <div class="card gameOffer" (click)="openGame(oferta1.id)">
+                                    <div class="card h-100 gameOffer" (click)="openGame(oferta1.id)">
                                         <a href="#">
                                             <span class="notify-badge">-{{oferta1.oferta}}% OFF</span>
                                             <img [src]="oferta1.imageProd" class="card-img-top" alt="...">
                                         </a>
                                         <div class="card-body">
                                             <h5 class="card-title">{{oferta1.nombre | titlecase}}</h5>
-                                            <p *ngIf="!dolar" class="card-text"><b>{{oferta1.precio | currency}} COP</b></p>
-                                            <p *ngIf="dolar" class="card-text"><b>{{(oferta1.precio)/usd | currency}} USD</b></p>
-                                            <p *ngIf="!dolar" class="card-text"><b>{{oferta1.preciosec | currency}} COP</b></p>
-                                            <p *ngIf="dolar" class="card-text"><b>{{(oferta1.preciosec)/usd | currency}} USD</b></p>
+                                        </div>
+                                        <div class="card-footer" style="border: none;">
+                                            <div class="text-center">
+                                                <p *ngIf="!dolar" class="card-text"><b>${{oferta1.precio | number}} C0P <br> ${{oferta1.preciosec | number}} C0P</b></p>
+                                                <p *ngIf="dolar" class="card-text"><b>${{(oferta1.precio)/usd | number}} USD <br> ${{(oferta1.preciosec)/usd | number}} USD</b></p>
+                                            </div><br>
                                             <button class="btn btn-lg btn-dark btn-block slde"><i class="fa fa-shopping-cart" aria-hidden="true"></i> ¡Lo quiero!</button>
                                         </div>
                                     </div>
@@ -230,10 +235,12 @@
                         <img [src]="item.imageProd" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{item.nombre | titlecase}}</h5>
-                            <p *ngIf="!dolar" class="card-text"><b>{{item.precio | currency}} COP</b></p>
-                            <p *ngIf="dolar" class="card-text"><b>{{(item.precio)/usd | currency}} USD</b></p>
-                            <p *ngIf="!dolar" class="card-text"><b>{{item.preciosec | currency}} COP</b></p>
-                            <p *ngIf="dolar" class="card-text"><b>{{(item.preciosec)/usd | currency}} USD</b></p>
+                            <div class="card-footer" style="border: none;">
+                                <div class="text-center">
+                                    <p *ngIf="!dolar" class="card-text"><b>${{item.precio | number}} C0P <br> ${{item.preciosec | number}} C0P</b></p>
+                                    <p *ngIf="dolar" class="card-text"><b>${{(item.precio)/usd | number}} USD <br> ${{(item.preciosec)/usd | number}} USD</b></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -14,8 +14,8 @@
         <div class="col-lg-4 mt-1 carro">
             <select name="moneda" class="slect" (change)="onDivisa($event.target.value)">
               <option [value]="valor" selected>{{valor}}</option>
-              <option *ngIf="valor == 'USD'" value="COP">COP</option>
-              <option *ngIf="valor == 'COP'"value="USD">USD</option>
+              <option *ngIf="valor == 'USD'" value="COP" ><span translate="no">C0P</span></option>
+              <option *ngIf="valor == 'COP'"value="USD" ><span translate="no">U$D</span></option>
             </select>
             <button *ngIf="!dolar" class="btn btn-light"><img src="../../../assets/img/co.png" alt="" width="30"></button>
             <button *ngIf="dolar" class="btn btn-light"><img src="../../../assets/img/us.png" alt="" width="30"></button>
@@ -68,7 +68,7 @@
             </ul>
         </div>
         <div class="user" *ngIf="user$ | async as user;else showLogin">
-            <a class="btn btn-primary" routerLinkActive="router-link-active">{{user.email}}</a>
+            <a class="btn btn-primary" (click)="onLogout()" routerLinkActive="router-link-active">{{user.email}}</a>
         </div>
         <ng-template #showLogin>
             <a routerLink="/login" routerLinkActive="active">
@@ -127,7 +127,7 @@
                     <span class="badge badge-warning intermitente">{{pedidos}}</span></a>
                 </li>
                 <div *ngIf="user$ | async as user;else showLogin">
-                    <a class="nav-link"><i class="fa fa-user-circle" aria-hidden="true"></i> {{user.email}}</a>
+                    <a class="nav-link" (click)="onLogout()"><i class="fa fa-user-circle" aria-hidden="true"></i> {{user.email}}</a>
                 </div>
                 <ng-template #showLogin>
                     <a routerLink="/login" routerLinkActive="active">

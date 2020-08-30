@@ -28,13 +28,10 @@ export class JuegosPS4Component implements OnInit {
     }, 2000);
     if (this.productoSvc.termino) {
       this.filterProducto = this.productoSvc.termino;
-      console.log(this.filterProducto);
     }
-      // console.log('Dolar: ', this.productoSvc.divisa);
     this.productoSvc.cargarProductos()
       .subscribe (resp => {
         this.juegos = resp;
-        // console.log(this.juegos);
       });
 
     if (this.productoSvc.ofertas === true) {
@@ -53,8 +50,6 @@ export class JuegosPS4Component implements OnInit {
                         this.precioDolar = res;
                         // tslint:disable-next-line: radix
                         this.usd = parseInt(this.precioDolar.dolar);
-                        // console.log(this.usd);
-                        // console.log(this.dolar);
                       });
     } else {
       this.dolar = false;
@@ -71,11 +66,9 @@ export class JuegosPS4Component implements OnInit {
     // tslint:disable-next-line: radix
     const cantidad = parseInt(valor);
     this.juegos = '';
-    // console.log(cantidad);
     this.productoSvc.loadGamesForPrice(cantidad)
     .subscribe (resp => {
       this.juegos = resp;
-      // console.log(this.juegos);
     });
   }
 
@@ -88,12 +81,9 @@ export class JuegosPS4Component implements OnInit {
                         this.precioDolar = res;
                         // tslint:disable-next-line: radix
                         this.usd = parseInt(this.precioDolar.dolar);
-                        // console.log(this.usd);
-                        // console.log(this.dolar);
                       });
     } else {
       this.dolar = false;
-      // console.log(this.dolar);
     }
   }
 
@@ -102,7 +92,6 @@ export class JuegosPS4Component implements OnInit {
   }
 
   btnSearch(cate: string){
-    // console.log(cate);
     this.productoSvc.termino = '';
     this.filterProducto = '';
     this.juegos = '';
@@ -118,7 +107,6 @@ export class JuegosPS4Component implements OnInit {
     this.productoSvc.cargarProductos()
     .subscribe (resp => {
       this.juegos = resp;
-      // console.log(this.juegos);
     });
   }
 

@@ -41,7 +41,7 @@
                     <td>{{item.medio}}</td>
                     <td>{{item.reference}}</td>
                     <td>{{item.state}}</td>
-                    <td>{{item.precio}}</td>
+                    <td>${{item.precio | number}}</td>
                     <td class="text-center">
                         <button *ngIf="item.state != 'Rechazada'" type="button" (click)="detailRequest(item.reference)" class="btn btn-success" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
                             <i class="fa fa-list fa-lg" aria-hidden="true"></i>
@@ -84,8 +84,8 @@
                             <td>
                                 <h5>{{juego.compra[1] | titlecase}}</h5>
                             </td>
-                            <td>{{juego.compra[4] | titlecase}}</td>
-                            <td>{{juego.compra[3] | currency}}</td>
+                            <td>{{juego.compra[5] | titlecase}}</td>
+                            <td>${{juego.compra[3] | number}}</td>
                         </tr>
                     </tbody>
                 </table>

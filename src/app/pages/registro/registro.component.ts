@@ -12,8 +12,9 @@ import Swal from 'sweetalert2';
 })
 export class RegistroComponent implements OnInit {
 
-  passwordView = true;
+  passwordView = false;
   usuario: User;
+  validate = true;
 
   registerForm = new FormGroup ({
     email: new FormControl('', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]),
@@ -26,7 +27,7 @@ export class RegistroComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onRegister(){
+  onRegister(registro: any){
     if (this.registerForm.invalid){
       Swal.fire({
         title: 'Error...',
@@ -44,65 +45,62 @@ export class RegistroComponent implements OnInit {
         }
       });
     }
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: 'btn btn-success',
-        cancelButton: 'btn btn-danger'
-      },
-      buttonsStyling: false
-    });
-    swalWithBootstrapButtons.fire({
-      title: 'Creación de cuenta',
-      text: 'Va a crear na cuenta en EjePlay',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Si, crear cuenta',
-      cancelButtonText: 'Cancelar',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.value) {
-        const {email, password } = this.registerForm.value;
-        try {
-          const user = this.authSvc.register(email, password);
-          if (user) {
-              console.log(user.then(userData => {
-                const id = userData.user.uid;
-                const datos = {
-                  id: userData.user.uid,
-                  email: userData.user.email
-                };
-                swalWithBootstrapButtons.fire(
-                  'Cuenta creada',
-                  'Bienvenido a EjePlay.',
-                  'success'
-                );
-                this.authSvc.createUserData(id, datos);
-                this.router.navigate(['/login']);
-              }));
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      } else if (
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        swalWithBootstrapButtons.fire(
-          'Cancelado',
-          'Te esperamos en EjePlay :)',
-          'error'
-        );
-      }
-    });
+    this.authSvc.verifyUserByEmail(registro.email)
+                .subscribe(usr => {
+                  if (usr.length > 0) {
+                   if (this.validate) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'El correo electrónico ingresado ya esta registrado!',
+                      footer: 'Intenta con uno diferente'
+                    });
+                   }
+                  }
+                  if (usr.length === 0) {
+                    Swal.fire({
+                      title: 'Creación de cuenta',
+                      text: 'Va a crear una cuenta en EjePlay',
+                      icon: 'question',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Si, crear cuenta!'
+                    }).then((result) => {
+                      const {email, password } = this.registerForm.value;
+                      const user = this.authSvc.register(email, password);
+                      if (user) {
+                          console.log(user.then(userData => {
+                            const id = userData.user.uid;
+                            const datos = {
+                              id: userData.user.uid,
+                              email: userData.user.email
+                            };
+                            if (result.value) {
+                              this.authSvc.sendEmailVerification();
+                              Swal.fire(
+                                email,
+                                'Cuenta creada correctamente, se ha enviado un email para que por favor verfique su cuente y pueda iniciar sesión.',
+                                'success'
+                              );
+                              this.validate = false;
+                              this.authSvc.createUserData(id, datos);
+                              this.authSvc.logout();
+                              this.router.navigate(['/login']);
+                            }
+                          }));
+                      }
+                    });
+                  }
+                });
   }
 
   viewPassActive(){
     this.passwordView = true;
-    console.log(this.passwordView);
   }
 
   viewPassInActive(){
     this.passwordView = false;
-    console.log(this.passwordView);
   }
 
   get emailNoValido() {

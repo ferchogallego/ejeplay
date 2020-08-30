@@ -21,8 +21,8 @@
                             <th scope="col">Juego</th>
                             <th scope="col"></th>
                             <th scope="col">Cuenta</th>
-                            <th scope="col">Cant</th>
-                            <th scope="col">Desc</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Descuento</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Total</th>
                             <th scope="col">Acciones</th>
@@ -36,12 +36,12 @@
                                 <h5>{{item.compra[1]}} <br></h5>
                                 <p>EjePlay Pereira.</p>
                             </td>
-                            <td>{{item.compra[5]}}</td>
-                            <td>1</td>
-                            <td>{{item.compra[4]}}%</td>
-                            <td>{{item.compra[3] | currency}}</td>
-                            <td>{{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | currency}}</td>
-                            <td>
+                            <td class="text-center">{{item.compra[5]}}</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">{{item.compra[4]}}%</td>
+                            <td class="text-center">${{item.compra[3] | number}}</td>
+                            <td class="text-center">${{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | number}}</td>
+                            <td class="text-center">
                                 <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(item)">
                             <i class="fa fa-trash"></i>
                         </button>
@@ -53,11 +53,11 @@
             <div class="col-lg-3 mt-3">
                 <p>
                     <label for="Subtotal" class="blok"><b>Subtotal:</b></label>
-                    <input type="text" class="liquid" readonly [value]="subtotal | currency">
+                    <b class="liquid" style="float: right;">${{subtotal | number}}</b>
                 </p>
                 <p>
                     <label for="Subtotal" class="blok"><b>Descuento:</b></label>
-                    <input style="color: rgb(8, 81, 240);" type="text" class="liquid" readonly [value]="descuento | currency">
+                    <b class="liquid" style="color: rgb(8, 81, 240); float: right;">${{descuento | number}}</b>
                 </p>
                 <!-- <p>
                     <label for="Subtotal" class="blok">Cupón:</label>
@@ -65,7 +65,7 @@
                 </p> -->
                 <p>
                     <label for="Subtotal" class="blok1"><b>TOTAL:</b></label>
-                    <input type="text" class="liquid1" readonly [value]='liquidacion |currency'>
+                    <b class="liquid1" style="float: right;">${{liquidacion | number}}</b>
                 </p>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1">
@@ -74,7 +74,8 @@
                     </label>
                 </div>
                 <hr>
-                <button class="endShop" type="submit">                                      
+                <!-- compra -->
+                <button class="endShop" type="button">                                      
                     <i class="fa fa-credit-card" aria-hidden="true" (click)="payu()"> Finalizar Compra </i>                    
                 </button>
                 <button class="shop" routerLink='/compras'>
@@ -110,9 +111,9 @@
                             <td>{{item.compra[5]}}</td>
                             <td>1</td>
                             <td>{{item.compra[4]}}%</td>
-                            <td>{{item.compra[3] | number}}</td>
-                            <td>{{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | number}}</td>
-                            <td>
+                            <td class="text-center">${{item.compra[3] | number}}</td>
+                            <td class="text-center">${{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | number}}</td>
+                            <td class="text-center">
                                 <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(item)">
                             <i class="fa fa-trash"></i>
                         </button>

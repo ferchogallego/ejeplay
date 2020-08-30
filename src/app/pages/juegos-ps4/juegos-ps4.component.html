@@ -35,7 +35,7 @@
                             <label for="formControlRange"><h5 class="titulo">Filtrar precio</h5></label>
                             <input type="range" id="slider" class="form-control-range rng" min="0" max="300000" step="1000" value="0" (change)="value($event.target.value)">
                             <div class="text-right mt-3">
-                                <label><h5>Selección: <b>{{rango | currency}}</b></h5></label>
+                                <label><h5>Selección: <b>${{rango | number}}</b></h5></label><br>
                                 <button class="filtrar" (click)="findPrice(rango)">Buscar</button>
                             </div>
                         </div>
@@ -47,15 +47,13 @@
                             <div class="col mb-3" *ngFor="let juego of juegos | filter:filterProducto">
                                 <div class="card h-100 games" (click)="openGame(juego.id)">
                                     <img [src]="juego.imageProd" class="card-img-top" alt="...">
-                                    <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% OFF</span>
+                                    <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
                                     <div class="card-body">
                                         <p class="card-title">{{juego.nombre | titlecase}}</p>
-                                        <p *ngIf="!dolar" class="card-text"><b>{{juego.precio | currency}} COP </b></p>
-                                        <p *ngIf="dolar" class="card-text"><b>{{(juego.precio)/usd | currency}} USD</b></p>
-                                        <p *ngIf="!dolar" class="card-text"><b>{{juego.preciosec | currency}} COP </b></p>
-                                        <p *ngIf="dolar" class="card-text"><b>{{(juego.preciosec)/usd | currency}} USD</b></p>
                                     </div>
                                     <div class="card-footer">
+                                        <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                        <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
                                         <button class="compra"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
                                     </div>
                                 </div>
@@ -95,7 +93,7 @@
                     <label for="formControlRange"><h5 class="titulo">Filtrar precio</h5></label>
                     <input type="range" id="slider" class="form-control-range rng" min="0" max="300000" step="1000" value="0" (change)="value($event.target.value)">
                     <div class="text-right mt-3">
-                        <label><h5>Selección: <b>{{rango | currency}}</b></h5></label>
+                        <label><h5>Selección: <b>${{rango | number}}</b></h5></label><br>
                         <button class="filtrar" (click)="findPrice(rango)">Buscar</button>
                     </div>
                 </div>
@@ -109,10 +107,12 @@
                         <img [src]="juego.imageProd" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
-                            <p *ngIf="!dolar" class="card-text"><b>{{juego.precio | currency}} COP</b></p>
-                            <p *ngIf="dolar" class="card-text"><b>{{(juego.precio)/usd | currency}} USD</b></p>
-                            <p *ngIf="!dolar" class="card-text"><b>{{juego.preciosec | currency}} COP</b></p>
-                            <p *ngIf="dolar" class="card-text"><b>{{(juego.preciosec)/usd | currency}} USD</b></p>
+                        </div>
+                        <div class="card-footer" style="border: none;">
+                            <div class="text-center">
+                                <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
+                            </div>
                         </div>
                     </div>
                 </div>
