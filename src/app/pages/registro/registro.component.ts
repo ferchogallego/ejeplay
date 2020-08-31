@@ -25,6 +25,7 @@ export class RegistroComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
+
   }
 
   onRegister(registro: any){
@@ -58,39 +59,31 @@ export class RegistroComponent implements OnInit {
                    }
                   }
                   if (usr.length === 0) {
-                    Swal.fire({
-                      title: 'Creación de cuenta',
-                      text: 'Va a crear una cuenta en EjePlay',
-                      icon: 'question',
-                      showCancelButton: true,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      confirmButtonText: 'Si, crear cuenta!'
-                    }).then((result) => {
-                      const {email, password } = this.registerForm.value;
-                      const user = this.authSvc.register(email, password);
-                      if (user) {
+                    const {email, password } = this.registerForm.value;
+                    const user = this.authSvc.register(email, password);
+                    if (user) {
                           console.log(user.then(userData => {
                             const id = userData.user.uid;
                             const datos = {
                               id: userData.user.uid,
                               email: userData.user.email
                             };
-                            if (result.value) {
-                              this.authSvc.sendEmailVerification();
-                              Swal.fire(
-                                email,
-                                'Cuenta creada correctamente, se ha enviado un email para que por favor verfique su cuente y pueda iniciar sesión.',
-                                'success'
-                              );
-                              this.validate = false;
-                              this.authSvc.createUserData(id, datos);
-                              this.authSvc.logout();
-                              this.router.navigate(['/login']);
-                            }
+                            this.authSvc.sendEmailVerification()
+                                        .then(() => {
+                                          this.validate = false;
+                                          this.authSvc.createUserData(id, datos)
+                                              .then(() => {
+                                                Swal.fire(
+                                                  email,
+                                                  'Cuenta creada correctamente, se ha enviado un email para que por favor verfique su cuenta y pueda iniciar sesión.',
+                                                  'success'
+                                                );
+                                                this.authSvc.logout();
+                                                this.router.navigate(['/login']);
+                                              });
+                                        });
                           }));
                       }
-                    });
                   }
                 });
   }

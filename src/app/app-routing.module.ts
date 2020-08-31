@@ -19,6 +19,7 @@ import { PurchasesComponent } from './pages/purchases/purchases.component';
 import { VentasComponent } from './admin/ventas/ventas.component';
 import { AccessComponent } from './admin/access/access.component';
 import { DollarComponent } from './admin/dollar/dollar.component';
+import { VerificacionComponent } from './pages/verificacion/verificacion.component';
 
 
 
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'admin', component: AccessComponent},
   { path: 'login', component: LoginComponent},
   { path: 'registro', component: RegistroComponent},
+  { path: 'verificacion', component: VerificacionComponent},
   { path: 'catalogo', component: JuegosPS4Component},
   { path: 'ofertas', component: OffersComponent},
   { path: 'preguntas', component: PreguntasComponent},

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../../services/products.service';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-inicio',
@@ -24,12 +25,21 @@ export class InicioComponent implements OnInit {
   precioDolar: any;
   usd: number;
 
+  public usr = this.authSvc.afAuth.user;
+
   constructor(private productoSvc: ProductsService,
-              private router: Router) { }
+              private router: Router,
+              private authSvc: AuthService) { }
 
   selectCurrency: string;
 
   ngOnInit(): void {
+    this.usr.subscribe(usuario => {
+      if (!usuario.emailVerified) {
+        this.router.navigate(['/verificacion']);
+      }
+    });
+
     this.productoSvc.termino = '';
     this.productoSvc.catalogo = false;
     this.productoSvc.search = true;

@@ -76,7 +76,7 @@
                 <hr>
                 <!-- compra -->
                 <button class="endShop" type="button">                                      
-                    <i class="fa fa-credit-card" aria-hidden="true" (click)="payu()"> Finalizar Compra </i>                    
+                    <i class="fa fa-credit-card" aria-hidden="true" (click)="payu()" data-toggle="modal" data-target="#modalCompra"> Finalizar Compra </i>                    
                 </button>
                 <button class="shop" routerLink='/compras'>
                     <i class="fa fa-shopping-cart" aria-hidden="true"> Seguir comprando </i>                    
@@ -147,7 +147,7 @@
                     </label>
                 </div>
                 <hr>
-                <button class="endShop" type="submit">                                      
+                <button class="endShop" type="button">                                      
                     <i class="fa fa-credit-card" aria-hidden="true" (click)="payu()"> Finalizar Compra </i>                    
                 </button>
                 <button class="shop" routerLink='/compras'>
@@ -157,3 +157,40 @@
         </div>
     </div>
 </div>
+
+<!-- modal -->
+
+<div *ngIf="checkOn" class="modal fade" id="modalCompra" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Finalizar Compra</h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../../assets/img/logo_payu.png" alt="" width="90"><br>
+                    <form #form method="post" action="https://checkout.payulatam.com/ppp-web-gateway-payu/">
+                        <input name="merchantId" type="hidden" [value]='merchantid'>
+                        <input name="accountId" type="hidden" [value]='accountId'>
+                        <input name="description" type="hidden" value="Pago PAYU EjePlay Pereira">
+                        <input name="referenceCode" type="hidden" [value]='reference'>
+                        <input name="amount" type="hidden" [value]='liquidacion'>
+                        <input name="tax" type="hidden" value="0">
+                        <input name="taxReturnBase" type="hidden" value="0">
+                        <input name="currency" type="hidden" value="COP">
+                        <input name="signature" type="hidden" [value]='signature'>
+                        <input name="test" type="hidden" value="0">
+                        <input name="buyerEmail" type="hidden" [value]='email'>
+                        <input name="responseUrl" type="hidden" value="https://www.ejeplaypereira.com/#/confirmacion">
+                        <input name="confirmationUrl" type="hidden" value="http://www.test.com/confirmation">
+                        <button type="submit" class="pago">
+                            <i class="fa fa-credit-card" (click)="form.submit()" aria-hidden="true"> Aceptar </i>
+                        </button>
+                    </form>
+                    <button class="btn btn-danger pago mt-2" style="background-color: rgb(160, 9, 9);" data-dismiss="modal" (click)="saleCancel(reference)">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false" href="#"></a>

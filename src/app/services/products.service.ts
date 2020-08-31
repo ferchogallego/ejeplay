@@ -274,7 +274,8 @@ export class ProductsService {
   cargarCompras(userId: string){
     return this.db.collection('carShop/', ref => ref
                   .where('estado', '==', 'Pendiente')
-                  .where('usuario', '==', userId)).snapshotChanges()
+                  .where('usuario', '==', userId))
+                  .snapshotChanges()
                   .pipe(
                    map(actions =>
                     actions.map(resp => {
@@ -283,6 +284,7 @@ export class ProductsService {
                     return {id, ...data};
                     }))
                    );
+
    }
 
    deleteItemCarById(id: string, userId: string){
@@ -302,7 +304,12 @@ export class ProductsService {
     });
   }
 
-  saleProcessReference(userId: string, referencia: any){
+  saleProcessReference(id: string, referencia: string){
+    this.db.collection('carShop').doc(id).update({
+      RefCompra: referencia
+    });
+  }
+ /*  saleProcessReference(userId: string, referencia: any){
     return this.db.collection('carShop/', ref => ref
                   .where('estado', '==', 'Pendiente')
                   .where('usuario', '==', userId)).snapshotChanges()
@@ -312,7 +319,7 @@ export class ProductsService {
                         const data = resp.payload.doc.data();
                         const id = resp.payload.doc.id;
                         let conIf = 0;
-                        this.db.collection('carShop/').doc(id).update({
+                        this.db.collection('carShop').doc(id).update({
                           RefCompra: referencia
                         }).then(result => {
                             conIf++;
@@ -323,45 +330,45 @@ export class ProductsService {
                           });
                       }))
                   );
-  }
+  } */
 
-  cancelSaleProcess(userId: string, referencia: any){
+  cancelSaleProcess(referencia: any){
     return this.db.collection('sales/', ref => ref
-                  .where('state', '==', 'Procesandose')
-                  .where('reference', '==', referencia)
-                  .where('comprador', '==', userId)).snapshotChanges()
+                  .where('reference', '==', referencia))
+                  .snapshotChanges()
                   .pipe(
-                    map(actions =>
-                      actions.map(resp => {
-                        const data = resp.payload.doc.data();
-                        const id = resp.payload.doc.id;
-                        this.db.collection('sales/').doc(id).delete();
-                      }))
-                  );
+                   map(actions =>
+                    actions.map(resp => {
+                    const data = resp.payload.doc.data() as any;
+                    const id = resp.payload.doc.id;
+                    return {id, ...data};
+                    }))
+                   );
   }
 
-  deleteCarByReference(userId: string, referencia: any){
+  deleteSaleCancel(idSale: string){
+    return this.db.collection('sales').doc(idSale).delete();
+  }
+
+  deleteCarByReference(referencia: any, userId: string){
     return this.db.collection('carShop/', ref => ref
                   .where('estado', '==', 'Pendiente')
-                  .where('RefCompra', '==', referencia)
-                  .where('usuario', '==', userId)).snapshotChanges()
+                  .where('usuario', '==', userId)
+                  .where('RefCompra', '==', referencia))
+                  .snapshotChanges()
                   .pipe(
-                    map(actions =>
-                      actions.map(resp => {
-                        const data = resp.payload.doc.data();
-                        const id = resp.payload.doc.id;
-                        let conIf = 0;
-                        this.db.collection('carShop/').doc(id).update({
-                          RefCompra: null
-                        }).then(result => {
-                            conIf++;
-                            // tslint:disable-next-line: no-string-literal
-                            if (conIf === data['docs']['length']){
-                                return(conIf);
-                              }
-                          });
-                      }))
-                  );
+                   map(actions =>
+                    actions.map(resp => {
+                    const data = resp.payload.doc.data() as Order;
+                    const id = resp.payload.doc.id;
+                    return {id, ...data};
+                    }))
+                   );
+  }
+  deleteCarCancel(idCar: string){
+    this.db.collection('carShop').doc(idCar).update({
+      RefCompra: 'null'
+    });
   }
 
   validateSale(userId: string, referencia: string){
@@ -410,7 +417,7 @@ export class ProductsService {
                         const data = resp.payload.doc.data();
                         const id = resp.payload.doc.id;
                         let conIf = 0;
-                        this.db.collection('carShop/').doc(id).update({
+                        this.db.collection('carShop').doc(id).update({
                           estado : 'Venta',
                         }).then(result => {
                             conIf++;

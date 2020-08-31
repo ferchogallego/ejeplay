@@ -31,6 +31,8 @@ import { PurchasesComponent } from './pages/purchases/purchases.component';
 import { VentasComponent } from './admin/ventas/ventas.component';
 import { AccessComponent } from './admin/access/access.component';
 import { DollarComponent } from './admin/dollar/dollar.component';
+import { HttpClientModule } from '@angular/common/http';
+import { VerificacionComponent } from './pages/verificacion/verificacion.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { DollarComponent } from './admin/dollar/dollar.component';
     PurchasesComponent,
     VentasComponent,
     AccessComponent,
-    DollarComponent
+    DollarComponent,
+    VerificacionComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,7 @@ import { DollarComponent } from './admin/dollar/dollar.component';
     AngularFireAuthModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     {provide: BUCKET, useValue: 'gs://ejeplay-7a38e.appspot.com'},

@@ -3,6 +3,7 @@ import { ProductsService } from '../../services/products.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Md5 } from 'md5-typescript';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-request',
@@ -34,10 +35,15 @@ export class RequestComponent implements OnInit {
   cifrado: string;
   moneda: 'COP';
   reference: number;
+  signature: any;
+
+  canc: any;
+  carRef: any;
+  carList: any;
 
   constructor(private productoSvc: ProductsService,
               private authSvc: AuthService,
-              ) { }
+              public http: HttpClient) { }
 
   ngOnInit(): void {
     this.productoSvc.termino = '';
@@ -106,73 +112,45 @@ export class RequestComponent implements OnInit {
 
   payu(){
     if (this.checkOn) {
-    this.reference = Math.ceil(Math.random() * 987524);
-    const signature = Md5.init(`${this.apiKey}~${this.merchantid}~${this.reference}~${this.liquidacion}~COP`);
-    const pasarela = `
-    <img src="../../../assets/img/logo_payu.png" alt="" width="90">
-    <form method="post" action="https://checkout.payulatam.com/ppp-web-gateway-payu/">
-      <input name="merchantId" type="hidden" value="${this.merchantid}">
-      <input name="accountId" type="hidden" value="${this.accountId}">
-      <input name="description" type="hidden" value="Pago PAYU EjePlay Pereira">
-      <input name="referenceCode" type="hidden" value="${this.reference}">
-      <input name="amount" type="hidden" value="${this.liquidacion}">
-      <input name="tax" type="hidden" value="0">
-      <input name="taxReturnBase" type="hidden" value="0">
-      <input name="currency" type="hidden" value="COP">
-      <input name="signature" type="hidden" value="${signature}">
-      <input name="test" type="hidden" value="0">
-      <input name="buyerEmail" type="hidden" value="${this.email}">
-      <input name="responseUrl" type="hidden" value="https://www.ejeplaypereira.com/#/confirmacion">
-      <input name="confirmationUrl" type="hidden" value="http://www.test.com/confirmation">
-      <button type="submit" class="pago">
-          <i class="fa fa-credit-card" aria-hidden="true"> Aceptar </i>
-      </button>
-    </form>`;
-    const fecha = new Date().getTime();
-    const medio = 'PayU';
-    const estado = 'Procesandose';
-    const refer = this.reference.toString();
-    this.productoSvc.sailProcesss(refer, this.idUser, this.liquidacion, fecha, medio, estado)
+      this.reference = Math.ceil(Math.random() * 987524);
+      this.signature = Md5.init(`${this.apiKey}~${this.merchantid}~${this.reference}~${this.liquidacion}~COP`);
+      const fecha = new Date().getTime();
+      const medio = 'PayU';
+      const estado = 'Procesandose';
+      const refer = this.reference.toString();
+      this.productoSvc.sailProcesss(refer, this.idUser, this.liquidacion, fecha, medio, estado)
                     .then(res => {
-                      this.productoSvc.saleProcessReference(this.idUser, this.reference.toString())
-                    .subscribe(venta => {
-                      if (venta) {
-                          Swal.fire({
-                          title: 'Realizar pago',
-                          icon: 'info',
-                          html: pasarela,
-                          showConfirmButton: false,
-                          showCancelButton: true,
-                          cancelButtonColor: '#d33',
-                          cancelButtonText: 'Cancelar'
-                        }).then(result => {
-                            if (result.dismiss) {
-                              this.productoSvc.cancelSaleProcess(this.idUser, refer)
-                                              .subscribe(cancelSale => {
-                                                if (cancelSale) {
-                                                  this.productoSvc.deleteCarByReference(this.idUser, refer)
-                                                                  .subscribe(nullCar => {
-                                                                    if (nullCar) {
-                                                                      location.reload();
-                                                                    }
-                                                                  });
-                                                }
-                                              });
+                     this.productoSvc.cargarCompras(this.idUser)
+                         .subscribe(list => {
+                           this.carList = list;
+                            // tslint:disable-next-line: prefer-for-of
+                           for (let i = 0; i < this.carList.length; i++) {
+                              const item = this.carList[i];
+                              this.productoSvc.saleProcessReference(item.id, refer);
                             }
-                        });
-                      }
+                         });
                     });
-                  });
-  }  else {
-    Swal.fire({
-      title: 'Error...',
-      text: 'Debes aceptar términos y condiciones para la compra',
-      icon: 'error',
-      allowOutsideClick: false,
-      showCloseButton: true
-      });
+    }  else {
+      Swal.fire({
+        title: 'Error...',
+        text: 'Debes aceptar términos y condiciones para la compra',
+        icon: 'error',
+        allowOutsideClick: false,
+        showCloseButton: true
+        });
+    }
   }
-}
+
+  saleCancel(referencia){
+    const rfr = referencia.toString();
+    this.productoSvc.cancelSaleProcess(rfr)
+        .subscribe(res => {
+          this.canc = res;
+          // console.log(this.canc[0].id);
+          this.productoSvc.deleteSaleCancel(this.canc[0].id);
+          location.reload();
+        });
+  }
 
 check(event: any){
     if (this.cont === 0) {
@@ -183,9 +161,4 @@ check(event: any){
       this.checkOn = false;
     }
 }
-
-cancel(){
-  location.reload();
-}
-
 }

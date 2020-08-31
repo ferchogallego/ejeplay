@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
 
   passwordView = false;
   load = false;
+  public usr = this.authSvc.afAuth.user;
 
   loginForm = new FormGroup ({
     email: new FormControl('', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]),
@@ -27,6 +28,11 @@ export class LoginComponent implements OnInit {
               private productoSvc: ProductsService) { }
 
   ngOnInit(): void {
+    this.usr.subscribe(usuario => {
+      if (!usuario.emailVerified) {
+        this.router.navigate(['/verificacion']);
+      }
+    });
     setTimeout(() => {
       this.load = true;
     }, 1000);
@@ -39,24 +45,7 @@ export class LoginComponent implements OnInit {
       if (user) {
         user.then(usr => {
           if (!usr.user.emailVerified) {
-            Swal.fire({
-              title: email,
-              text: 'El correo ingresado no ha sido verificado',
-              icon: 'question',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Enviar nuevo correo de verificación'
-            }).then((result) => {
-              this.authSvc.sendEmailVerification();
-              if (result.value) {
-                Swal.fire(
-                  'Se ha enviado un nuevo correo de verificación',
-                  'Ve a tu cuenta, confirma e ingresa a Eje Play :)',
-                  'success'
-                );
-              }
-            });
+           this.router.navigate(['/verificacion']);
           }
           if (usr.user.emailVerified) {
             this.productoSvc.userActive = true;
