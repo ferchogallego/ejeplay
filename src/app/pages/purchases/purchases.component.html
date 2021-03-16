@@ -23,22 +23,18 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Fecha</th>
-                            <th scope="col">Medio</th>
                             <th scope="col">Referedencia de pago</th>
                             <th scope="col">Estado</th>
-                            <th scope="col">Precio</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of lista">
-                            <td>{{item.comprado | date}}</td>
-                            <td>{{item.medio}}</td>
-                            <td>{{item.reference}}</td>
-                            <td>{{item.state}}</td>
-                            <td>${{item.precio | number}}</td>
+                            <td>{{item.fecha | date}}</td>
+                            <td>{{item.refCompra}}</td>
+                            <td>{{item.estado}}</td>
                             <td>
-                                <button type="button" class="btn btn-success" (click)="openModal(item.reference)" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
+                                <button type="button" class="btn btn-success" (click)="openModal(item)" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
                                     <i class="fa fa-list" aria-hidden="true"></i>
                                   </button>
                             </td>
@@ -52,7 +48,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Detalle de compra</h5>
@@ -67,17 +63,19 @@
                             <th scope="col">Juego</th>
                             <th scope="col"></th>
                             <th scope="col">Cuenta</th>
+                            <th scope="col">Descuento</th>
                             <th scope="col">Precio</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let juego of juegos">
-                            <td><img [src]="juego.compra[2]" class="img-fluid" alt="Responsive image" width="60"></td>
+                            <td><img [src]="juego.imagen" class="img-fluid" alt="Responsive image" width="60"></td>
                             <td>
-                                <h5>{{juego.compra[1] | titlecase}}</h5>
+                                <h5>{{juego.nombre | titlecase}}</h5>
                             </td>
-                            <td>{{juego.compra[5] | titlecase}}</td>
-                            <td>${{juego.compra[3] | number}}</td>
+                            <td>{{juego.cuenta | titlecase}}</td>
+                            <td>%{{juego.descuento}}</td>
+                            <td>${{juego.precio | number}}</td>
                         </tr>
                     </tbody>
                 </table>

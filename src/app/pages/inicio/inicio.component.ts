@@ -3,6 +3,7 @@ import { ProductsService } from '../../services/products.service';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-inicio',
@@ -17,7 +18,7 @@ export class InicioComponent implements OnInit {
   imagen2: string;
   imagen3: string;
   juegos: any;
-  ofertas: any;
+  fisicos: any;
   ofertas1: any;
   ofertas2: any;
 
@@ -61,14 +62,9 @@ export class InicioComponent implements OnInit {
       this.juegos = resp;
     });
 
-    this.productoSvc.loadGamesForOffer()
+    this.productoSvc.loadPhysicalProducts()
     .subscribe(res => {
-      this.ofertas = res;
-    });
-
-    this.productoSvc.loadStarterOffers2()
-    .subscribe (res => {
-      this.ofertas2 = res;
+      this.fisicos = res;
     });
 
     this.productoSvc.loadStarterOffers1()
@@ -103,15 +99,31 @@ export class InicioComponent implements OnInit {
       this.dolar = false;
     }
   }
-  openGame(juego: string){
-    this.router.navigate([`/detalle/${juego}`]);
+  openGame(juego: any){
+    if (juego.cantPpal === 0 && juego.cantSec === 0 ) {
+      Swal.fire(
+        'Agotado',
+        'Pronto tendremos de nuevo este título',
+        'question'
+      );
+    } else {
+      this.router.navigate([`/detalle/${juego.id}`]);
+    }
   }
 
   openCatalogInOffer(){
+    this.productoSvc.fisicos = false;
     this.productoSvc.ofertas = true;
     this.router.navigate(['/catalogo']);
   }
   openCatalogoAll(){
+    this.productoSvc.fisicos = false;
+    this.productoSvc.ofertas = false;
+    this.router.navigate(['/catalogo']);
+   }
+
+   openCatalogInProds(){
+    this.productoSvc.fisicos = true;
     this.productoSvc.ofertas = false;
     this.router.navigate(['/catalogo']);
    }

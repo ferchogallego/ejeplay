@@ -23,7 +23,10 @@ export class NavbarComponent implements OnInit {
   public user = this.authSvc.afAuth.user;
   perfilUser: any;
   idUser: string;
+  compras: any;
   pedidos: any;
+  cantCompras: number;
+  compra = [];
 
   catalogo = false;
 
@@ -33,7 +36,9 @@ export class NavbarComponent implements OnInit {
 
   constructor(private authSvc: AuthService,
               private router: Router,
-              private productoSvc: ProductsService) { }
+              private productoSvc: ProductsService) {
+    this.loadStorage();
+  }
 
   ngOnInit(): void {
     if (this.productoSvc.catalogo === true) {
@@ -42,11 +47,15 @@ export class NavbarComponent implements OnInit {
     this.buscador = this.productoSvc.search;
     this.user.subscribe(resp => {
       this.perfilUser = resp;
-      this.idUser = this.perfilUser.uid;
-      this.productoSvc.cantPedidos(this.perfilUser.uid)
-                      .subscribe (cant => {
-                        this.pedidos = cant.length;
-                      });
+      if (this.perfilUser) {
+        this.idUser = this.perfilUser.uid;
+        this.productoSvc.purchasesByBuyer(this.perfilUser.uid)
+                        .subscribe(res => {
+                          this.cantCompras = res.length;
+                        });
+      } else {
+        localStorage.setItem('carShoEjePlay', JSON.stringify(this.compra));
+      }
     });
     if (this.productoSvc.divisa === 'USD') {
       this.dolar = true;
@@ -60,7 +69,7 @@ export class NavbarComponent implements OnInit {
   onLogout(){
     Swal.fire({
       title: 'Salir de Eje Play?',
-      text: 'Vas a cerrar tu sesión?',
+      text: 'Vas a cerrar tu sesión, lo que tengas en el carrito se eliminará?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -69,6 +78,7 @@ export class NavbarComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         try {
+          this.limpiarCarrito();
           this.authSvc.logout();
           this.router.navigate(['/home']);
         } catch (error) {
@@ -83,15 +93,36 @@ export class NavbarComponent implements OnInit {
     });
    }
 
+   limpiarCarrito(){
+    localStorage.setItem('carShoEjePlay', JSON.stringify(this.compra));
+    this.router.navigate(['/solicitudes']);
+   }
+
    onDivisa(event: string){
      this.pago = event;
-     this.selectCurrency.emit(this.pago);
-     if (this.pago === 'USD') {
-       this.dolar = true;
-     } else {
-       this.dolar = false;
-     }
-     console.log('navbar:', this.dolar);
+     Swal.fire({
+      title: 'Está seguro?',
+      text: 'Se va a cambiar la moneda de pago a' + ' ' + this.pago,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Cambiar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.selectCurrency.emit(this.pago);
+        if (this.pago === 'USD') {
+          this.dolar = true;
+        } else {
+          this.dolar = false;
+        }
+        Swal.fire(
+          'Hecho!',
+          'La moneda de pago ha sido modificada.',
+          'success'
+        );
+      }
+    });
    }
 
    OnSearch(word: string){
@@ -103,12 +134,21 @@ export class NavbarComponent implements OnInit {
    }
 
    openCatalogInOffer(){
-     this.productoSvc.ofertas = true;
-     this.router.navigate(['/catalogo']);
+    this.productoSvc.fisicos = false;
+    this.productoSvc.ofertas = true;
+    this.router.navigate(['/catalogo']);
    }
 
    openCatalogoAll(){
+    this.productoSvc.fisicos = false;
     this.productoSvc.ofertas = false;
     this.router.navigate(['/catalogo']);
    }
+
+   loadStorage(){
+    if (localStorage.getItem('carShoEjePlay')) {
+      this.compras = JSON.parse( localStorage.getItem('carShoEjePlay'));
+      this.pedidos = this.compras.length;
+    }
+  }
   }

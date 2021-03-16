@@ -21,8 +21,7 @@
                             <th scope="col">Juego</th>
                             <th scope="col"></th>
                             <th scope="col">Cuenta</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Descuento</th>
+                            <th scope="col">Desc</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Total</th>
                             <th scope="col">Acciones</th>
@@ -30,19 +29,18 @@
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let item of compras">
-                            <td><img [src]="item.compra[2]" class="img-fluid img-thumbnail" alt=" "> </td>
+                        <tr *ngFor="let item of compras; let i = index">
+                            <td><img [src]="item.imagen" width="60" alt=" "> </td>
                             <td>
-                                <h5>{{item.compra[1]}} <br></h5>
+                                <h5>{{item.nombre}} <br></h5>
                                 <p>EjePlay Pereira.</p>
                             </td>
-                            <td class="text-center">{{item.compra[5]}}</td>
-                            <td class="text-center">1</td>
-                            <td class="text-center">{{item.compra[4]}}%</td>
-                            <td class="text-center">${{item.compra[3] | number}}</td>
-                            <td class="text-center">${{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | number}}</td>
+                            <td>{{item.cuenta}}</td>
+                            <td>{{item.descuento}}%</td>
+                            <td class="text-center">${{item.precio | number}}</td>
+                            <td class="text-center">${{item.precio - ((item.precio * item.descuento)/100) | number}}</td>
                             <td class="text-center">
-                                <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(item)">
+                                <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(i)">
                             <i class="fa fa-trash"></i>
                         </button>
                             </td>
@@ -59,22 +57,29 @@
                     <label for="Subtotal" class="blok"><b>Descuento:</b></label>
                     <b class="liquid" style="color: rgb(8, 81, 240); float: right;">${{descuento | number}}</b>
                 </p>
-                <!-- <p>
-                    <label for="Subtotal" class="blok">Cupón:</label>
-                    <input type="text" class="liquid2" placeholder="Código de cupón">
-                </p> -->
+                <p>
+                    <label for="Subtotal" class="blok"><b>Descuento Cupón:</b></label>
+                    <b class="liquid" style="color: rgb(8, 81, 240); float: right;">%{{desCpon | number}}</b>
+                </p>
+                <p>
+                    <label for="Subtotal" class="blok">Redimir Cupón:</label>
+                    <button class="btn btn-light" data-toggle="modal" data-target="#cupones"><img src="../../../assets/img/coupon.png" width="80"  alt=""></button>
+                </p>
                 <p>
                     <label for="Subtotal" class="blok1"><b>TOTAL:</b></label>
                     <b class="liquid1" style="float: right;">${{liquidacion | number}}</b>
                 </p>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1">
+                    <!-- <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1"> -->
                     <label class="form-check-label" for="defaultCheck1">
-                        Acepto términos y condiciones de EjePlay y autorizo el tratamiento de mis datos personales.
+                        Al finalizar compra acepto términos y condiciones de EjePlay y autorizo el tratamiento de mis datos personales. 
+                        <a class="term" data-toggle="modal" data-target="#terminos">
+                           Ver Terminos y Condiciones
+                        </a>
                     </label>
                 </div>
                 <hr>
-                <!-- compra -->
+
                 <button class="endShop" type="button">                                      
                     <i class="fa fa-credit-card" aria-hidden="true" (click)="payu()" data-toggle="modal" data-target="#modalCompra"> Finalizar Compra </i>                    
                 </button>
@@ -93,28 +98,25 @@
                             <th scope="col">Juego</th>
                             <th scope="col"></th>
                             <th scope="col">Cuenta</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Descuento</th>
+                            <th scope="col">Desc</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Total</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
-
                     <tbody>
-                        <tr *ngFor="let item of compras">
-                            <td><img [src]="item.compra[2]" class="img-fluid img-thumbnail" alt=" "> </td>
+                        <tr *ngFor="let item of compras; let i = index">
+                            <td><img [src]="item.imagen" width="60" alt=" "> </td>
                             <td>
-                                <h5>{{item.compra[1]}} <br></h5>
+                                <h5>{{item.nombre}} <br></h5>
                                 <p>EjePlay Pereira.</p>
                             </td>
-                            <td>{{item.compra[5]}}</td>
-                            <td>1</td>
-                            <td>{{item.compra[4]}}%</td>
-                            <td class="text-center">${{item.compra[3] | number}}</td>
-                            <td class="text-center">${{item.compra[3] - ((item.compra[3] * item.compra[4])/100) | number}}</td>
+                            <td>{{item.cuenta}}</td>
+                            <td>{{item.descuento}}%</td>
+                            <td class="text-center">${{item.precio | number}}</td>
+                            <td class="text-center">${{item.precio - ((item.precio * item.descuento)/100) | number}}</td>
                             <td class="text-center">
-                                <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(item)">
+                                <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(i)">
                             <i class="fa fa-trash"></i>
                         </button>
                             </td>
@@ -132,24 +134,35 @@
                     <label for="Subtotal" class="blok"><b>Descuento:</b></label>
                     <input style="color: rgb(8, 81, 240);" type="text" class="liquid" readonly [value]="descuento | currency">
                 </p>
-                <!-- <p>
-                    <label for="Subtotal" class="blok">Cupón:</label>
-                    <input type="text" class="liquid2" placeholder="Código de cupón">
-                </p> -->
+
+                <p>
+                    <label for="Subtotal" class="blok"><b>Descuento Cupón:</b></label>
+                    <b class="liquid" style="color: rgb(8, 81, 240); float: right;">%{{desCpon | number}}</b>
+                </p>
+
+                <p>
+                    <label for="Subtotal" class="blok">Redimir Cupón:</label>
+                    <button class="btn btn-light" data-toggle="modal" data-target="#cupones"><img src="../../../assets/img/coupon.png" width="80"  alt=""></button>
+                </p>
+
                 <p>
                     <label for="Subtotal" class="blok1"><b>TOTAL:</b></label>
                     <input type="text" class="liquid1" readonly [value]='liquidacion |currency'>
                 </p>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1">
+                    <!-- <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1"> -->
                     <label class="form-check-label" for="defaultCheck1">
-                        Acepto términos y condiciones de EjePlay y autorizo el tratamiento de mis datos personales.
+                        Al finalizar compra acepto términos y condiciones de EjePlay y autorizo el tratamiento de mis datos personales. 
+                        <a class="term" data-toggle="modal" data-target="#terminos">
+                           Ver Terminos y Condiciones
+                        </a>
                     </label>
                 </div>
                 <hr>
-                <button class="endShop" type="button">                                      
-                    <i class="fa fa-credit-card" aria-hidden="true" (click)="payu()"> Finalizar Compra </i>                    
+                <button class="endShop" type="button" (click)="payu()">                                      
+                    <i class="fa fa-credit-card" aria-hidden="true"> Finalizar Compra </i>                    
                 </button>
+
                 <button class="shop" routerLink='/compras'>
                     <i class="fa fa-shopping-cart" aria-hidden="true"> Seguir comprando </i>                    
                 </button>
@@ -157,40 +170,70 @@
         </div>
     </div>
 </div>
-
-<!-- modal -->
-
-<div *ngIf="checkOn" class="modal fade" id="modalCompra" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal cupones-->
+<div class="modal fade" id="cupones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Finalizar Compra</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Redimir Mis Cupones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
             </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    <img src="../../../assets/img/logo_payu.png" alt="" width="90"><br>
-                    <form #form method="post" action="https://checkout.payulatam.com/ppp-web-gateway-payu/">
-                        <input name="merchantId" type="hidden" [value]='merchantid'>
-                        <input name="accountId" type="hidden" [value]='accountId'>
-                        <input name="description" type="hidden" value="Pago PAYU EjePlay Pereira">
-                        <input name="referenceCode" type="hidden" [value]='reference'>
-                        <input name="amount" type="hidden" [value]='liquidacion'>
-                        <input name="tax" type="hidden" value="0">
-                        <input name="taxReturnBase" type="hidden" value="0">
-                        <input name="currency" type="hidden" value="COP">
-                        <input name="signature" type="hidden" [value]='signature'>
-                        <input name="test" type="hidden" value="0">
-                        <input name="buyerEmail" type="hidden" [value]='email'>
-                        <input name="responseUrl" type="hidden" value="https://www.ejeplaypereira.com/#/confirmacion">
-                        <input name="confirmationUrl" type="hidden" value="http://www.test.com/confirmation">
-                        <button type="submit" class="pago">
-                            <i class="fa fa-credit-card" (click)="form.submit()" aria-hidden="true"> Aceptar </i>
-                        </button>
-                    </form>
-                    <button class="btn btn-danger pago mt-2" style="background-color: rgb(160, 9, 9);" data-dismiss="modal" (click)="saleCancel(reference)">Cancelar</button>
+            <div class="modal-body text-center">
+                <div class="col-12">
+                    <div>
+                        <input type="text" class="form-control" placeholder="Ingrese código de cupón" (change)="codCupon($event.target.value)"><br>
+                        <button class="btn btn-dark" (click)="canjearCuponGeneral()" data-dismiss="modal">Verificar código</button>
+                    </div>
+                    <br>
+                    <!--  <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Cupón de Bienvenida:</h5>
+                                <img src="../../../assets/img/cupon1.png" width="70" alt="">
+                                <button class="btn btn-primary btn-block mt-2" (click)="cuponRegistro()" data-dismiss="modal">Redimir Cupón</button>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="col-sm-12 mt-2">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Cupón de Cliente Fiel:</h5>
+                                <img src="../../../assets/img/cupon2.png" width="70" alt="">
+                                <button class="btn btn-success btn-block mt-2" (click)="cuponFiel()" data-dismiss="modal">Redimir Cupón</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<a data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false" href="#"></a>
+
+<div class="modal fade" id="terminos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <h3>Términos y condiciones</h3>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="contenido">
+                    <p>
+                        Todos los usuarios entregados son de propiedad de EJEPLAY para la descarga del contenido, por ningún motivo se deben modificar/cambiar los datos entregados, de hacerlo podrá perder la garantía del producto y el acceso al mismo. El no correcto seguimiento
+                        de las instrucciones de instalación y posterior uso del juego y/o usuario entregado puede acarrear la perdida de garantía, EJEPLAY puede suspender temporal o definitivamente el acceso según lo requiera. Dado el caso también perderá
+                        el acceso a todos los juegos adquiridos por motivos de seguridad. EJEPLAY no se hace responsable por los cambios de políticas impuestos por Sony y que puedan afectar directamente las cuentas de Playstation Network.
+                    </p><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -34,7 +34,7 @@ export class VentasComponent implements OnInit {
   }
 
   filterByRef(refer: string){
-    this.lista = '';
+    this.lista = [];
     this.productoScv.loadSalesAdminByReference(refer)
                    .subscribe(res => {
                       this.lista = res;
@@ -51,53 +51,51 @@ export class VentasComponent implements OnInit {
                    });
   }
 
-  detailRequest(reference: string){
-    this.productoScv.loadSaleByReference(reference)
-                    .subscribe(res => {
-                      this.request = res;
-                    });
+  detailRequest(venta: any){
+    console.log(venta);
+    this.request = venta.carrito;
   }
 
-  approve(reference: string, comprador: string){
-    this.productoScv.updateSale(comprador, reference)
-                    .subscribe(result => {
-                      const id = result[0].id;
-                      this.productoScv.updateSaleAccepted(id)
-                          .then (sale => {
-                            this.productoScv.pedidos(comprador, reference)
-                                .subscribe(pedido => {
-                                  if (pedido) {
-                                    Swal.fire({
-                                      title: 'Aprobada',
-                                      text: 'La venta se aprobó correctamente',
-                                      icon: 'success',
-                                      showCancelButton: false,
-                                      confirmButtonColor: '#3085d6',
-                                      cancelButtonColor: '#d33',
-                                      confirmButtonText: 'Ok'
-                                    }).then((aprobado) => {
-                                      if (aprobado.value) {
-                                        window.location.reload();
-                                      }
-                                    });
-                                  }
-                                });
-                          });
-                    });
-  }
+ aprobarVenta(idSale: string){
+  Swal.fire({
+    title: 'Está seguro?',
+    text: 'Se va a aprobar esta venta',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, aprobar!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.productoScv.pedidosAprobado(idSale);
+      Swal.fire(
+        'Aceptada!',
+        'Venta confirmada.',
+        'success'
+      );
+    }
+  });
+ }
 
   deny(idSale: string){
-    this.productoScv.pedidosCancelados(idSale)
-                    .then(res => {
-                      Swal.fire({
-                        title: 'Eliminado',
-                        text: 'El registro se ha borrado correctamente',
-                        icon: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ok'
-                      });
-                    });
+    Swal.fire({
+      title: 'Está seguro?',
+      text: 'Se va a eliminar esta venta',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, borrar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // console.log(idSale);
+        this.productoScv.pedidosCancelados(idSale);
+        Swal.fire(
+          'Borrado!',
+          'Venta eliminada del sistema.',
+          'success'
+        );
+      }
+    });
   }
 }

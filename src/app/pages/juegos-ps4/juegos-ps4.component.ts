@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../../services/products.service';
+import { PruebaService } from '../../services/prueba.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-juegos-ps4',
@@ -11,6 +13,8 @@ export class JuegosPS4Component implements OnInit {
 
   rango = '0';
   juegos: any;
+  cantidad: number;
+  alfabetico: any;
   filterProducto = '';
   dolar = false;
   precioDolar: any;
@@ -18,6 +22,7 @@ export class JuegosPS4Component implements OnInit {
   load = false;
 
   constructor(private productoSvc: ProductsService,
+              private pruebaService: PruebaService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -29,10 +34,14 @@ export class JuegosPS4Component implements OnInit {
     if (this.productoSvc.termino) {
       this.filterProducto = this.productoSvc.termino;
     }
-    this.productoSvc.cargarProductos()
-      .subscribe (resp => {
-        this.juegos = resp;
-      });
+
+    if (this.productoSvc.fisicos === true) {
+      this.juegos = '';
+      this.productoSvc.loadPhysicalProducts()
+                    .subscribe(res => {
+                      this.juegos = res[0];
+                    });
+    }
 
     if (this.productoSvc.ofertas === true) {
       this.productoSvc.termino = '';
@@ -41,6 +50,16 @@ export class JuegosPS4Component implements OnInit {
                     .subscribe(res => {
                       this.juegos = res;
                     });
+    }
+
+    if (this.productoSvc.ofertas === false && this.productoSvc.fisicos === false
+      || this.productoSvc.ofertas === undefined || this.productoSvc.fisicos === undefined) {
+      this.pruebaService.cargarElementos().subscribe(res => {
+        this.juegos = res;
+        this.alfabetico = res;
+        this.cantidad = this.juegos.length;
+        console.log(this.juegos);
+      });
     }
 
     if (this.productoSvc.divisa === 'USD') {
@@ -87,8 +106,17 @@ export class JuegosPS4Component implements OnInit {
     }
   }
 
-  openGame(juego: string){
-    this.router.navigate([`/detalle/${juego}`]);
+  openGame(juego: any){
+    // console.log(juego);
+    if (juego.cantPpal === 0 && juego.cantSec === 0 ) {
+      Swal.fire(
+        'Agotado',
+        'Pronto tendremos de nuevo este título',
+        'question'
+      );
+    } else {
+      this.router.navigate([`/detalle/${juego.id}`]);
+    }
   }
 
   btnSearch(cate: string){
@@ -104,9 +132,10 @@ export class JuegosPS4Component implements OnInit {
     this.productoSvc.termino = '';
     this.juegos = '';
     this.filterProducto = '';
-    this.productoSvc.cargarProductos()
-    .subscribe (resp => {
-      this.juegos = resp;
+    this.pruebaService.cargarElementos().subscribe(res => {
+      this.juegos = res;
+      this.alfabetico = res;
+      this.cantidad = this.juegos.length;
     });
   }
 
@@ -118,6 +147,31 @@ export class JuegosPS4Component implements OnInit {
                   .subscribe(res => {
                     this.juegos = res;
                   });
+  }
+
+  filtrarBusqueda(event: string){
+    this.juegos = [];
+    if (event === 'alfabetico') {
+      this.juegos = this.alfabetico;
+    }
+    if (event === 'fecha') {
+      this.pruebaService.CargarElementosFecha().then(res => {
+        this.juegos = res;
+        this.cantidad = this.juegos.length;
+      });
+    }
+    if (event === 'menor') {
+      this.pruebaService.CargarElementosPrecioMmenor().then(res => {
+        this.juegos = res;
+        this.cantidad = this.juegos.length;
+      });
+    }
+    if (event === 'mayor') {
+      this.pruebaService.CargarElementosPrecioMayor().then(res => {
+        this.juegos = res;
+        this.cantidad = this.juegos.length;
+      });
+    }
   }
 
 }

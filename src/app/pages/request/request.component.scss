@@ -86,3 +86,14 @@
     margin-bottom: 5px;
     transition: 600ms;
 }
+
+.term {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+.term:hover {
+    color: #364d6a;
+    text-decoration: underline;
+}

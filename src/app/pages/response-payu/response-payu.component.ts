@@ -27,7 +27,6 @@ export class ResponsePayuComponent implements OnInit {
     this.user.subscribe(resp => {
       this.perfilUser = resp;
       this.idUser = this.perfilUser.uid;
-      // tslint:disable-next-line: radix
       this.referencia = this.activatedRoute.snapshot.queryParams.referenceCode;
       const refer = this.referencia.toString();
       if (this.activatedRoute.snapshot.queryParams.transactionState === '4'){
@@ -42,8 +41,6 @@ export class ResponsePayuComponent implements OnInit {
            this.resultado = res;
            const id = this.resultado[0].id;
            this.productoSvc.updateSaleAccepted(id).then( resultado => {
-             this.productoSvc.pedidos(this.idUser, refer).subscribe(car => {
-             });
            }).catch(err => {
             Swal.fire({
               title: 'Error...',

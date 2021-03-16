@@ -16,7 +16,7 @@ export class InventarioComponent implements OnInit {
   constructor(public productoSvc: ProductsService) { }
 
   ngOnInit(): void {
-    this.productoSvc.cargarProductos()
+    this.productoSvc.cargarProductosOrdenFecha()
                     .subscribe (resp => {
                       this.juegos = resp;
                       console.log(this.juegos);

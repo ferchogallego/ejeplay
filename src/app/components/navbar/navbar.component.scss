@@ -147,3 +147,22 @@
         }
     }
 }
+
+.noti {
+    position: absolute;
+    margin-top: -10px;
+    padding: 4px 4px;
+    box-shadow: 0px 0px 7px;
+    animation: infinite resplandorAnimation 2s;
+    border-radius: 50%;
+}
+
+@keyframes resplandorAnimation {
+    0%,
+    100% {
+        box-shadow: 0px 0px 20px;
+    }
+    50% {
+        box-shadow: 0px 0px 0px;
+    }
+}

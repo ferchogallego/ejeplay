@@ -3,6 +3,7 @@ import { ProductsService } from 'src/app/services/products.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { PruebaService } from '../../services/prueba.service';
 
 @Component({
   selector: 'app-detalle',
@@ -10,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./detalle.component.scss']
 })
 export class DetalleComponent implements OnInit {
-
+  usuario: any;
   prim = false;
   secund = false;
   activa = false;
@@ -22,7 +23,16 @@ export class DetalleComponent implements OnInit {
   game: any;
   idGame: string;
   juego: string;
+
   imagen: string;
+  imagen1: string;
+  imagen2: string;
+  imagen3: string;
+  miniatura: string;
+  miniatura1: string;
+  miniatura2: string;
+  miniatura4: string;
+
   idioma: string;
   peso: string;
   precio: any;
@@ -37,37 +47,61 @@ export class DetalleComponent implements OnInit {
   descuento: number;
   costopri: any;
   costosec: any;
+  agotado = false;
+  comentador: string;
+
+  datos: {};
 
   public user = this.authSvc.afAuth.user;
   perfilUser: any;
 
   solicitud: any = {
-    compra: [],
-    estado: 'Pendiente',
-    fecha: new Date().getTime(),
-    usuario: '',
+   idJuego: '',
+   nombre: '',
+   imagen: '',
+   precio: 0,
+   descuento: 0,
+   cuenta: ''
   };
+
+  favoritos: any = {
+    juego: '',
+    nombre: '',
+    usuario: '',
+    imagen: '',
+    fecha: new Date().getTime()
+  };
+
+  compra = [];
 
   descrip = true;
   ficha = false;
   comentarios = false;
+  comentariosList: any;
+
+  juegoFavorito: any;
 
   constructor(private productoSvc: ProductsService,
               private route: ActivatedRoute,
               private router: Router,
-              private authSvc: AuthService) { }
+              private authSvc: AuthService,
+              private pruebaSvc: PruebaService) {
+    this.loadStorage();
+  }
 
   ngOnInit(): void {
     this.productoSvc.termino = '';
     this.productoSvc.catalogo = false;
     this.productoSvc.search = true;
     const id = this.route.snapshot.paramMap.get('id');
+
     setTimeout(() => {
       this.load = true;
     }, 2000);
     this.productoSvc.loadGameById(id)
                     .subscribe(res => {
                       this.game = res;
+                      console.log(this.game);
                       this.idGame = id;
                       this.juego = this.game.nombre;
                       this.imagen = this.game.imageProd ;
@@ -77,15 +111,22 @@ export class DetalleComponent implements OnInit {
                       this.preciosec = this.game.preciosec;
                       this.oferta = this.game.oferta;
                       this.categoria = this.game.categoria;
-                      this.descripcion = this.game.descripcion;
-                      this.tipo = this.game.tipo;
-                      this.cantP = this.game.cantPpal;
-                      this.cantS = this.game.cantSec;
                       this.productoSvc.loadGamesByCategory(this.categoria)
                                       .subscribe(cat => {
                                         this.relacionados = cat;
                                       });
                       this.offerCalculate();
+                      this.descripcion = this.game.descripcion;
+                      this.tipo = this.game.tipo;
+                      this.cantP = this.game.cantPpal;
+                      this.cantS = this.game.cantSec;
+                      this.imagen1 = this.game.images.imagen1;
+                      this.imagen2 = this.game.images.imagen2;
+                      this.imagen3 = this.game.images.imagen3;
+                      this.miniatura = this.game.images.miniatura;
+                      this.miniatura1 = this.game.images.miniatura1;
+                      this.miniatura2 = this.game.images.miniatura2;
+                      this.miniatura4 = this.game.images.miniatura4;
                     });
   }
 
@@ -103,8 +144,26 @@ export class DetalleComponent implements OnInit {
       this.dolar = false;
     }
   }
+
+  verComentarios(){
+    this.productoSvc.cargarComentariosPorIdJuego(this.idGame)
+                    .subscribe(cmt => {
+                      this.comentariosList = cmt;
+                      console.log( this.comentariosList);
+                    });
+  }
+
   openGame(juego: string){
     this.game = '';
+    this.idGame = juego;
+    this.tipo = this.game.tipo;
+    this.imagen1 = '';
+    this.imagen2 = '';
+    this.imagen3 = '';
+    this.miniatura = '';
+    this.miniatura1 = '';
+    this.miniatura2 = '';
+    this.miniatura4 = '';
     this.productoSvc.loadGameById(juego)
                     .subscribe(res => {
                       this.game = res;
@@ -122,6 +181,16 @@ export class DetalleComponent implements OnInit {
                                       .subscribe(cat => {
                                         this.relacionados = cat;
                                       });
+                      this.tipo = this.game.tipo;
+                      this.cantP = this.game.cantPpal;
+                      this.cantS = this.game.cantSec;
+                      this.imagen1 = this.game.images.imagen1;
+                      this.imagen2 = this.game.images.imagen2;
+                      this.imagen3 = this.game.images.imagen3;
+                      this.miniatura = this.game.images.miniatura;
+                      this.miniatura1 = this.game.images.miniatura1;
+                      this.miniatura2 = this.game.images.miniatura2;
+                      this.miniatura4 = this.game.images.miniatura4;
                     });
   }
 
@@ -132,15 +201,34 @@ export class DetalleComponent implements OnInit {
     }
   }
 
-  request(idGame: string){
-    this.user.subscribe(resp => {
-      this.perfilUser = resp;
-      this.solicitud.idJuego = idGame;
-      this.solicitud.usuario = this.perfilUser.uid;
-      this.productoSvc.cargarPedido(this.solicitud);
-    });
+  request(){
+    console.log(this.solicitud);
+    this.compra.push(this.solicitud);
+    localStorage.setItem('carShoEjePlay', JSON.stringify(this.compra));
     this.router.navigate(['/solicitudes']);
   }
+
+  requestProd(){
+    this.solicitud = {
+      idJuego: '',
+      nombre: '',
+      imagen: '',
+      precio: 0,
+      descuento: 0,
+      cuenta: ''
+     };
+    const primaria = 'N/A';
+    this.solicitud.idJuego = this.idGame;
+    this.solicitud.nombre = this.juego;
+    this.solicitud.imagen = this.imagen;
+    this.solicitud.precio = this.precio;
+    this.solicitud.descuento = this.oferta;
+    this.solicitud.cuenta = primaria;
+    this.compra.push(this.solicitud);
+    localStorage.setItem('carShoEjePlay', JSON.stringify(this.compra));
+    this.router.navigate(['/solicitudes']);
+  }
+
   viewTabs(contenido: string){
    if (contenido === 'descripcion') {
     this.descrip = true;
@@ -156,9 +244,18 @@ export class DetalleComponent implements OnInit {
     this.descrip = false;
     this.ficha = false;
     this.comentarios = true;
+    this.verComentarios();
    }
   }
   activateSale(slot: string, desc: number){
+    this.solicitud = {
+      idJuego: '',
+      nombre: '',
+      imagen: '',
+      precio: 0,
+      descuento: 0,
+      cuenta: ''
+     };
     this.descuento = desc;
     if (slot === 'primario') {
       if (this.cantP > 0) {
@@ -166,8 +263,12 @@ export class DetalleComponent implements OnInit {
         this.secund = false;
         this.activa = true;
         const primaria = 'Principal';
-        this.solicitud.compra = [];
-        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.precio, this.descuento, primaria);
+        this.solicitud.idJuego = this.idGame;
+        this.solicitud.nombre = this.juego;
+        this.solicitud.imagen = this.imagen;
+        this.solicitud.precio = this.precio;
+        this.solicitud.descuento = this.descuento;
+        this.solicitud.cuenta = primaria;
       }
       if (this.cantP === 0) {
         Swal.fire({
@@ -183,8 +284,12 @@ export class DetalleComponent implements OnInit {
         this.secund = true;
         this.activa = true;
         const secundaria = 'Secundaria';
-        this.solicitud.compra = [];
-        this.solicitud.compra.push(this.idGame, this.juego, this.imagen, this.preciosec, this.descuento, secundaria);
+        this.solicitud.idJuego = this.idGame;
+        this.solicitud.nombre = this.juego;
+        this.solicitud.imagen = this.imagen;
+        this.solicitud.precio = this.preciosec;
+        this.solicitud.descuento = this.descuento;
+        this.solicitud.cuenta = secundaria;
       }
       if (this.cantS === 0) {
         Swal.fire({
@@ -194,5 +299,108 @@ export class DetalleComponent implements OnInit {
         });
       }
     }
+  }
+
+  listaDeseos(juego: string, imagen: string){
+    this.user.subscribe(usr => {
+      this.usuario = usr;
+      if (this.usuario !== null) {
+        const idUser = this.usuario.uid;
+        this.pruebaSvc.confirmarJuegoFavorito(idUser, this.idGame)
+                  .then(res => {
+                    this.juegoFavorito = res;
+                    console.log(this.juegoFavorito.length);
+                    if (this.juegoFavorito.length > 0) {
+                      Swal.fire(
+                        'Ya es favorito!',
+                        'El juego ya se encuentra en tu lista de deseos.',
+                        'success'
+                      );
+                      return;
+                    } else {
+                      this.favoritos = {
+                        juego: '',
+                        nombre: '',
+                        usuario: '',
+                        imagen: '',
+                        fecha: new Date().getTime()
+                      };
+                      this.favoritos.juego = this.idGame;
+                      this.favoritos.usuario = idUser;
+                      this.favoritos.nombre = juego;
+                      this.favoritos.imagen = imagen;
+                      this.pruebaSvc.agregarListaDeseos(this.favoritos).then(() => {
+                            Swal.fire(
+                              'Agregado!',
+                              'El juego fué agregado a tus favoritos.',
+                              'success'
+                            );
+                          });
+                    }
+                  });
+      } else {
+        Swal.fire(
+          'Sesión no iniciada!',
+          'Para seleccionar favoritos debe iniciar sesión.',
+          'question'
+        );
+      }
+    });
+  }
+
+  loadStorage(){
+    if (localStorage.getItem('carShoEjePlay')) {
+      this.compra = JSON.parse( localStorage.getItem('carShoEjePlay'));
+    }
+  }
+
+  galeria(seleccion: string){
+    if (seleccion === '1') {
+      this.imagen = this.imagen2;
+    }
+    if (seleccion === '2') {
+      this.imagen = this.imagen3;
+    }
+    if (seleccion === '3') {
+      this.imagen = this.imagen1;
+    }
+    if (seleccion === '4') {
+      this.imagen = this.game.imageProd;
+    }
+  }
+
+  aliasComentario(alias: string){
+    this.comentador = alias;
+  }
+
+  comentarioJuego(comentario: string){
+    this.datos = {
+      coment: comentario,
+      fecha: new Date().getTime(),
+      estado: 'Revision',
+      usuario: this.comentador,
+      idJuego: this.idGame
+    };
+  }
+
+  enviarComentario(){
+      Swal.fire({
+      title: 'Se va a cargar este comentario',
+      text: 'Esta seguro de su comentario del juego?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, comentar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Comentario enviado',
+          'Recuerde que el comentario será verificado antes de publicarse.',
+          'success'
+        );
+        this.productoSvc.cargarComentarioJuego(this.datos);
+      }
+    });
   }
 }

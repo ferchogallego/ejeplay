@@ -11,7 +11,7 @@
                     <select class="form-control" (change)="filterByState($event.target.value)">  
                         <option value="todos">Todos</option>                    
                         <option value="Aprobada">Aprobada</option>
-                        <option value="Procesandose">En proceso</option>
+                        <option value="Pendiente">Pendiente</option>
                         <option value="Rechazada">Rechazada</option>
             </select>
                 </div>
@@ -27,29 +27,27 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Fecha</th>
-                    <th scope="col">Medio</th>
-                    <th scope="col">Ref. pago</th>
+                    <th scope="col">Ref-Compra</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">Precio</th>
                     <th scope="col">acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let item of lista">
-                    <td>{{item.comprado | date}}</td>
-                    <td>{{item.medio}}</td>
-                    <td>{{item.reference}}</td>
-                    <td>{{item.state}}</td>
-                    <td>${{item.precio | number}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.fecha | date}}</td>
+                    <td>{{item.refCompra}}</td>
+                    <td>{{item.estado}}</td>
                     <td class="text-center">
-                        <button *ngIf="item.state != 'Rechazada'" type="button" (click)="detailRequest(item.reference)" class="btn btn-success" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
+                        <button type="button" (click)="detailRequest(item)" class="btn btn-success" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
                             <i class="fa fa-list fa-lg" aria-hidden="true"></i>
                           </button>
-                        <button *ngIf="item.state == 'Procesandose'" type="button" class="btn btn-primary ml-2 mr-2" (click)="approve(item.reference, item.comprador)" title="Aprobar venta">
+                        <button *ngIf="item.estado != 'Aprobada'" type="button" (click)="aprobarVenta(item.id)" class="btn btn-primary ml-2 mr-1" title="Aprobar venta">
                             <i class="fa fa-check fa-lg" aria-hidden="true"></i>
                           </button>
-                        <button *ngIf="item.state != 'Aprobada'" type="button" class="btn btn-danger" (click)="deny(item.id)" title="Eliminar de la lista">
+                        <button *ngIf="item.estado != 'Rechazada'" type="button" class="btn btn-danger ml-1" (click)="deny(item.id)" title="Eliminar de la lista">
                             <i class="fa fa-ban fa-lg" aria-hidden="true"></i>
                           </button>
                     </td>
@@ -80,12 +78,12 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let juego of request">
-                            <td><img [src]="juego.compra[2]" class="img-fluid" alt="Responsive image" width="60"></td>
+                            <td><img [src]="juego.imagen" class="img-fluid" alt="Responsive image" width="60"></td>
                             <td>
-                                <h5>{{juego.compra[1] | titlecase}}</h5>
+                                <h5>{{juego.nombre | titlecase}}</h5>
                             </td>
-                            <td>{{juego.compra[5] | titlecase}}</td>
-                            <td>${{juego.compra[3] | number}}</td>
+                            <td>{{juego.cuenta | titlecase}}</td>
+                            <td>${{juego.precio | number}}</td>
                         </tr>
                     </tbody>
                 </table>

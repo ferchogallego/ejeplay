@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Producto } from 'src/app/shared/producto.interface';
 import { ProductsService } from 'src/app/services/products.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-editar-producto',
@@ -12,15 +15,52 @@ import Swal from 'sweetalert2';
 })
 export class EditarProductoComponent implements OnInit {
 
-  producto: Producto;
+  producto: any;
   imageSrc: any;
+  imageSrc1: any;
   image: any;
   private imageOriginal: any;
   imgLoad = false;
+  imagenes: any;
+  imagen1: any;
+  imagen2: string;
+  imagen3: string;
+  mini: string;
+  mini1: string;
+  mini2: string;
+  mini4: string;
+
+  uploadPercent1: Observable<number>;
+  urlImage1: string;
+  uploadPercent2: Observable<number>;
+  urlImage2: string;
+  uploadPercent3: Observable<number>;
+  urlImage3: string;
+  uploadPercent4: Observable<number>;
+  urlmini: string;
+  uploadPercent5: Observable<number>;
+  urlmini1: string;
+  uploadPercent6: Observable<number>;
+  urlmini2: string;
+  uploadPercent7: Observable<number>;
+  urlmini4: string;
+
+  idProd: string;
+
+  images = {
+    imagen1: '',
+    imagen2: '',
+    imagen3: '',
+    miniatura: '',
+    miniatura1: '',
+    miniatura2: '',
+    miniatura4: ''
+  };
 
   constructor(private productoSvc: ProductsService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private storage: AngularFireStorage) { }
 
     editProductForm = new FormGroup({
       id: new FormControl('', Validators.required),
@@ -84,14 +124,24 @@ export class EditarProductoComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    this.idProd = id;
     this.productoSvc.getProductById(id)
-                    .subscribe((resp: Producto) => {
+                    .subscribe((resp: any) => {
                       this.producto = resp;
                       this.producto.id = id;
                       this.image = this.producto.imageProd;
                       this.imageOriginal = this.producto.imageProd;
-                      console.log('Producto: ', this.producto.descripcion);
+                      // console.log('Producto: ', this.producto.images);
                       this.initValuesForm();
+
+                      this.imagenes = this.producto.images;
+                      this.imagen1 =  this.imagenes.imagen1;
+                      this.imagen2 =  this.imagenes.imagen2;
+                      this.imagen3 =  this.imagenes.imagen3;
+                      this.mini =  this.imagenes.miniatura;
+                      this.mini1 =  this.imagenes.miniatura1;
+                      this.mini2 =  this.imagenes.miniatura2;
+                      this.mini4 =  this.imagenes.miniatura4;
                     });
   }
 
@@ -133,6 +183,144 @@ export class EditarProductoComponent implements OnInit {
       this.imageSrc = reader.result;
     };
     reader.readAsDataURL(this.image);
+  }
+
+  handleImage1(event){
+    const idImg = Math.random().toString(36).substring(2);
+    const file = event.target.files[0];
+    const filePath = `productos/prds_${idImg}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent1 = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => {
+      ref.getDownloadURL().subscribe( urlImg => {
+        this.urlImage1 = urlImg;
+        this.images.imagen1 = this.urlImage1;
+      });
+    })).subscribe();
+  }
+
+  handleImage2(event){
+    const idImg = Math.random().toString(36).substring(2);
+    const file = event.target.files[0];
+    const filePath = `productos/prds_${idImg}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent2 = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => {
+      ref.getDownloadURL().subscribe( urlImg => {
+        this.urlImage2 = urlImg;
+        this.images.imagen2 = this.urlImage2;
+      });
+    })).subscribe();
+  }
+
+  handleImage3(event){
+    const idImg = Math.random().toString(36).substring(2);
+    const file = event.target.files[0];
+    const filePath = `productos/prds_${idImg}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent3 = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => {
+      ref.getDownloadURL().subscribe( urlImg => {
+        this.urlImage3 = urlImg;
+        this.images.imagen3 = this.urlImage3;
+      });
+    })).subscribe();
+  }
+
+  handleMini(event){
+    const idImg = Math.random().toString(36).substring(2);
+    const file = event.target.files[0];
+    const filePath = `productos/prds_${idImg}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent5 = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => {
+      ref.getDownloadURL().subscribe( urlImg => {
+        this.urlmini = urlImg;
+        this.images.miniatura = this.urlmini;
+      });
+    })).subscribe();
+  }
+
+  handleMini1(event){
+    const idImg = Math.random().toString(36).substring(2);
+    const file = event.target.files[0];
+    const filePath = `productos/prds_${idImg}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent6 = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => {
+      ref.getDownloadURL().subscribe( urlImg => {
+        this.urlmini1 = urlImg;
+        this.images.miniatura1 = this.urlmini1;
+      });
+    })).subscribe();
+  }
+
+  handleMini2(event){
+    const idImg = Math.random().toString(36).substring(2);
+    const file = event.target.files[0];
+    const filePath = `productos/prds_${idImg}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent4 = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => {
+      ref.getDownloadURL().subscribe( urlImg => {
+        this.urlmini2 = urlImg;
+        this.images.miniatura2 = this.urlmini2;
+      });
+    })).subscribe();
+  }
+
+  handleMini4(event){
+    const idImg = Math.random().toString(36).substring(2);
+    const file = event.target.files[0];
+    const filePath = `productos/prds_${idImg}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent7 = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => {
+      ref.getDownloadURL().subscribe( urlImg => {
+        this.urlmini4 = urlImg;
+        this.images.miniatura4 = this.urlmini4;
+      });
+    })).subscribe();
+  }
+
+  updateGalery(){
+    if (this.urlImage1 === undefined) {
+      this.urlImage1 = this.imagen1;
+      this.images.imagen1 = this.urlImage1;
+    }
+    if (this.urlImage2 === undefined) {
+      this.urlImage2 = this.imagen2;
+      this.images.imagen2 = this.urlImage2;
+    }
+    if (this.urlImage3 === undefined) {
+      this.urlImage3 = this.imagen3;
+      this.images.imagen3 = this.urlImage3;
+    }
+    if (this.urlmini === undefined) {
+      this.urlmini = this.mini;
+      this.images.miniatura = this.mini;
+    }
+    if (this.urlmini1 === undefined) {
+      this.urlmini1 = this.mini1;
+      this.images.miniatura1 = this.mini1;
+    }
+    if (this.urlmini2 === undefined) {
+      this.urlmini2 = this.mini2;
+      this.images.miniatura2 = this.mini2;
+    }
+    if (this.urlmini4 === undefined) {
+      this.urlmini4 = this.mini4;
+      this.images.miniatura4 = this.mini4;
+    }
+    this.productoSvc.galeriaProductos(this.idProd, this.images).then(() => window.location.reload());
+
   }
 
 }

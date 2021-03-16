@@ -12,9 +12,26 @@
     </div>
 </div>
 <div *ngIf="load">
-    <div class="container ppal d-none d-lg-block d-xl-block">
+    <div class="container-fluid ppal d-none d-lg-block d-xl-block">
         <div class="col-lg-12">
-            <h3 class="titulo">Catálogo de juegos PS4</h3>
+            <div class="row">
+                <div class="col-5">
+                    <h3 class="titulo">Catálogo de juegos PS4</h3>
+                </div>
+                <div class="col-4 text-right">
+                    <p>Mostrando {{cantidad}} juegos</p>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <select class="form-control" (change)="filtrarBusqueda($event.target.value)">                      
+                          <option value="alfabetico">Orden Alfabético</option>
+                          <option value="fecha">Mas Recientes</option>
+                          <option value="menor">Precio: de menor a mayor</option>
+                          <option value="mayor">Precio: de mayor a menor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <hr>
             <div class="row">
                 <div class="col-lg-3 izq">
@@ -23,13 +40,16 @@
                         <button class="btnshc"><i class="fa fa-search-plus fa-lg"></i></button>
                     </form>
                     <h5 class="titulo mt-3">Filtrar por categoría</h5>
-                    <button (click)="loadAllgames()" class="btn btn-primary btn-block">Todos</button>
-                    <button (click)="loadOffergames()" class="btn btn-primary btn-block">Ofertas</button>
-                    <button (click)="btnSearch('Deportes')" class="btn btn-primary btn-block">Deportes</button>
                     <button (click)="btnSearch('Acción')" class="btn btn-primary btn-block">Acción</button>
-                    <button (click)="btnSearch('Rol')" class="btn btn-primary btn-block">Rol</button>
-                    <button (click)="btnSearch('Infantil')" class="btn btn-primary btn-block">Infantil</button>
                     <button (click)="btnSearch('Aventura')" class="btn btn-primary btn-block">Aventura</button>
+                    <button (click)="btnSearch('Deportes')" class="btn btn-primary btn-block">Deportes</button>
+                    <button (click)="btnSearch('Fisicos')" class="btn btn-primary btn-block">Juegos Físicos y Accesorios</button>
+                    <button (click)="btnSearch('Infantil')" class="btn btn-primary btn-block">Infantil</button>
+                    <button (click)="btnSearch('Lucha')" class="btn btn-primary btn-block">Lucha</button>
+                    <button (click)="loadOffergames()" class="btn btn-primary btn-block">Ofertas</button>
+                    <button (click)="btnSearch('Rol')" class="btn btn-primary btn-block">Terror</button>
+                    <button (click)="loadAllgames()" class="btn btn-primary btn-block">Todos</button>
+
                     <form class="mt-3">
                         <div class="form-group">
                             <label for="formControlRange"><h5 class="titulo">Filtrar precio</h5></label>
@@ -43,18 +63,27 @@
                 </div>
                 <div class="col-lg-9">
                     <div>
-                        <div class="row row-cols-1 row-cols-md-4">
-                            <div class="col mb-3" *ngFor="let juego of juegos | filter:filterProducto">
-                                <div class="card h-100 games" (click)="openGame(juego.id)">
-                                    <img [src]="juego.imageProd" class="card-img-top" alt="...">
-                                    <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
-                                    <div class="card-body">
-                                        <p class="card-title">{{juego.nombre | titlecase}}</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
-                                        <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
-                                        <button class="compra"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Comprar</button>
+                        <div class="d-none d-lg-block d-xl-block">
+                            <div class="row row-cols-1 row-cols-md-4">
+                                <div class="col mb-3" *ngFor="let juego of juegos | filter:filterProducto">
+                                    <div class="card h-100 games" (click)="openGame(juego)">
+                                        <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
+                                        <span *ngIf="juego.cantPpal == 0 && juego.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
+                                        <img loading="lazy" [src]="juego.imageProd" class="card-img-top" alt="...">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
+                                        </div>
+                                        <div class="card-footer" style="border: none;">
+                                            <div class="text-center">
+                                                <div *ngIf="juego.categoria != 'Fisicos'">
+                                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                                    <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
+                                                </div>
+                                                <div *ngIf="juego.categoria == 'Fisicos'">
+                                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P</b></p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -76,14 +105,17 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-6">
-                        <button (click)="loadOffergames()" class="btn btn-primary btn-block">Ofertas</button>
-                        <button (click)="btnSearch('Deportes')" class="btn btn-primary btn-block">Deportes</button>
                         <button (click)="btnSearch('Acción')" class="btn btn-primary btn-block">Acción</button>
+                        <button (click)="btnSearch('Aventura')" class="btn btn-primary btn-block">Aventura</button>
+                        <button (click)="btnSearch('Deportes')" class="btn btn-primary btn-block">Deportes</button>
+                        <button (click)="btnSearch('Fisicos')" class="btn btn-primary btn-block">Físicos</button>
                     </div>
                     <div class="col-6">
-                        <button (click)="btnSearch('Rol')" class="btn btn-primary btn-block">Rol</button>
                         <button (click)="btnSearch('Infantil')" class="btn btn-primary btn-block">Infantil</button>
-                        <button (click)="btnSearch('Aventura')" class="btn btn-primary btn-block">Aventura</button>
+                        <button (click)="btnSearch('Lucha')" class="btn btn-primary btn-block">Lucha</button>
+                        <button (click)="loadOffergames()" class="btn btn-primary btn-block">Ofertas</button>
+                        <button (click)="btnSearch('Rol')" class="btn btn-primary btn-block">Terror</button>
+
                     </div>
                 </div>
                 <button (click)="loadAllgames()" class="btn btn-primary btn-block mt-2">Todos</button>
@@ -98,20 +130,36 @@
                     </div>
                 </div>
             </form>
+            <div class="col-12">
+                <div class="form-group">
+                    <select class="form-control" (change)="filtrarBusqueda($event.target.value)">                      
+                      <option value="alfabetico">Orden Alfabético</option>
+                      <option value="fecha">Mas Recientes</option>
+                      <option value="menor">Precio: de menor a mayor</option>
+                      <option value="mayor">Precio: de mayor a menor</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div>
             <div class="row">
                 <div class="col-6 mb-2" *ngFor="let juego of juegos | filter:filterProducto">
-                    <div class="card h-100 games" (click)="openGame(juego.id)">
+                    <div class="card h-100 games" (click)="openGame(juego)">
                         <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
-                        <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                        <span *ngIf="juego.cantPpal == 0 && juego.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
+                        <img loading="lazy" [src]="juego.imageProd" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
                         </div>
                         <div class="card-footer" style="border: none;">
                             <div class="text-center">
-                                <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
-                                <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
+                                <div *ngIf="juego.categoria != 'Fisicos'">
+                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                    <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
+                                </div>
+                                <div *ngIf="juego.categoria == 'Fisicos'">
+                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P</b></p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -119,4 +167,3 @@
             </div>
         </div>
     </div>
-</div>

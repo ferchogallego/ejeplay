@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Nombre del juego:</label>
+                            <label>Nombre del juego / Producto:</label>
                             <input type="text" formControlName="nombre" class="form-control" [class.is-invalid]="nombreNoValido" placeholder="Nombre del producto" name="nombre">
                             <small *ngIf="nombreNoValido" class="text-danger">Debe ingresar el nombre</small>
                         </div>
@@ -17,20 +17,23 @@
                             <select class="form-control" formControlName="tipo" name="tipo" required>                      
                               <option value="Ps4">Ps4</option>
                               <option value="Ps3">Ps5</option>
+                              <option value="fisico">Fisicos - Accesorios</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Imagen del juego:</label>
+                            <label>Imagen del juego / Producto:</label>
                             <input type="file" formControlName="imageProd" class="form-control" (change)="handleImage($event)">
                         </div>
                         <div class="form-group">
                             <label>Categoria:</label>
                             <select class="form-control" formControlName="categoria" name="categoria" required>                      
-                              <option value="Acción">Acción</option>
-                              <option value="Deportes">Deportes</option>
-                              <option value="Rol">Rol</option>
-                              <option value="Infantil">Infantil</option>
-                              <option value="Aventura">Aventura</option>
+                                <option value="Fisicos">Fisicos</option>
+                                <option value="Acción">Acción</option>
+                                <option value="Deportes">Deportes</option>
+                                <option value="Infantil">Infantil</option>
+                                <option value="Aventura">Aventura</option>
+                                <option value="Terror">Terror</option>
+                                <option value="Lucha">Lucha</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -39,6 +42,7 @@
                               <option value="Multi Idioma">Multi Idioma</option>
                               <option value="Textos Español - Audio Ingles">Textos Español - Audio Inglés</option>
                               <option value="Ingles">Inglés</option>
+                              <option value="N/A">No Aplica</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -90,7 +94,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <label>Descripción del juego:</label>
+                        <label>Descripción del juego / producto:</label>
                         <textarea class="form-control" formControlName="descripcion" name="descripcion" [class.is-invalid]="descripcionNoValido" cols="30" rows="5"></textarea>
                         <small *ngIf="descripcionNoValido" class="text-danger">Debe ingresar la descripción del juego min 30 caracteres</small>
                     </div>
@@ -100,8 +104,119 @@
                     <button type="submit" class="btn btn-outline-success w-50">
                         <i class="fa fa-save"> Guardar</i>
                     </button>
+                    <hr>
                 </div>
             </form>
+            <div class="col-12 mt-3">
+                <div class="row">
+                    <div class="col-4 text-center cntdor">
+                        <label class="custom-file imgchange" id="customFile">
+                            <img *ngIf="imagen1" [src]="imagen1" width="100" alt="">
+                            <img *ngIf="!imagen1" src="../../../assets/img/picture.png" width="100" alt="">
+                            <input type="file" class="custom-file-input" (change)="handleImage1($event)">
+                            <span class="custom-file-control form-control-file"></span>
+                        </label>
+                        <div class="text-center">
+                            <h5>Imagen 1</h5>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent1 | async) + '%'"></div>
+                        </div>
+                    </div>
+                    <div class="col-4 text-center cntdor">
+                        <label class="custom-file imgchange" id="customFile">
+                            <img *ngIf="imagen2" [src]="imagen2" width="100" alt="">
+                            <img *ngIf="!imagen2" src="../../../assets/img/picture.png" width="100" alt="">
+                            <input type="file" class="custom-file-input" (change)="handleImage2($event)">
+                            <span class="custom-file-control form-control-file"></span>
+                        </label>
+                        <div class="text-center">
+                            <h5>Imagen 2</h5>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent2 | async) + '%'"></div>
+                        </div>
+                    </div>
+                    <div class="col-4 text-center cntdor">
+                        <label class="custom-file imgchange" id="customFile">
+                            <img *ngIf="imagen3" [src]="imagen3" width="100" alt="">
+                            <img *ngIf="!imagen3" src="../../../assets/img/picture.png" width="100" alt="">
+                            <input type="file" class="custom-file-input" (change)="handleImage3($event)">
+                            <span class="custom-file-control form-control-file"></span>
+                        </label>
+                        <div class="text-center">
+                            <h5>Imagen 3</h5>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent3 | async) + '%'"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3 text-center cntdor">
+                        <label class="custom-file imgchange" id="customFile">
+                            <img *ngIf="mini2" [src]="mini2" width="70" alt="">
+                            <img *ngIf="!mini2" src="../../../assets/img/picture.png" width="50" alt="">
+                            <input type="file" class="custom-file-input" (change)="handleMini2($event)">
+                            <span class="custom-file-control form-control-file"></span>
+                        </label>
+                        <div class="text-center">
+                            <h5>Miniatura 1</h5>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent4 | async) + '%'"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-3 text-center cntdor">
+                        <label class="custom-file imgchange" id="customFile">
+                            <img *ngIf="mini" [src]="mini" width="70" alt="">
+                        <img *ngIf="!mini" src="../../../assets/img/picture.png" width="50" alt="">
+                            <input type="file" class="custom-file-input" (change)="handleMini($event)">
+                            <span class="custom-file-control form-control-file"></span>
+                        </label>
+                        <div class="text-center">
+                            <h5>Miniatura 2</h5>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent5 | async) + '%'"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-3 text-center cntdor">
+                        <label class="custom-file imgchange" id="customFile">
+                            <img *ngIf="mini1" [src]="mini1" width="70" alt="">
+                            <img *ngIf="!mini1" src="../../../assets/img/picture.png" width="50" alt="">
+                            <input type="file" class="custom-file-input" (change)="handleMini1($event)">
+                            <span class="custom-file-control form-control-file"></span>
+                        </label>
+                        <div class="text-center">
+                            <h5>Miniatura 3</h5>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent6 | async) + '%'"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-3 text-center cntdor">
+                        <label class="custom-file imgchange" id="customFile">
+                            <img *ngIf="mini4" [src]="mini4" width="70" alt="">
+                            <img *ngIf="!mini4" src="../../../assets/img/picture.png" width="50" alt="">
+                            <input type="file" class="custom-file-input" (change)="handleMini4($event)">
+                            <span class="custom-file-control form-control-file"></span>
+                        </label>
+                        <div class="text-center">
+                            <h5>Miniatura Principal</h5>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent7 | async) + '%'"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary btn w-50" (click)="updateGalery()">Actualizar Galería</button>
+                </div>
+            </div>
         </div>
     </div><br>
 </div>

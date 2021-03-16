@@ -5,7 +5,6 @@ import { first } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -64,6 +63,22 @@ export class AuthService {
   logout(){
     try {
       this.afAuth.signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  verificarCuponesUsuarios(idUser: string){
+    return this.db.collection('users').doc(idUser).valueChanges();
+  }
+
+  usarCuponRegistro(idUser: string){
+    return this.db.collection('users').doc(idUser).update({cuponInicio: 'Si'});
+  }
+
+  resetPassword(email: string){
+    try {
+      return this.afAuth.sendPasswordResetEmail(email);
     } catch (error) {
       console.log(error);
     }

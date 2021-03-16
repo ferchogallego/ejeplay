@@ -33,6 +33,10 @@ import { AccessComponent } from './admin/access/access.component';
 import { DollarComponent } from './admin/dollar/dollar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { VerificacionComponent } from './pages/verificacion/verificacion.component';
+import { FavoritosComponent } from './pages/favoritos/favoritos.component';
+import { CuponesComponent } from './admin/cupones/cupones.component';
+import { ComentariosComponent } from './admin/comentarios/comentarios.component';
+import { ContrasenaComponent } from './pages/contrasena/contrasena.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { VerificacionComponent } from './pages/verificacion/verificacion.compone
     VentasComponent,
     AccessComponent,
     DollarComponent,
-    VerificacionComponent
+    VerificacionComponent,
+    FavoritosComponent,
+    CuponesComponent,
+    ComentariosComponent,
+    ContrasenaComponent
   ],
   imports: [
     BrowserModule,

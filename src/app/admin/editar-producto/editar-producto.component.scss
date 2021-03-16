@@ -14,3 +14,20 @@
         height: 240px;
     }
 }
+
+.cntdor {
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(82, 78, 78);
+    border-radius: 6px;
+}
+
+.imgchange {
+    cursor: pointer;
+}
+
+.imgchange:hover {
+    transform: scale(1.1);
+    transition: 800ms;
+    opacity: 0.5;
+}

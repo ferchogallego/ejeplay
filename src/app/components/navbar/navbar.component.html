@@ -12,13 +12,9 @@
         </div>
 
         <div class="col-lg-4 mt-1 carro">
-            <select name="moneda" class="slect" (change)="onDivisa($event.target.value)">
-              <option [value]="valor" selected>{{valor}}</option>
-              <option *ngIf="valor == 'USD'" value="COP" ><span translate="no">C0P</span></option>
-              <option *ngIf="valor == 'COP'"value="USD" ><span translate="no">U$D</span></option>
-            </select>
-            <button *ngIf="!dolar" class="btn btn-light"><img src="../../../assets/img/co.png" alt="" width="30"></button>
-            <button *ngIf="dolar" class="btn btn-light"><img src="../../../assets/img/us.png" alt="" width="30"></button>
+            <!-- <button *ngIf="!dolar" (click)="onDivisa('USD')" class="btn btn-light"><img src="../../../assets/img/co.png" alt="" width="30"></button>
+            <button *ngIf="dolar" (click)="onDivisa('COP')" class="btn btn-light"><img src="../../../assets/img/us.png" alt="" width="30"></button> -->
+
             <button *ngIf="pedidos > 0" class="btn btn-primary car" [routerLink]="['/solicitudes']" routerLinkActive="router-link-active">
                 <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
                 <span class="badge badge-warning intermitente">{{pedidos}}</span>
@@ -37,7 +33,7 @@
                     <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active">Inicio</a>
                 </li>
                 <li class="nav-item" *ngIf="!catalogo">
-                    <a class="nav-link" (click)="openCatalogoAll()">Juegos PS4</a>
+                    <a class="nav-link" (click)="openCatalogoAll()">Catálogo</a>
                 </li>
                 <li class="nav-item" *ngIf="!catalogo">
                     <a class="nav-link" (click)="openCatalogInOffer()">Ofertas</a>
@@ -60,7 +56,10 @@
                     </div>
                 </li>
                 <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
-                    <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-basket"></i> Mis compras</a>
+                    <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-basket"></i> Mis compras<span class="badge badge-success noti">{{cantCompras}}</span></a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" routerLink="/favoritos"><i class="fa fa-heart"></i> Mis favoritos</a>
                 </li>
                 <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
                     <a class="nav-link" (click)="onLogout()"> <i class="fa fa-sign-out"></i> Salir</a>
@@ -94,7 +93,7 @@
                     <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active">Inicio</a>
                 </li>
                 <li class="nav-item" *ngIf="!catalogo">
-                    <a class="nav-link" (click)="openCatalogoAll()">Juegos PS4</a>
+                    <a class="nav-link" (click)="openCatalogoAll()">Catálogo</a>
                 </li>
                 <li class="nav-item" *ngIf="!catalogo">
                     <a class="nav-link" (click)="openCatalogInOffer()">Ofertas</a>
@@ -120,9 +119,12 @@
                     <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-basket"></i> Mis compras</a>
                 </li>
                 <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" routerLink="/favoritos"><i class="fa fa-heart"></i> Mis favoritos</a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
                     <a class="nav-link" (click)="onLogout()"> <i class="fa fa-sign-out"></i> Salir</a>
                 </li>
-                <li class="nav-item" [routerLink]="['/solicitudes']" *ngIf="user$ | async as user;">
+                <li *ngIf="user$ | async as user;" class="nav-item" [routerLink]="['/solicitudes']">
                     <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-cart"></i> Carrito
                     <span class="badge badge-warning intermitente">{{pedidos}}</span></a>
                 </li>

@@ -91,7 +91,7 @@
             <div class="row">
                 <div class="col-lg-12 mt-5">
                     <h4><i class="fa fa-star" aria-hidden="true"></i> JUEGOS DESTACADOS
-                        <a [routerLink]="['/catalogo']" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
+                        <a (click)="openCatalogoAll()" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
                     </h4>
                     <hr>
 
@@ -101,16 +101,17 @@
             <div class="d-none d-lg-block d-xl-block">
                 <div class="row row-cols-1 row-cols-md-5">
                     <div class="col mb-3" *ngFor="let juego of juegos">
-                        <div class="card h-100 games" (click)="openGame(juego.id)">
+                        <div class="card h-100 games" (click)="openGame(juego)">
                             <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
+                            <span *ngIf="juego.cantPpal == 0 && juego.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
                             <img [src]="juego.imageProd" class="card-img-top" alt="...">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
                             </div>
                             <div class="card-footer" style="border: none;">
                                 <div class="text-center">
-                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P - ${{juego.preciosec | number}} C0P</b></p>
-                                    <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD - ${{(juego.preciosec)/usd | number}} USD</b></p>
+                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                    <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
                                 </div>
                             </div>
                         </div>
@@ -121,10 +122,11 @@
         <div class="col-12 mvl d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
             <div class="row">
                 <div class="col-6 mb-2" *ngFor="let juego of juegos">
-                    <div class="card h-100 games" (click)="openGame(juego.id)">
+                    <div class="card h-100 games" (click)="openGame(juego)">
                         <span *ngIf="juego.oferta > 0" class="notify-badge" translate="no">-{{juego.oferta}}% 0FF</span>
+                        <span *ngIf="juego.cantPpal == 0 && juego.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
                         <img [src]="juego.imageProd" class="card-img-top" alt="...">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
                         </div>
                         <div class="card-footer" style="border: none;">
@@ -140,84 +142,90 @@
 
     </section>
     <hr>
+    <section class="fisicos">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 mt-5">
+                    <h4><img src="../../../assets/img/fisico.png" width="25" alt=""> JUEGOS FISICOS Y ACCESORIOS
+                        <a style="cursor: pointer;" (click)="openCatalogInProds()" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
+                    </h4>
+                    <hr>
+                </div>
+            </div>
+            <br>
+            <div class="d-none d-lg-block d-xl-block">
+                <div class="row row-cols-1 row-cols-md-5">
+                    <div class="col mb-3" *ngFor="let juego of fisicos">
+                        <div class="card h-100 games" (click)="openGame(juego)">
+                            <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
+                            <span *ngIf="juego.cantPpal == 0 && juego.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
+                            <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
+                            </div>
+                            <div class="card-footer" style="border: none;">
+                                <div class="text-center">
+                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P </b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mvl d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+                <div class="row">
+                    <div class="col-6 mb-2" *ngFor="let juego of fisicos">
+                        <div class="card h-100 games" (click)="openGame(juego.id)">
+                            <span *ngIf="juego.oferta > 0" class="notify-badge" translate="no">-{{juego.oferta}}% 0FF</span>
+                            <span *ngIf="juego.cantPpal == 0 && juego.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
+                            <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
+                            </div>
+                            <div class="card-footer" style="border: none;">
+                                <div class="text-center">
+                                    <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                    <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+    </section>
     <section class="ofertas">
         <!-----------------------titulo ----------------->
         <div class="d-none d-lg-block d-xl-block">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 mt-5">
-                        <h4><i class="fa fa-briefcase"></i> JUEGOS EN OFERTA
-                            <a (click)="openCatalogoAll()" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
+                        <h4><i class="fa fa-briefcase"></i> PRODUCTOS EN OFERTA
+                            <a style="cursor: pointer;" (click)="openCatalogInOffer()" class="allview"> Ver todos <i class="fa fa-chevron-right" aria-hidden="true"></i> </a>
                         </h4>
                         <hr>
                     </div>
                 </div>
-                <!--Carousel Wrapper-->
-                <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
-
-                    <!--Controls-->
-                    <div class="controls-top text-center">
-                        <a class="btn btn-lg btn-dark slde2" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
-                        <a class="btn btn-lg btn-dark slde2" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
-                    </div>
-                    <!--/.Controls-->
-
-                    <!--Slides-->
-                    <div class="carousel-inner" role="listbox">
-
-                        <!--First slide-->
-                        <div class="carousel-item active">
-                            <div class="col-md-3" style="float:left" *ngFor="let oferta2 of ofertas2">
-                                <div class="mb-3">
-                                    <div class="card h-100 gameOffer" (click)="openGame(oferta2.id)">
-                                        <a href="#">
-                                            <span class="notify-badge">-{{oferta2.oferta}}% 0FF</span>
-                                            <img [src]="oferta2.imageProd" class="card-img-top" alt="...">
-                                        </a>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{oferta2.nombre | titlecase}}</h5>
-                                        </div>
-                                        <div class="card-footer" style="border: none;">
-                                            <div class="text-center">
-                                                <p *ngIf="!dolar" class="card-text"><b>${{oferta2.precio | number}} C0P <br> ${{oferta2.preciosec | number}} C0P</b></p>
-                                                <p *ngIf="dolar" class="card-text"><b>${{(oferta2.precio)/usd | number}} USD <br> ${{(oferta2.preciosec)/usd | number}} USD</b></p>
-                                            </div><br>
-                                            <button class="btn btn-lg btn-dark btn-block slde"><i class="fa fa-shopping-cart" aria-hidden="true"></i> ¡Lo quiero!</button>
-                                        </div>
+                <div class="d-none d-lg-block d-xl-block">
+                    <div class="row row-cols-1 row-cols-md-5">
+                        <div class="col mb-3" *ngFor="let juego of ofertas1">
+                            <div class="card h-100 games" (click)="openGame(juego)">
+                                <span *ngIf="juego.oferta > 0" class="notify-badge">-{{juego.oferta}}% 0FF</span>
+                                <span *ngIf="juego.cantPpal == 0 && juego.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
+                                <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{juego.nombre | titlecase}}</h5>
+                                </div>
+                                <div class="card-footer" style="border: none;">
+                                    <div class="text-center">
+                                        <p *ngIf="!dolar" class="card-text"><b>${{juego.precio | number}} C0P <br> ${{juego.preciosec | number}} C0P</b></p>
+                                        <p *ngIf="dolar" class="card-text"><b>${{(juego.precio)/usd | number}} USD <br> ${{(juego.preciosec)/usd | number}} USD</b></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--/.First slide-->
-
-                        <!--Second slide-->
-                        <div class="carousel-item">
-                            <div class="col-md-3" style="float:left" *ngFor="let oferta1 of ofertas1">
-                                <div class="mb-3">
-                                    <div class="card h-100 gameOffer" (click)="openGame(oferta1.id)">
-                                        <a href="#">
-                                            <span class="notify-badge">-{{oferta1.oferta}}% 0FF</span>
-                                            <img [src]="oferta1.imageProd" class="card-img-top" alt="...">
-                                        </a>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{oferta1.nombre | titlecase}}</h5>
-                                        </div>
-                                        <div class="card-footer" style="border: none;">
-                                            <div class="text-center">
-                                                <p *ngIf="!dolar" class="card-text"><b>${{oferta1.precio | number}} C0P <br> ${{oferta1.preciosec | number}} C0P</b></p>
-                                                <p *ngIf="dolar" class="card-text"><b>${{(oferta1.precio)/usd | number}} USD <br> ${{(oferta1.preciosec)/usd | number}} USD</b></p>
-                                            </div><br>
-                                            <button class="btn btn-lg btn-dark btn-block slde"><i class="fa fa-shopping-cart" aria-hidden="true"></i> ¡Lo quiero!</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/.Second slide-->
                     </div>
-                    <!--/.Slides-->
                 </div>
-                <!--/.Carousel Wrapper-->
             </div>
         </div>
         <div class="col-12 mvl d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
@@ -229,11 +237,12 @@
                 <hr>
             </div>
             <div class="row">
-                <div class="col-6 mb-2" *ngFor="let item of ofertas">
-                    <div class="card h-100 games" (click)="openGame(item.id)">
+                <div class="col-6 mb-2" *ngFor="let item of ofertas1">
+                    <div class="card h-100 games" (click)="openGame(item)">
                         <span *ngIf="item.oferta > 0" class="notify-badge">-{{item.oferta}}% 0FF</span>
+                        <span *ngIf="item.cantPpal == 0 && item.cantSec == 0" class="notify-badge2" translate="no">AGOTADO</span>
                         <img [src]="item.imageProd" class="card-img-top" alt="...">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             <h5 class="card-title">{{item.nombre | titlecase}}</h5>
                             <div class="card-footer" style="border: none;">
                                 <div class="text-center">
@@ -250,6 +259,7 @@
     <section class="pagos">
         <div class="container mt-5">
             <div class="col-md-12 text-center">
+                <br>
                 <h2>Todas tus compras 100% <b>Seguras</b></h2>
                 <h3>A través de: </h3>
                 <img src="../../../assets/img/pagos.png" class="img-fluid" alt="Responsive image">

@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
             this.productoSvc.userActive = true;
             this.onLoginRedirect();
             Swal.fire({
-              title: 'Bienvendo',
+              title: 'Bienvenido',
               text: 'Gracias por visitar Eje Play',
               icon: 'success',
               allowOutsideClick: false,
@@ -77,7 +77,9 @@ export class LoginComponent implements OnInit {
       const id = resp.user.uid;
       const datos = {
                   id: resp.user.uid,
-                  email: resp.user.email
+                  email: resp.user.email,
+                  fecha: new Date().getTime(),
+                  cuponInicio: 'No'
                 };
       this.authSvc.verifyUser(id)
                   .subscribe(usr => {
@@ -97,7 +99,9 @@ export class LoginComponent implements OnInit {
       const id = resp.user.uid;
       const datos = {
                   id: resp.user.uid,
-                  email: resp.user.email
+                  email: resp.user.email,
+                  fecha: new Date().getTime(),
+                  cuponInicio: 'No'
                 };
       this.authSvc.verifyUser(id)
                   .subscribe(usr => {
@@ -114,7 +118,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginRedirect(){
-    this.router.navigate(['/catalogo']);
+    this.router.navigate(['/home']);
   }
 
   viewPassActive(){

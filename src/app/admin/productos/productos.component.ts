@@ -65,7 +65,7 @@ export class ProductosComponent implements OnInit {
   ngOnInit(): void {}
 
   addNewProduct(product: Producto){
-    console.log(product);
+    // console.log(product);
     if ( this.newProductForm.invalid ) {
       Swal.fire({
         title: 'Error...',

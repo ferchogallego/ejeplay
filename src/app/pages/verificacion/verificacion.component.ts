@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-verificacion',
@@ -19,6 +20,11 @@ export class VerificacionComponent implements OnInit {
     this.authSvc.sendEmailVerification()
                 .then(() => {
                   this.authSvc.logout();
+                  Swal.fire(
+                    'Correo de verificación reenviado',
+                    'Por favor revise su buzón de correo y su spam',
+                    'success'
+                  );
                   this.router.navigate(['/login']);
                 });
   }

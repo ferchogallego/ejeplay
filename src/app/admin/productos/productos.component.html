@@ -8,29 +8,32 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Nombre del juego:</label>
+                            <label>Nombre del juego / Producto:</label>
                             <input type="text" formControlName="nombre" class="form-control" [class.is-invalid]="nombreNoValido" placeholder="Nombre del producto" name="nombre">
                             <small *ngIf="nombreNoValido" class="text-danger">Debe ingresar el nombre</small>
                         </div>
                         <div class="form-group">
-                            <label>Tipo de juego</label>
+                            <label>Tipo de juego / Producto</label>
                             <select class="form-control" formControlName="tipo" name="tipo" required>                      
                               <option value="Ps4">Ps4</option>
                               <option value="Ps3">Ps5</option>
+                              <option value="fisico">Fisicos - Accesorios</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Imagen del juego:</label>
+                            <label>Imagen del juego / Producto:</label>
                             <input type="file" formControlName="imageProd" class="form-control" (change)="handleImage($event)">
                         </div>
                         <div class="form-group">
                             <label>Categoria:</label>
-                            <select class="form-control" formControlName="categoria" name="categoria" required>                      
+                            <select class="form-control" formControlName="categoria" name="categoria" required> 
+                              <option value="Fisicos">Fisicos</option>
                               <option value="Acción">Acción</option>
                               <option value="Deportes">Deportes</option>
-                              <option value="Rol">Rol</option>
                               <option value="Infantil">Infantil</option>
                               <option value="Aventura">Aventura</option>
+                              <option value="Terror">Terror</option>
+                              <option value="Lucha">Lucha</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -39,10 +42,11 @@
                               <option value="Multi Idioma">Multi Idioma</option>
                               <option value="Textos Español - Audio Ingles">Textos Español - Audio Inglés</option>
                               <option value="Ingles">Inglés</option>
+                              <option value="N/A">No Aplica</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Oferta del juego:</label>
+                            <label>Oferta del juego / producto:</label>
                             <input type="number" formControlName="oferta" class="form-control" placeholder="Oferta del juego" name="oferta">
                         </div>
                     </div>
@@ -58,7 +62,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Cantidad Principal:</label>
-                                    <input type="number" formControlName="cantPpal" class="form-control" name="cantPpal" placeholder="Ingrese la cantidad principal" [class.is-invalid]="preciosecNoValido">
+                                    <input type="number" formControlName="cantPpal" class="form-control" name="cantPpal" placeholder="Ingrese la cantidad principal" [class.is-invalid]="cantPpalNoValido">
                                     <small *ngIf="cantPpalNoValido" class="text-danger">Debe ingresar la cantidad principal</small>
                                 </div>
                             </div>
@@ -74,7 +78,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Cantidad Secundario:</label>
-                                    <input type="number" formControlName="cantSec" class="form-control" name="cantSec" placeholder="Ingrese la cantidad secundario" [class.is-invalid]="preciosecNoValido">
+                                    <input type="number" formControlName="cantSec" class="form-control" name="cantSec" placeholder="Ingrese la cantidad secundario" [class.is-invalid]="cantSecNoValido">
                                     <small *ngIf="cantSecNoValido" class="text-danger">Debe ingresar la cantidad secundario secundario</small>
                                 </div>
                             </div>
@@ -90,7 +94,7 @@
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
-                        <label>Descripción del juego:</label>
+                        <label>Descripción del juego / producto:</label>
                         <textarea class="form-control" formControlName="descripcion" [class.is-invalid]="descripcionNoValido" cols="30" rows="5"></textarea>
                         <small *ngIf="descripcionNoValido" class="text-danger">Debe ingresar la descripción del juego min 30 caracteres</small>
                     </div>

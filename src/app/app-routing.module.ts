@@ -20,12 +20,15 @@ import { VentasComponent } from './admin/ventas/ventas.component';
 import { AccessComponent } from './admin/access/access.component';
 import { DollarComponent } from './admin/dollar/dollar.component';
 import { VerificacionComponent } from './pages/verificacion/verificacion.component';
-
+import { FavoritosComponent } from './pages/favoritos/favoritos.component';
+import { CuponesComponent} from './admin/cupones/cupones.component';
+import { ComentariosComponent } from './admin/comentarios/comentarios.component';
+import { ContrasenaComponent } from './pages/contrasena/contrasena.component';
 
 
 const routes: Routes = [
   { path: 'home', component: InicioComponent},
-  { path: 'administrador', component: InventarioComponent, canActivate: [AdminGuard]},
+  { path: 'administrador', component: InventarioComponent},
   { path: 'producto/:id', component: ProductosComponent, canActivate: [AdminGuard]},
   { path: 'editar/:id', component: EditarProductoComponent, canActivate: [AdminGuard]},
   { path: 'slider', component: UpdateSliderComponent, canActivate: [AdminGuard]},
@@ -36,11 +39,15 @@ const routes: Routes = [
   { path: 'catalogo', component: JuegosPS4Component},
   { path: 'ofertas', component: OffersComponent},
   { path: 'preguntas', component: PreguntasComponent},
+  { path: 'contrasena', component: ContrasenaComponent},
   { path: 'detalle/:id', component: DetalleComponent},
   { path: 'ventas', component: VentasComponent, canActivate: [AdminGuard]},
+  { path: 'cupones', component: CuponesComponent, canActivate: [AdminGuard]},
+  { path: 'comentarios', component: ComentariosComponent, canActivate: [AdminGuard]},
   { path: 'dolar', component: DollarComponent, canActivate: [AdminGuard]},
   { path: 'info', component: PurchasesComponent, canActivate: [AuthGuard]},
   { path: 'solicitudes', component: RequestComponent, canActivate: [AuthGuard]},
+  { path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard]},
   { path: 'confirmacion', component: ResponsePayuComponent, canActivate: [AuthGuard]},
   { path: '**', pathMatch: 'full', redirectTo: '/home'}
 ];

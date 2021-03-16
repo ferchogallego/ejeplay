@@ -27,6 +27,9 @@ export class ProductsService {
   // catalogo en ofertas
   ofertas: boolean;
 
+  // catalogo fisico
+  fisicos: boolean;
+
   // opciones de menu catalogo
   catalogo: boolean;
 
@@ -105,6 +108,20 @@ export class ProductsService {
                );
   }
 
+  cargarProductosOrdenFecha(){
+    return this.db.collection('productos', ref => ref
+                  .orderBy('fechaCreacion', 'desc'))
+                  .snapshotChanges()
+                   .pipe(
+                     map(actions =>
+                      actions.map(resp => {
+                        const data = resp.payload.doc.data() as Producto;
+                        const id = resp.payload.doc.id;
+                        return {id, ...data};
+                      }))
+                   );
+  }
+
   loadGamesForPrice(precio: number){
     return this.db.collection('productos', ref => ref
                   .where('precio', '<=', precio))
@@ -120,7 +137,8 @@ export class ProductsService {
   }
 
   loadStarterGames(){
-    return this.db.collection('productos', ref => ref.orderBy('nombre').limit(10))
+    return this.db.collection('productos', ref => ref
+                  .orderBy('nombre').limit(10))
                   .snapshotChanges()
                   .pipe(
                     map(actions =>
@@ -146,8 +164,7 @@ export class ProductsService {
   }
   loadStarterOffers1(){
     return this.db.collection('productos', ref => ref
-                  .where('oferta', '>', 0)
-                  .where('oferta', '<', 20).limit(4))
+                  .where('oferta', '>', 0).limit(10))
                   .snapshotChanges()
                   .pipe(
                     map(actions =>
@@ -158,9 +175,9 @@ export class ProductsService {
                      }))
                   );
   }
-  loadStarterOffers2(){
+  loadPhysicalProducts(){
     return this.db.collection('productos', ref => ref
-                  .where('oferta', '>', 20).limit(4))
+                  .where('categoria', '==', 'Fisicos').limit(5))
                   .snapshotChanges()
                   .pipe(
                     map(actions =>
@@ -304,33 +321,15 @@ export class ProductsService {
     });
   }
 
+  sailFinalProccess(order: any){
+    return this.db.collection('salesFinal').add(order);
+  }
+
   saleProcessReference(id: string, referencia: string){
     this.db.collection('carShop').doc(id).update({
       RefCompra: referencia
     });
   }
- /*  saleProcessReference(userId: string, referencia: any){
-    return this.db.collection('carShop/', ref => ref
-                  .where('estado', '==', 'Pendiente')
-                  .where('usuario', '==', userId)).snapshotChanges()
-                  .pipe(
-                    map(actions =>
-                      actions.map(resp => {
-                        const data = resp.payload.doc.data();
-                        const id = resp.payload.doc.id;
-                        let conIf = 0;
-                        this.db.collection('carShop').doc(id).update({
-                          RefCompra: referencia
-                        }).then(result => {
-                            conIf++;
-                            // tslint:disable-next-line: no-string-literal
-                            if (conIf === data['docs']['length']){
-                                return(conIf);
-                              }
-                          });
-                      }))
-                  );
-  } */
 
   cancelSaleProcess(referencia: any){
     return this.db.collection('sales/', ref => ref
@@ -372,10 +371,10 @@ export class ProductsService {
   }
 
   validateSale(userId: string, referencia: string){
-    return this.db.collection('sales/', ref => ref
-                  .where('reference', '==', referencia)
-                  .where('state', '==', 'Procesandose')
-                  .where('comprador', '==', userId)).snapshotChanges()
+    return this.db.collection('salesFinal/', ref => ref
+                  .where('refCompra', '==', referencia)
+                  .where('estado', '==', 'Pendiente')
+                  .where('cliente', '==', userId)).snapshotChanges()
                   .pipe(
                    map(actions =>
                     actions.map(resp => {
@@ -400,37 +399,19 @@ export class ProductsService {
   }
 
   updateSaleAccepted(id: string){
-    return this.db.collection('sales').doc(id).update({state : 'Aprobada'});
+    return this.db.collection('salesFinal').doc(id).update({estado : 'Aprobada'});
   }
 
   updateSaleRejected(id: string){
-    return this.db.collection('sales').doc(id).update({state : 'Rechazada'});
+    return this.db.collection('salesFinal').doc(id).update({estado : 'Rechazada'});
   }
 
-  pedidos(userId: string, referencia: string){
-    return this.db.collection('carShop/', ref => ref
-                  .where('RefCompra', '==', referencia)
-                  .where('usuario', '==', userId)).snapshotChanges()
-                  .pipe(
-                    map(actions =>
-                      actions.map(resp => {
-                        const data = resp.payload.doc.data();
-                        const id = resp.payload.doc.id;
-                        let conIf = 0;
-                        this.db.collection('carShop').doc(id).update({
-                          estado : 'Venta',
-                        }).then(result => {
-                            conIf++;
-                            // tslint:disable-next-line: no-string-literal
-                            if (conIf === data['docs']['length']){
-                                return(conIf);
-                              }
-                          });
-                      }))
-                  );
-  }
   pedidosCancelados(idSale: string){
-    return this.db.collection('sales').doc(idSale).delete();
+    return this.db.collection('salesFinal').doc(idSale).update({estado : 'Rechazada'});
+  }
+
+  pedidosAprobado(idSale: string){
+    return this.db.collection('salesFinal').doc(idSale).update({estado: 'Aprobada'});
   }
 
   cantPedidos(userId: string){
@@ -439,16 +420,25 @@ export class ProductsService {
     .where('usuario', '==', userId)).valueChanges();
    }
 
-   purchasesByBuyer(id: string){
-    return this.db.collection('sales/', ref => ref
-    .where('comprador', '==', id)).valueChanges();
+   purchasesByBuyer(idUser: string){
+    return this.db.collection('salesFinal/', ref => ref
+    .where('cliente', '==', idUser))
+    .snapshotChanges()
+                   .pipe(
+                     map(actions =>
+                      actions.map(resp => {
+                      const data = resp.payload.doc.data() as any;
+                      const id = resp.payload.doc.id;
+                      return {id, ...data};
+                      }))
+                     );
    }
    loadSaleByReference(compra: string){
     return this.db.collection('carShop/', ref => ref
     .where('RefCompra', '==', compra)).valueChanges();
    }
    loadSalesAdmin(){
-     return this.db.collection('sales')
+     return this.db.collection('salesFinal')
                    .snapshotChanges()
                    .pipe(
                      map(actions =>
@@ -460,12 +450,21 @@ export class ProductsService {
                      );
    }
    loadSalesAdminByState(estado: string){
-    return this.db.collection('sales/', ref => ref
-    .where('state', '==', estado)).valueChanges();
+    return this.db.collection('salesFinal/', ref => ref
+    .where('estado', '==', estado)).valueChanges();
    }
    loadSalesAdminByReference(rfce: string){
-    return this.db.collection('sales/', ref => ref
-    .where('reference', '==', rfce)).valueChanges();
+    return this.db.collection('salesFinal/', ref => ref
+                  .where('refCompra', '==', rfce))
+                  .snapshotChanges()
+                  .pipe(
+                    map(actions =>
+                     actions.map(resp => {
+                     const data = resp.payload.doc.data() as any;
+                     const id = resp.payload.doc.id;
+                     return {id, ...data};
+                     }))
+                    );
    }
 
    loadDollarPrice(){
@@ -486,4 +485,78 @@ export class ProductsService {
        dolar: precio
      });
    }
+
+   updateStorage(compra: any){
+    localStorage.setItem('carShoEjePlay', JSON.stringify(compra));
+  }
+
+  cargarComentarioJuego(datos: any){
+    this.db.collection('comentarios').add(datos);
+  }
+
+  cargarComentariosPorIdJuego(idJuego: string){
+    return this.db.collection('comentarios', ref => ref
+                  .where('idJuego', '==', idJuego)
+                  .where('estado', '==', 'Aceptado'))
+                  .valueChanges();
+  }
+
+  galeriaProductos(idProducto: string, galeria: any){
+    return this.db.collection('productos').doc(idProducto).update({images: galeria});
+  }
+
+  generarCuponAdmin(cupon: any){
+    return this.db.collection('cupones').add(cupon);
+  }
+
+  cargarCupones(){
+    return this.db.collection('cupones')
+                  .snapshotChanges()
+                  .pipe(
+                    map(actions =>
+                     actions.map(resp => {
+                     const data = resp.payload.doc.data() as any;
+                     const id = resp.payload.doc.id;
+                     return {id, ...data};
+                     }))
+                    );
+  }
+  elimimarCuponPorId(idCupon: string){
+    return this.db.collection('cupones').doc(idCupon).delete();
+  }
+  consultaCuponAdmin(cod: string){
+    return this.db.collection('cupones', ref => ref
+                  .where('codigo', '==', cod))
+                  .snapshotChanges()
+                  .pipe(
+                    map(actions =>
+                     actions.map(resp => {
+                     const data = resp.payload.doc.data() as any;
+                     const id = resp.payload.doc.id;
+                     return {id, ...data};
+                     }))
+                    );
+  }
+
+  cargarComentarionRevision(){
+    return this.db.collection('comentarios', ref => ref
+                  .where('estado', '==', 'Revision'))
+                  .snapshotChanges()
+                  .pipe(
+                    map(actions =>
+                     actions.map(resp => {
+                     const data = resp.payload.doc.data() as any;
+                     const id = resp.payload.doc.id;
+                     return {id, ...data};
+                     }))
+                    );
+  }
+
+  aceptarComentario(idComent: string){
+    return this.db.collection('comentarios').doc(idComent).update({estado: 'Aceptado'});
+  }
+
+  borrarComentario(idComent: string){
+    return this.db.collection('comentarios').doc(idComent).delete();
+  }
 }

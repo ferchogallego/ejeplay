@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../shared/users.interface';
 import Swal from 'sweetalert2';
+import { noop } from 'rxjs';
 
 @Component({
   selector: 'app-registro',
@@ -66,7 +67,9 @@ export class RegistroComponent implements OnInit {
                             const id = userData.user.uid;
                             const datos = {
                               id: userData.user.uid,
-                              email: userData.user.email
+                              email: userData.user.email,
+                              fecha: new Date().getTime(),
+                              cuponInicio: 'No'
                             };
                             this.authSvc.sendEmailVerification()
                                         .then(() => {
@@ -75,7 +78,7 @@ export class RegistroComponent implements OnInit {
                                               .then(() => {
                                                 Swal.fire(
                                                   email,
-                                                  'Cuenta creada correctamente, se ha enviado un email para que por favor verfique su cuenta y pueda iniciar sesión.',
+                                                  'Cuenta creada correctamente, se ha enviado un email a su correo, revise buzon de entrada y spam, para que por favor verfique su cuenta y pueda iniciar sesión.',
                                                   'success'
                                                 );
                                                 this.authSvc.logout();
@@ -86,6 +89,51 @@ export class RegistroComponent implements OnInit {
                       }
                   }
                 });
+  }
+
+  onLoginFacebook(){
+    this.authSvc.loginFacebook().then(resp => {
+      const id = resp.user.uid;
+      const datos = {
+                  id: resp.user.uid,
+                  email: resp.user.email,
+                  fecha: new Date().getTime(),
+                  cuponInicio: 'No'
+                };
+      this.authSvc.verifyUser(id)
+                  .subscribe(usr => {
+                    if (usr.length === 0) {
+                      this.authSvc.createUserData(id, datos)
+                      .then (save => this.onLoginRedirect());
+                    }
+                    if (usr.length > 0) {
+                      this.onLoginRedirect();
+                    }
+                  });
+    }).catch(err => console.log('Error', err.message));
+  }
+
+  onLoginGoogle(){
+    this.authSvc.loginGoogle().then(resp => {
+      const id = resp.user.uid;
+      const datos = {
+                  id: resp.user.uid,
+                  email: resp.user.email,
+                  fecha: new Date().getTime(),
+                  cuponInicio: 'No'
+                };
+      this.authSvc.verifyUser(id)
+                  .subscribe(usr => {
+                    if (usr.length === 0) {
+                      this.authSvc.createUserData(id, datos)
+                                  .then (save => this.onLoginRedirect());
+                    }
+                    if (usr.length > 0) {
+                      this.onLoginRedirect();
+                    }
+                  });
+      this.onLoginRedirect();
+    }).catch(err => console.log('Error', err.message));
   }
 
   viewPassActive(){
@@ -101,6 +149,10 @@ export class RegistroComponent implements OnInit {
   }
   get passwordNoValido() {
     return this.registerForm.get('password').invalid && this.registerForm.get('password').touched;
+  }
+
+  onLoginRedirect(){
+    this.router.navigate(['/catalogo']);
   }
 
 }

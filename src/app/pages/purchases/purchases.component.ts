@@ -30,14 +30,12 @@ export class PurchasesComponent implements OnInit {
       this.productoSvc.purchasesByBuyer(this.perfilUser.uid)
                       .subscribe(trans => {
                         this.lista = trans;
+                        console.log(this.lista);
                       });
     });
   }
-  openModal(ref: string){
-    this.productoSvc.loadSaleByReference(ref)
-                    .subscribe(res => {
-                      this.juegos = res;
-                    });
+  openModal(compra: any){
+    this.juegos = compra.carrito;
   }
 
 }
