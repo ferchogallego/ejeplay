@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
 import Swal from 'sweetalert2';
-import { auth } from 'firebase';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +26,7 @@ export class LoginComponent implements OnInit {
               private productoSvc: ProductsService) { }
 
   ngOnInit(): void {
+    // tslint:disable-next-line: deprecation
     this.usr.subscribe(usuario => {
       if (!usuario.emailVerified) {
         this.router.navigate(['/verificacion']);
@@ -82,6 +81,7 @@ export class LoginComponent implements OnInit {
                   cuponInicio: 'No'
                 };
       this.authSvc.verifyUser(id)
+                  // tslint:disable-next-line: deprecation
                   .subscribe(usr => {
                     if (usr.length === 0) {
                       this.authSvc.createUserData(id, datos)
@@ -104,6 +104,7 @@ export class LoginComponent implements OnInit {
                   cuponInicio: 'No'
                 };
       this.authSvc.verifyUser(id)
+                  // tslint:disable-next-line: deprecation
                   .subscribe(usr => {
                     if (usr.length === 0) {
                       this.authSvc.createUserData(id, datos)
