@@ -1,0 +1,275 @@
+<div class="fijo d-none d-lg-block d-xl-block">
+    <div class="row">
+        <div class="col-lg-2" id="logo">
+            <a [routerLink]="['/home']" routerLinkActive="router-link-active"><img src="../../../assets/img/logo.png" id="log"></a>
+        </div>
+
+        <div class="col-lg-6 mt-3 text-center search">
+            <form *ngIf="buscador" id="buscar" [formGroup]="searchForm" class="form-inline" (ngSubmit)="OnSearch(searchForm.value.palabra)">
+                <input type="text" name="buscar" value="" class="form-control" placeholder="Buscar" formControlName="palabra" />
+                <button type="submit" class="btn btn-light"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </form>
+        </div>
+
+        <div class="col-lg-4 mt-1 carro">
+            <a  class="btn btn-primary redes" href="https://www.facebook.com/EjePlayPereira/" target="_blank"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
+            <a class="btn btn-primary redes ml-1 mr-1" href="https://www.instagram.com/ejeplaypereira/?hl=es" target="_blank"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a> 
+            <a href="https://wa.me/573105898578" target="_blank" class="btn btn-primary redes"> <i class="fa fa-whatsapp fa-lg" aria-hidden="true"></i></a>
+
+            <button *ngIf="pedidos > 0" class="btn btn-primary car" [routerLink]="['/solicitudes']" routerLinkActive="router-link-active">
+                <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                <span class="badge badge-warning intermitente">{{pedidos}}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- --------------------------este es el menú ----------------------->
+    <nav class="navbar navbar-expand-md navbar-dark" id="menu">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" >Inicio <span class="sr-only">(current)</span></a>
+                  </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Catálogo</a>
+                    <div class="dropdown-menu desplegable" aria-labelledby="dropdown03">
+                        <a class="dropdown-item" [routerLink]="['/catalogo']">
+                                Juegos Digitales PS4
+                        </a>
+                        <a class="dropdown-item" [routerLink]="['/catalogo-ps5']">
+                                Juegos Digitales PS5
+                        </a>   
+                        <a class="dropdown-item" [routerLink]="['/fisicos']">
+                                Juegos Físicos o Accesorios
+                        </a>                        
+                    </div>
+                </li>
+                <li class="nav-item" *ngIf="!catalogo">
+                    <a class="nav-link"(click)="openCatalogInOffer()">Ofertas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/preguntas']" routerLinkActive="router-link-active">Preguntas Frecuentes</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Contáctanos</a>
+                    <div class="dropdown-menu desplegable" aria-labelledby="dropdown03">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">
+                                Contáctanos
+                            </a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#politicas">
+                                Politicas de Seguridad
+                            </a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#terminos">
+                                Terminos y Condiciones
+                            </a>
+                    </div>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-basket"></i> Mis compras<span class="badge badge-success noti">{{cantCompras}}</span></a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" routerLink="/favoritos"><i class="fa fa-heart"></i> Mis favoritos</a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" (click)="onLogout()"> <i class="fa fa-sign-out"></i> Salir</a>
+                </li>
+            </ul>
+        </div>
+        <div class="user" *ngIf="user$ | async as user;else showLogin">
+            <a class="btn btn-primary" (click)="onLogout()" routerLinkActive="router-link-active">{{user.email}}</a>
+        </div>
+        <ng-template #showLogin>
+            <a routerLink="/login" routerLinkActive="active">
+                <a class="btn btn-primary" [routerLink]="['/login']" routerLinkActive="router-link-active">INGRESAR</a>
+            </a>
+        </ng-template>
+    </nav>
+</div>
+
+<!--Navbar moviles-->
+<div class="d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top moviles">
+        <a class="navbar-brand" href="#">
+            <img src="../../../assets/img/logo2.png" width="60" alt="" loading="lazy">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span  class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Catálogo</a>
+                    <div class="dropdown-menu dpgbleMov" aria-labelledby="dropdown03">
+                        <a class="dropdown-item" [routerLink]="['/catalogo']">
+                            Juegos Digitales PS4
+                    </a>
+                    <a class="dropdown-item" [routerLink]="['/catalogo-ps5']">
+                            Juegos Digitales PS5
+                    </a>   
+                    <a class="dropdown-item" [routerLink]="['/fisicos']">
+                            Juegos Físicos o Accesorios
+                    </a>                                       
+                    </div>
+                </li>
+                <li class="nav-item" *ngIf="!catalogo">
+                    <a class="nav-link" (click)="openCatalogInOffer()">Ofertas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/preguntas']" routerLinkActive="router-link-active">Preguntas Frecuentes</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Contáctanos</a>
+                    <div class="dropdown-menu dpgbleMov" aria-labelledby="dropdown03">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">
+                                Contáctanos
+                            </a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#politicas">
+                                Politicas de Seguridad
+                            </a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#terminos">
+                                Terminos y Condiciones
+                            </a>
+                    </div>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-basket"></i> Mis compras</a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" routerLink="/favoritos"><i class="fa fa-heart"></i> Mis favoritos</a>
+                </li>
+                <li class="nav-item" routerLinkActive="active" *ngIf="user$ | async as user;">
+                    <a class="nav-link" (click)="onLogout()"> <i class="fa fa-sign-out"></i> Salir</a>
+                </li>
+                <li *ngIf="user$ | async as user;" class="nav-item" [routerLink]="['/solicitudes']">
+                    <a class="nav-link" routerLink="/info"><i class="fa fa-shopping-cart"></i> Carrito
+                    <span class="badge badge-warning intermitente">{{pedidos}}</span></a>
+                </li>
+                <div *ngIf="user$ | async as user;else showLogin">
+                    <a class="nav-link" (click)="onLogout()"><i class="fa fa-user-circle" aria-hidden="true"></i> {{user.email}}</a>
+                </div>
+                <ng-template #showLogin>
+                    <a routerLink="/login" routerLinkActive="active">
+                        <a class="nav-link mb-2" [routerLink]="['/login']">INGRESAR</a>
+                    </a>
+                </ng-template>
+            </ul>
+            <form *ngIf="buscador" id="buscar" [formGroup]="searchForm" class="form-inline" (ngSubmit)="OnSearch(searchForm.value.palabra)">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" formControlName="palabra">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+
+            <button class="btn btn-primary"> <i class="fa fa-facebook fa-lg" aria-hidden="true"></i></button>
+            <button class="btn btn-primary ml-1 mr-1"> <i class="fa fa-instagram fa-lg" aria-hidden="true"></i></button>
+            <button class="btn btn-primary"> <i class="fa fa-whatsapp fa-lg" aria-hidden="true"></i></button>
+        </div>
+    </nav>
+</div>
+
+<!-- -----------------------Modal ------------------------>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eje Play Pereira</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../../assets/img/logo.png" class="img-fluid" alt="Responsive image">
+                </div>
+                <h3><i class="fa fa-whatsapp fa-2x" aria-hidden="true"></i> 310 5898578</h3>
+                <h3><i class="fa fa-envelope fa-2x" aria-hidden="true"></i> info@ejeplaypereira.com</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a href="https://api.whatsapp.com/send?phone=+573105898578" target="_blank" class="btn btn-success"><i class="fa fa-whatsapp fa-lg" aria-hidden="true"></i>&nbsp; Whatsapp</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="politicas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <h2>Políticas de Seguridad</h2>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="contenido">
+                    <p>
+                        La presente Política de Privacidad establece los términos en que EJE PLAY usa y protege la información que es proporcionada por sus usuarios al momento de utilizar su sitio web. Esta compañía está comprometida con la seguridad de los datos de sus usuarios.
+                        Cuando le pedimos llenar los campos de información personal con la cual usted pueda ser identificado, lo hacemos asegurando que sólo se empleará de acuerdo con los términos de este documento. Sin embargo esta Política de Privacidad
+                        puede cambiar con el tiempo o ser actualizada por lo que le recomendamos y enfatizamos revisar continuamente esta página para asegurarse que está de acuerdo con dichos cambios.
+                    </p><br>
+                    <h3>Información que es recogida</h3>
+                    <p>
+                        Nuestro sitio web podrá recoger información personal por ejemplo: Nombre, información de contacto como su dirección de correo electrónica e información demográfica. Así mismo cuando sea necesario podrá ser requerida información específica para procesar
+                        algún pedido o realizar una entrega o facturación.
+                    </p><br>
+                    <h3>Uso de la información recogida</h3>
+                    <p>
+                        Nuestro sitio web emplea la información con el fin de proporcionar el mejor servicio posible, particularmente para mantener un registro de usuarios, de pedidos en caso que aplique, y mejorar nuestros productos y servicios. Es posible que sean enviados
+                        correos electrónicos periódicamente a través de nuestro sitio con ofertas especiales, nuevos productos y otra información publicitaria que consideremos relevante para usted o que pueda brindarle algún beneficio, estos correos electrónicos
+                        serán enviados a la dirección que usted proporcione y podrán ser cancelados en cualquier momento. EJEPLAY está altamente comprometido para cumplir con el compromiso de mantener su información segura. Usamos los sistemas más avanzados
+                        y los actualizamos constantemente para asegurarnos que no exista ningún acceso no autorizado.
+                    </p><br>
+                    <h3>Cookies</h3>
+                    <p>
+                        Una cookie se refiere a un fichero que es enviado con la finalidad de solicitar permiso para almacenarse en su ordenador, al aceptar dicho fichero se crea y la cookie sirve entonces para tener información respecto al tráfico web, y también facilita las
+                        futuras visitas a una web recurrente. Otra función que tienen las cookies es que con ellas las web pueden reconocerte individualmente y por tanto brindarte el mejor servicio personalizado de su web. Nuestro sitio web emplea las
+                        cookies para poder identificar las páginas que son visitadas y su frecuencia. Esta información es empleada únicamente para análisis estadístico y después la información se elimina de forma permanente. Usted puede eliminar las cookies
+                        en cualquier momento desde su ordenador. Sin embargo las cookies ayudan a proporcionar un mejor servicio de los sitios web, estás no dan acceso a información de su ordenador ni de usted, a menos de que usted así lo quiera y la
+                        proporcione directamente. Usted puede aceptar o negar el uso de cookies, sin embargo la mayoría de navegadores aceptan cookies automáticamente pues sirve para tener unmejor servicio web. También usted puede cambiar la configuración
+                        de su ordenador para declinar las cookies. Si se declinan es posible que no pueda utilizar algunos de nuestros servicios.
+                    </p>
+                    <br>
+                    <h3>Control de su información personal</h3>
+                    <p>Esta compañía no venderá, cederá ni distribuirá la información personal que es recopilada sin su consentimiento, salvo que sea requerido por un juez con un orden judicial. EJEPLAY Se reserva el derecho de cambiar los términos de la
+                        presente Política de Privacidad en cualquier momento.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="terminos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <h3>Términos y condiciones</h3>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="contenido">
+                    <p>
+                        Todos los usuarios entregados son de propiedad de EJEPLAY para la descarga del contenido, por ningún motivo se deben modificar/cambiar los datos entregados, de hacerlo podrá perder la garantía del producto y el acceso al mismo. El no correcto seguimiento
+                        de las instrucciones de instalación y posterior uso del juego y/o usuario entregado puede acarrear la perdida de garantía, EJEPLAY puede suspender temporal o definitivamente el acceso según lo requiera. Dado el caso también perderá
+                        el acceso a todos los juegos adquiridos por motivos de seguridad. EJEPLAY no se hace responsable por los cambios de políticas impuestos por Sony y que puedan afectar directamente las cuentas de Playstation Network.
+                    </p><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

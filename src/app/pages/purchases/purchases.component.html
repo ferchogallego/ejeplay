@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+<div *ngIf="!load">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center carga">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <img src="../../../assets/img/logo.png" alt="" width="100">
+        </div>
+    </div>
+</div>
+<div *ngIf="load">
+    <div class="container">
+        <div class="col-lg-12">
+            <h3>
+                <img src="../../../assets/img/money.png" width="70" class="img-fluid" alt="Responsive image"> Información de transacciones
+            </h3>
+            <hr>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Referedencia de pago</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lista">
+                            <td>{{item.fecha | date}}</td>
+                            <td>{{item.refCompra}}</td>
+                            <td>{{item.estado}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success" (click)="openModal(item)" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                  </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Detalle de compra</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Juego</th>
+                            <th scope="col"></th>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col">Descuento</th>
+                            <th scope="col">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let juego of juegos">
+                            <td><img [src]="juego.imagen" class="img-fluid" alt="Responsive image" width="60"></td>
+                            <td>
+                                <h5>{{juego.nombre | titlecase}}</h5>
+                            </td>
+                            <td>{{juego.cuenta | titlecase}}</td>
+                            <td>%{{juego.descuento}}</td>
+                            <td>${{juego.precio | number}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+.fijo {
+    padding: 0;
+    margin: 0;
+    top: 0;
+    background: #fff;
+    background-image: url(../../../assets/img/fondo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+    #logo,
+    #carro {
+        text-align: center;
+    }
+    #logo #log {
+        width: 100px;
+    }
+    #moneda,
+    #carro {
+        padding-top: 3%;
+        width: 40px;
+    }
+    .search {
+        input {
+            width: 90%;
+        }
+    }
+    .reds {
+        margin-left: 2px;
+        width: 30px;
+        height: 30px;
+        i {
+            font-size: large;
+            margin-left: -5px;
+        }
+    }
+    #redes {
+        padding-top: 3%;
+    }
+    #acceder {
+        padding-top: 2%;
+        text-align: center;
+        font-size: 15px;
+        a {
+            text-decoration: none;
+            color: rgb(80, 78, 78);
+        }
+    }
+    .slect {
+        height: 38px;
+        margin-top: 1px;
+        border-radius: 5px;
+    }
+    .redes {
+        width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #364d6a;
+            border: none;
+    }
+    .carro {
+        padding-top: 1%;
+        .car {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #364d6a;
+            border: none;
+            float: right;
+            margin-right: 10px;
+            margin-bottom: 3px;
+            .intermitente {
+                top: 15px;
+                position: absolute;
+                padding: 5px 5px;
+                box-shadow: 0px 0px 7px;
+                animation: infinite resplandorAnimation 2s;
+                border-radius: 50%;
+            }
+            @keyframes resplandorAnimation {
+                0%,
+                100% {
+                    box-shadow: 0px 0px 20px;
+                }
+                50% {
+                    box-shadow: 0px 0px 0px;
+                }
+            }
+        }
+    }
+    .nav-link:hover {
+        cursor: pointer;
+    }
+    #menu {
+        background-color: #364d6a;
+        li:hover {
+            cursor: pointer;
+            border: solid;
+            border-color: #fff;
+            border-radius: 7px;
+            border-width: 1px;
+            transition: 700ms;
+        }
+        .desplegable {
+            background-color: #101010cc;
+            a {
+                color: #fff;
+            }
+            a:hover {
+                cursor: pointer;
+                background-color: #364d6a;
+                border-radius: 10px;
+                transform: scale(1.1);
+                transition: 700ms;
+            }
+        }
+        .user {
+            float: right;
+        }
+    }
+}
+
+.modal {
+    background-color: rgba(0, 0, 0, 0.726);
+}
+
+.contenido {
+    p {
+        text-align: justify;
+        margin: 15px;
+    }
+}
+
+.moviles {
+    background-color: #364d6a !important;
+    li,
+    a {
+        color: #fff;
+    }
+    .dpgbleMov {
+        background-color: #101010cc;
+        a {
+            border: solid;
+            border-width: 1px;
+            border-color: #364d6a;
+            color: #fff;
+        }
+        a:hover {
+            cursor: pointer;
+            background-color: #364d6a;
+            border-radius: 10px;
+            transform: scale(1.1);
+            transition: 700ms;
+        }
+    }
+}
+
+.noti {
+    position: absolute;
+    margin-top: -10px;
+    padding: 4px 4px;
+    box-shadow: 0px 0px 7px;
+    animation: infinite resplandorAnimation 2s;
+    border-radius: 50%;
+}
+
+@keyframes resplandorAnimation {
+    0%,
+    100% {
+        box-shadow: 0px 0px 20px;
+    }
+    50% {
+        box-shadow: 0px 0px 0px;
+    }
+}

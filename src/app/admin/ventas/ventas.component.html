@@ -1,0 +1,122 @@
+<app-admin-nav></app-admin-nav>
+<div class="container">
+    <h3>Registro de Pedidos</h3>
+    <hr>
+    <h5>Filtrar Por:</h5>
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Estado:</label>
+                    <select class="form-control" (change)="filterByState($event.target.value)">  
+                        <option value="todos">Todos</option>                    
+                        <option value="Aprobada">Aprobada</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Rechazada">Rechazada</option>
+            </select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <label for="referencia">Referencia:</label>
+                <input class="form-control" (change)="filterByRef($event.target.value)" type="text" placeholder="Ingrese referencia" name="referencia" autocomplete="off">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Ref-Compra</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lista">
+                    <td>{{item.email}}</td>
+                    <td>{{item.fecha | date}}</td>
+                    <td>{{item.refCompra}}</td>
+                    <td>{{item.estado}}</td>
+                    <td class="text-center">
+                        <button type="button" (click)="detailRequest(item)" class="btn btn-success" title="Ver detalle" data-toggle="modal" data-target="#staticBackdrop">
+                            <i class="fa fa-list fa-lg" aria-hidden="true"></i>
+                          </button>
+                        <button *ngIf="item.estado != 'Aprobada'" type="button" (click)="aprobarVenta(item.id)" class="btn btn-primary ml-2 mr-1" title="Aprobar venta">
+                            <i class="fa fa-check fa-lg" aria-hidden="true"></i>
+                          </button>
+                        <button *ngIf="item.estado != 'Rechazada'" type="button" class="btn btn-danger ml-1" (click)="deny(item.id)" title="Eliminar de la lista">
+                            <i class="fa fa-ban fa-lg" aria-hidden="true"></i>
+                          </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Detalle de venta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="delivery">
+                    <h5>
+                        Datos de entrega:
+                    </h5>
+                    <p>
+                        Cliente: <b>{{sail.entrega.nombre | titlecase}}</b>
+                    </p>
+                    <p>
+                        Documento: <b>{{sail.entrega.tipodocumento }}</b>
+                    </p>
+                    <p>
+                        Número: <b>{{sail.entrega.numero }}</b>
+                    </p>
+                    <p>
+                        Teléfono: <b>{{sail.entrega.telefono }}</b>
+                    </p>
+                    <p>
+                        Departamento: <b>{{sail.entrega.departamento | titlecase}}</b>
+                    </p>
+                    <p>
+                        Ciudad: <b>{{sail.entrega.ciudad | titlecase}}</b>
+                    </p>
+                    <p>
+                        Dirección: <b>{{sail.entrega.direccion | titlecase}}</b>
+                    </p>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Juego</th>
+                            <th scope="col"></th>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let juego of request">
+                            <td><img [src]="juego.imagen" class="img-fluid" alt="Responsive image" width="60"></td>
+                            <td>
+                                <h5>{{juego.nombre | titlecase}}</h5>
+                            </td>
+                            <td>{{juego.cuenta | titlecase}}</td>
+                            <td>${{juego.precio | number}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

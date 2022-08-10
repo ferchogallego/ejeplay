@@ -1,0 +1,59 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="container">
+    <div class="col-lg-12">
+        <table class="table mt-3 animated fadeIn faster">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Posición</th>
+                    <th scope="col">Seleccionar</th>
+                    <th scope="col">Actualizar</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td class="slideBox"><img [src]="imagen1" class="img-fluid img-thumbnail" alt="..." width="300"> </td>
+                    <td>Primera Imagen</td>
+                    <td>
+                        <input type="file" (change)="handleImage($event)">
+                    </td>
+                    <td>
+                        <button class="btn btn-info mr-1" title="Editar" (click)="changeImageSlider('imagen1')">
+                            <i class="fa fa-exchange fa-lg"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="slideBox"><img [src]="imagen2" class="img-fluid img-thumbnail" alt="..." width="300"> </td>
+                    <td>Segunda Imagen</td>
+                    <td>
+                        <input type="file" (change)="handleImage($event)">
+                    </td>
+                    <td>
+                        <button class="btn btn-info mr-1" title="Editar" (click)="changeImageSlider('imagen2')">
+                            <i class="fa fa-exchange fa-lg"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="slideBox"><img [src]="imagen3" class="img-fluid img-thumbnail" alt="..." width="300"> </td>
+                    <td>Tercera Imagen</td>
+                    <td>
+                        <input type="file" (change)="handleImage($event)">
+                    </td>
+                    <td>
+                        <button class="btn btn-info mr-1" title="Editar" (click)="changeImageSlider('imagen3')">
+                            <i class="fa fa-exchange fa-lg"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

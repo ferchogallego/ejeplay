@@ -1,0 +1,87 @@
+.carga {
+    margin-top: 16rem;
+    .spinner-border {
+        color: #364d6a !important;
+        font-size: large;
+    }
+}
+
+.container-fluid {
+    margin-top: 13rem;
+}
+
+.info {
+    color: rgb(107, 105, 105);
+}
+
+.notify-badge {
+    position: absolute;
+    right: -1px;
+    top: 10px;
+    background: red;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 20px;
+}
+
+.notify-badge2 {
+    position: absolute;
+    right: -1px;
+    top: 200px;
+    background: rgb(255, 116, 3);
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 20px;
+}
+
+.nav-tabs {
+    cursor: pointer;
+    li:hover {
+        background-color: #364d6a;
+        color: #fff;
+        transition: 700ms;
+        border-radius: 5px;
+    }
+}
+
+.relacionados {
+    .card {
+        cursor: pointer;
+    }
+    .card:hover {
+        transition: 700ms;
+        transform: scale(1.1);
+    }
+}
+
+.deseos {
+    position: absolute;
+    right: -1px;
+    top: 70px;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 20px;
+    border-radius: 50%;
+    background-color: rgb(184, 214, 231);
+    border-color: rgb(44, 136, 241);
+    color: #fff;
+}
+
+.deseos:hover {
+    transition: 800ms;
+    transform: scale(1.1);
+    background-color: rgb(44, 136, 241);
+}
+
+.mtra {
+    cursor: pointer;
+}

@@ -1,0 +1,158 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { User } from '../../shared/users.interface';
+import Swal from 'sweetalert2';
+import { noop } from 'rxjs';
+
+@Component({
+  selector: 'app-registro',
+  templateUrl: './registro.component.html',
+  styleUrls: ['./registro.component.scss']
+})
+export class RegistroComponent implements OnInit {
+
+  passwordView = false;
+  usuario: User;
+  validate = true;
+
+  registerForm = new FormGroup ({
+    email: new FormControl('', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+  });
+
+  constructor(private authSvc: AuthService,
+              private router: Router) { }
+
+  ngOnInit(): void {
+
+  }
+
+  onRegister(registro: any){
+    if (this.registerForm.invalid){
+      Swal.fire({
+        title: 'Error...',
+        text: 'Debe ingresar la información requerida',
+        icon: 'error',
+        allowOutsideClick: false,
+        showCloseButton: true
+      });
+      return Object.values( this.registerForm.controls ).forEach( control => {
+        if ( control instanceof FormGroup ) {
+          // tslint:disable-next-line: no-shadowed-variable
+          Object.values( control.controls ).forEach( control => control.markAsTouched() );
+        } else {
+          control.markAsTouched();
+        }
+      });
+    }
+    this.authSvc.verifyUserByEmail(registro.email)
+                .subscribe(usr => {
+                  if (usr.length > 0) {
+                   if (this.validate) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'El correo electrónico ingresado ya esta registrado!',
+                      footer: 'Intenta con uno diferente'
+                    });
+                   }
+                  }
+                  if (usr.length === 0) {
+                    const {email, password } = this.registerForm.value;
+                    const user = this.authSvc.register(email, password);
+                    if (user) {
+                      user.then(userData => {
+                        const id = userData.user.uid;
+                        const datos = {
+                          id: userData.user.uid,
+                          email: userData.user.email,
+                          fecha: new Date().getTime(),
+                          cuponInicio: 'Si'
+                        };
+                        this.authSvc.sendEmailVerification()
+                                    .then(() => {
+                                      this.validate = false;
+                                      this.authSvc.createUserData(id, datos)
+                                          .then(() => {
+                                            Swal.fire(
+                                              email,
+                                              'Cuenta creada correctamente, se ha enviado un email a su correo, revise buzon de entrada y spam, para que por favor verfique su cuenta y pueda iniciar sesión.',
+                                              'success'
+                                            );
+                                            this.authSvc.logout();
+                                            this.router.navigate(['/login']);
+                                          });
+                                    });
+                      });
+                      }
+                  }
+                });
+  }
+
+  onLoginFacebook(){
+    this.authSvc.loginFacebook().then(resp => {
+      const id = resp.user.uid;
+      const datos = {
+                  id: resp.user.uid,
+                  email: resp.user.email,
+                  fecha: new Date().getTime(),
+                  cuponInicio: 'Si'
+                };
+      this.authSvc.verifyUser(id)
+                  .subscribe(usr => {
+                    if (usr.length === 0) {
+                      this.authSvc.createUserData(id, datos)
+                      .then (save => this.onLoginRedirect());
+                    }
+                    if (usr.length > 0) {
+                      this.onLoginRedirect();
+                    }
+                  });
+    }).catch(err => console.log('Error', err.message));
+  }
+
+  onLoginGoogle(){
+    this.authSvc.loginGoogle().then(resp => {
+      const id = resp.user.uid;
+      const datos = {
+                  id: resp.user.uid,
+                  email: resp.user.email,
+                  fecha: new Date().getTime(),
+                  cuponInicio: 'Si'
+                };
+      this.authSvc.verifyUser(id)
+                  .subscribe(usr => {
+                    if (usr.length === 0) {
+                      this.authSvc.createUserData(id, datos)
+                                  .then (save => this.onLoginRedirect());
+                    }
+                    if (usr.length > 0) {
+                      this.onLoginRedirect();
+                    }
+                  });
+      this.onLoginRedirect();
+    }).catch(err => console.log('Error', err.message));
+  }
+
+  viewPassActive(){
+    this.passwordView = true;
+  }
+
+  viewPassInActive(){
+    this.passwordView = false;
+  }
+
+  get emailNoValido() {
+    return this.registerForm.get('email').invalid && this.registerForm.get('email').touched;
+  }
+  get passwordNoValido() {
+    return this.registerForm.get('password').invalid && this.registerForm.get('password').touched;
+  }
+
+  onLoginRedirect(){
+    this.router.navigate(['/catalogo']);
+  }
+
+}

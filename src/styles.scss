@@ -1,0 +1,37 @@
+.pago {
+    width: 30%;
+    height: 45px;
+    border-radius: 5px;
+    background-color: #364d6a;
+    border: solid;
+    border-color: #364d6a;
+    color: #fff;
+    transition: 600ms;
+}
+
+.pago:hover {
+    border: solid;
+    border-color: #364d6a;
+    background-color: #fff;
+    color: #364d6a;
+    transition: 600ms;
+}
+
+.btn-whatsapp {
+    cursor: pointer;
+    display:block;
+    width:70px;
+    height:70px;
+    color:#fff;
+    position: fixed;
+    right:20px;
+    bottom:50px;
+    border-radius:50%;
+    line-height:80px;
+    text-align:center;
+    z-index:999;
+  }
+  
+  .btn-whatsapp:hover{
+    transform: scale(1.1);
+  }

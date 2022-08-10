@@ -1,0 +1,296 @@
+<app-navbar></app-navbar>
+<div *ngIf="!load">
+    <div class="col-md-12 lding">
+        <div class="d-flex justify-content-center carga">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <img src="../../../assets/img/logo.png" alt="" width="100">
+        </div>
+    </div>
+</div>
+<div *ngIf="load">
+    <div class="col-lg-12 d-none d-lg-block d-xl-block">
+        <div class="row">
+            <div class="col-lg-8 table-responsive">
+                <table class="table mt-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">Juego</th>
+                            <th scope="col"></th>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col">Desc</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let item of compras; let i = index">
+                            <td><img [src]="item.imagen" width="60" alt=" "> </td>
+                            <td>
+                                <h5>{{item.nombre}} <br></h5>
+                                <p>EjePlay Pereira.</p>
+                            </td>
+                            <td>{{item.cuenta}}</td>
+                            <td>{{item.descuento}}%</td>
+                            <td class="text-center">${{item.precio | number}}</td>
+                            <td class="text-center">${{item.precio - ((item.precio * item.descuento)/100) | number}}</td>
+                            <td class="text-center">
+                                <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(i)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4 mt-3">
+                <p>
+                    <label for="Subtotal" class="blok"><b>Subtotal:</b></label>
+                    <b class="liquid" style="float: right;">${{subtotal | number}}</b>
+                </p>
+                <p>
+                    <label for="Subtotal" class="blok"><b>Descuento:</b></label>
+                    <b class="liquid" style="color: rgb(8, 81, 240); float: right;">${{descuento | number}}</b>
+                </p>
+                <p>
+                    <label for="Subtotal" class="blok"><b>Descuento Cupón:</b></label>
+                    <b class="liquid" style="color: rgb(8, 81, 240); float: right;">{{desCpon | number}}%</b>
+                </p>
+                <p>
+                    <label for="Subtotal" class="blok">Redimir Cupón:</label>
+                    <button class="btn btn-light" data-toggle="modal" data-target="#cupones"><img src="../../../assets/img/coupon.png" width="80"  alt=""></button>
+                </p>
+                <div class="col-lg-12" *ngIf="fisicos">
+                    <hr>
+                    <h5>Datos de entrega:</h5>
+                    <hr>
+                    <form [formGroup]="deliveryForm" (ngSubmit)="infoUser(deliveryForm.value)">
+                        <label for=""><b>Nombre completo:</b></label>
+                        <small class="text-danger" *ngIf="nombreNoValido"> Ingrese su nombre</small>
+                        <input type="text" class="form-control" placeholder="Ingrese su nombre" formControlName="nombre" [class.is-invalid]="nombreNoValido">
+
+                        <label class="mt-2" for=""><b>Tipo documento:</b></label>
+                        <small class="text-danger" *ngIf="tipodocumentoNoValido"> Seleccione el tipo de documento</small>
+                        <select name="select" class="form-control" formControlName="tipodocumento" [class.is-invalid]="departamentoNoValido">
+                          <option value="" selected>Seleccione tipo</option>
+                          <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                          <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                          <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
+                          <option value="Tarjeta de Extranjería">Tarjeta de Extranjería</option>
+                          <option value="Permiso de Permanencia">Permiso de Permanencia</option>
+                          <option value="NIT">NIT</option>
+                          <option value="Otro">Otro</option>
+                        </select>
+
+                        <label class="mt-2" for=""><b>Número Identificación:</b></label>
+                        <small class="text-danger" *ngIf="numeroNoValido"> Ingrese su número de identificación</small>
+                        <input type="number" class="form-control" placeholder="Ingrese su número de identificación" formControlName="numero" [class.is-invalid]="numeroNoValido">
+
+                        <label class="mt-2" for=""><b>Teléfono:</b></label>
+                        <small class="text-danger" *ngIf="telefonoNoValido"> Ingrese su número de teléfono</small>
+                        <input type="text" class="form-control" placeholder="Ingrese su número telefónico" formControlName="telefono" [class.is-invalid]="telefonoNoValido">
+
+
+                        <label class="mt-2" for=""><b>Departamento:</b></label>
+                        <small class="text-danger" *ngIf="departamentoNoValido"> Seleccione el departamento</small>
+                        <select name="select" class="form-control" (change)="seleccionaDepartamento($event.target.value)" formControlName="departamento" [class.is-invalid]="departamentoNoValido">
+                          <option value="" selected>Seleccione departamento</option>
+                          <option *ngFor="let item of ciudadesList" [value]="item.nombre">{{item.nombre | titlecase}}</option>
+                        </select>
+
+
+                        <label class="mt-2 mb-2" for=""><b>Ciudad:</b></label>
+                        <small class="text-danger" *ngIf="ciudadNoValido"> Seleccione la ciudad</small>
+                        <select name="select" class="form-control" (change)="seleccionaCiudad($event.target.value)" formControlName="ciudad" [class.is-invalid]="ciudadNoValido">
+                          <option value="" selected>Seleccione ciudad</option>
+                          <option *ngFor="let item of citySelection" [value]="item">{{item | titlecase}}</option>
+                        </select>
+
+
+                        <label class="mt-2" for=""><b>Dirección:</b></label>
+                        <small class="text-danger" *ngIf="direccionNoValido"> Ingrese la dirección de envío</small>
+                        <input type="text" class="form-control" placeholder="Dirección de entrega" formControlName="direccion" [class.is-invalid]="direccionNoValido">
+
+
+                        <button style="width: 100%;" class="endShop mt-2" type="submit">
+                            <i class="fa fa-user-plus" aria-hidden="true"> Confirmar datos </i>
+                        </button>
+                    </form>
+                </div>
+                <p>
+                    <label for="Subtotal" class="blok1"><b>TOTAL:</b></label>
+                    <b class="liquid1" style="float: right;">${{liquidacion | number}}</b>
+                </p>
+                <div class="form-check">
+                    <!-- <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1"> -->
+                    <label class="form-check-label" for="defaultCheck1">
+                        Al finalizar compra acepto términos y condiciones de EjePlay y autorizo el tratamiento de mis datos personales. 
+                        <a class="term" data-toggle="modal" data-target="#terminos">
+                           Ver Terminos y Condiciones
+                        </a>
+                    </label>
+                </div>
+                <hr>
+
+                <button class="endShop" type="button">                                      
+                    <i class="fa fa-credit-card" aria-hidden="true" (click)="payu()"> Finalizar Compra </i>                    
+                </button>
+                <button class="shop" routerLink='/compras'>
+                    <i class="fa fa-shopping-cart" aria-hidden="true"> Seguir comprando </i>                    
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+        <div class="container movil">
+            <div class="col-12">
+                <table class="table table-responsive mt-3 animated fadeIn faster">
+                    <thead>
+                        <tr>
+                            <th scope="col">Juego</th>
+                            <th scope="col"></th>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col">Desc</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of compras; let i = index">
+                            <td><img [src]="item.imagen" width="60" alt=" "> </td>
+                            <td>
+                                <h5>{{item.nombre}} <br></h5>
+                                <p>EjePlay Pereira.</p>
+                            </td>
+                            <td>{{item.cuenta}}</td>
+                            <td>{{item.descuento}}%</td>
+                            <td class="text-center">${{item.precio | number}}</td>
+                            <td class="text-center">${{item.precio - ((item.precio * item.descuento)/100) | number}}</td>
+                            <td class="text-center">
+                                <button class="btn btn-danger" title="Eliminar" (click)="borrarProducto(i)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div class="col-12">
+                <p>
+                    <label for="Subtotal" class="blok"><b>Subtotal:</b></label>
+                    <input type="text" class="liquid" readonly [value]="subtotal | currency">
+                </p>
+                <p>
+                    <label for="Subtotal" class="blok"><b>Descuento:</b></label>
+                    <input style="color: rgb(8, 81, 240);" type="text" class="liquid" readonly [value]="descuento | currency">
+                </p>
+
+                <p>
+                    <label for="Subtotal" class="blok"><b>Descuento Cupón:</b></label>
+                    <b class="liquid" style="color: rgb(8, 81, 240); float: right;">%{{desCpon | number}}</b>
+                </p>
+
+                <p>
+                    <label for="Subtotal" class="blok">Redimir Cupón:</label>
+                    <button class="btn btn-light" data-toggle="modal" data-target="#cupones"><img src="../../../assets/img/coupon.png" width="80"  alt=""></button>
+                </p>
+
+                <p>
+                    <label for="Subtotal" class="blok1"><b>TOTAL:</b></label>
+                    <input type="text" class="liquid1" readonly [value]='liquidacion |currency'>
+                </p>
+                <div class="form-check">
+                    <!-- <input class="form-check-input" type="checkbox" (change)="check($event.target.value)" id="defaultCheck1"> -->
+                    <label class="form-check-label" for="defaultCheck1">
+                        Al finalizar compra acepto términos y condiciones de EjePlay y autorizo el tratamiento de mis datos personales. 
+                        <a class="term" data-toggle="modal" data-target="#terminos">
+                           Ver Terminos y Condiciones
+                        </a>
+                    </label>
+                </div>
+                <hr>
+                <button class="endShop" type="button" (click)="payu()">                                      
+                    <i class="fa fa-credit-card" aria-hidden="true"> Finalizar Compra </i>                    
+                </button>
+
+                <button class="shop" routerLink='/compras'>
+                    <i class="fa fa-shopping-cart" aria-hidden="true"> Seguir comprando </i>                    
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal cupones-->
+<div class="modal fade" id="cupones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Redimir Mis Cupones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="col-12">
+                    <div>
+                        <input type="text" class="form-control" placeholder="Ingrese código de cupón" (change)="codCupon($event.target.value)"><br>
+                        <button class="btn btn-dark" (click)="canjearCuponGeneral()" data-dismiss="modal">Verificar código</button>
+                    </div>
+                    <br>
+                    <div *ngIf="usuario.cuponInicio == 'Si'" class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Cupón de Bienvenida:</h5>
+                                <img src="../../../assets/img/cupon1.png" width="70" alt="">
+                                <button class="btn btn-primary btn-block mt-2" (click)="cuponRegistro()" data-dismiss="modal">Redimir Cupón</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mt-2">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Cupón de Cliente Fiel:</h5>
+                                <img src="../../../assets/img/cupon2.png" width="70" alt="">
+                                <button class="btn btn-success btn-block mt-2" (click)="cuponFiel()" data-dismiss="modal">Redimir Cupón</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="terminos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <h3>Términos y condiciones</h3>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="contenido">
+                    <p>
+                        Todos los usuarios entregados son de propiedad de EJEPLAY para la descarga del contenido, por ningún motivo se deben modificar/cambiar los datos entregados, de hacerlo podrá perder la garantía del producto y el acceso al mismo. El no correcto seguimiento
+                        de las instrucciones de instalación y posterior uso del juego y/o usuario entregado puede acarrear la perdida de garantía, EJEPLAY puede suspender temporal o definitivamente el acceso según lo requiera. Dado el caso también perderá
+                        el acceso a todos los juegos adquiridos por motivos de seguridad. EJEPLAY no se hace responsable por los cambios de políticas impuestos por Sony y que puedan afectar directamente las cuentas de Playstation Network.
+                    </p><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

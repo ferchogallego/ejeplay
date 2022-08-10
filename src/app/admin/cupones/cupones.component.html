@@ -1,0 +1,38 @@
+<app-admin-nav></app-admin-nav>
+<div class="container mt-5">
+    <h3><img src="../../../assets/img/newCupon.png" width="70" alt=""> Crear Cupón</h3>
+    <hr>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-6">
+                <input type="text" (change)="nombreCupon($event.target.value)" placeholder="Nombre del cupón" class="form-control">
+                <br>
+                <input type="text" (change)="codigoCupon($event.target.value)" placeholder="Código del cupón" class="form-control">
+                <br>
+                <input type="number" (change)="descuentoCupon($event.target.value)" placeholder="Porcentaje de descuento %" class="form-control">
+                <br>
+                <input type="number" (change)="duracionCupon($event.target.value)" placeholder="Días disponible" class="form-control">
+                <br>
+                <button class="btn btn-primary btn-block btn-lg" (click)="generaCupon()">
+                    Crear Cupón
+                </button>
+            </div>
+            <div class="col-6">
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <div class="col">
+                        <div class="card" *ngFor="let item of coupons">
+                            <div class="card-body text-center">
+                                <img src="../../../assets/img/porciento.png" width="50" alt="">
+                                <h3>{{item.descuento}}%</h3>
+                                <h4 class="card-title">{{item.nombre | titlecase}}</h4>
+                                <h5><b>{{item.codigo}}</b></h5>
+                                <p>{{item.fecha | date}}</p>
+                                <button class="btn btn-danger btn-block" (click)="eliminaCupon(item.id)">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,212 @@
+<app-navbar (selectCurrency)="divisaSelected($event)"></app-navbar>
+<div *ngIf="!load">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center carga">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <img src="../../../assets/img/logo.png" alt="" width="100">
+        </div>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="load">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="row row-cols-1 row-cols-md-2 relacionados">
+                <div class="col-12 mvl d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+                    <div class="row">
+                        <div class="col-3 mb-2">
+                            <div class="card h-100 games">
+                                <img [src]="miniatura" class="img-fluid mtra" (click)="galeria('1')" alt="Responsive image" width="100%" alt="">
+                            </div>
+                        </div>
+                        <div class="col-3 mb-2">
+                            <div class="card h-100 games">
+                                <img [src]="miniatura1" class="img-fluid mtra" (click)="galeria('2')" alt="Responsive image" width="100%" alt="">
+                            </div>
+                        </div>
+                        <div class="col-3 mb-2">
+                            <div class="card h-100 games">
+                                <img [src]="miniatura2" class="img-fluid mtra" (click)="galeria('3')" alt="Responsive image" width="100%" alt="">
+                            </div>
+                        </div>
+                        <div class="col-3 mb-2">
+                            <div class="card h-100 games">
+                                <img [src]="miniatura4" class="img-fluid mtra" (click)="galeria('4')" alt="Responsive image" width="100%" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="d-none d-lg-block d-xl-block">
+                    <div>
+                        <img [src]="miniatura" class="img-fluid mtra" (click)="galeria('1')" alt="Responsive image" width="100%" alt="">
+                    </div>
+                    <div>
+                        <img [src]="miniatura1" class="img-fluid mtra mt-4" (click)="galeria('2')" alt="Responsive image" width="100%" alt="">
+                    </div>
+                    <div>
+                        <img [src]="miniatura2" class="img-fluid mtra mt-4" (click)="galeria('3')" alt="Responsive image" width="100%" alt="">
+                    </div>
+                    <div>
+                        <img [src]="miniatura4" class="img-fluid mtra mt-4" (click)="galeria('4')" alt="Responsive image" width="100%" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 text-center">
+                <span *ngIf="oferta > 0" class="notify-badge" translate="no">-{{oferta}}% 0FF</span>
+                <span *ngIf="cantP == 0 && cantS == 0" class="notify-badge2" translate="no">AGOTADO</span>
+                <img [src]="imagen" alt="" width="93%">
+                <button class="btn btn-light deseos" (click)="listaDeseos(juego, imagen)" title="Agregar a mi lista de deseos"><i class="fa fa-heart fa-lg"></i></button>
+            </div>
+            <div class="col-lg-4 info">
+
+                <h2>{{juego}}</h2>                
+                <div *ngIf="oferta > 0">
+                    <s><h4 translate="no">${{precio | number}} <small>COP</small> ${{preciosec | number}} <small>COP</small></h4></s><br>
+                    <h4 translate="no">${{precio -((precio * oferta)/100) | number}} <small>COP</small> ${{preciosec - ((preciosec * oferta)/100) | number}} <small>COP</small></h4>
+                </div>
+                <div *ngIf="oferta == 0">
+                    <h4 translate="no">${{precio | number}} <small>COP</small> ${{preciosec | number}} <small>COP</small></h4>
+                </div>
+                <hr>
+                <div *ngIf="categoria != 'Fisicos'">
+                    <p><i class="fa fa-language fa-lg"></i> &nbsp;{{idioma}}</p>
+                    <p><i class="fa fa-calculator fa-lg"></i>&nbsp;Peso: <b>{{peso}}</b></p>
+                    <p><i class="fa fa-check-circle fa-lg"></i>&nbsp;Juego completamente original</p>
+                    <p>- Entrega inmediata</p>
+                    <p>- Tutorial paso a paso</p>
+                    <label for=""><b>Seleccionar tipo de cuenta:</b> </label>
+                    <div class="row">
+                        <div class="col-6">
+                            <button (click)="activateSale('primario', oferta)" class="btn btn-primary btn-block">Principal</button>
+                        </div>
+                        <div class="col-6">
+                            <button (click)="activateSale('secundario', oferta)" class="btn btn-primary btn-block">Secundaria</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div *ngIf="oferta == 0">
+                    <h4 translate="no" *ngIf="secund">${{preciosec | number}} <small>COP</small></h4>
+                    <h4 translate="no" *ngIf="prim">${{precio | number}} <small>COP</small></h4>
+                </div>
+                <div *ngIf="oferta > 0">
+                    <h4 translate="no" *ngIf="secund"><s>${{preciosec | number}}</s> - ${{costosec | number}} <small>COP</small></h4>
+                    <h4 translate="no" *ngIf="prim"><s>${{precio | number}}</s> - ${{costopri | number}} <small>COP</small></h4>
+                </div>
+                <hr>
+                <div *ngIf="categoria != 'Fisicos'">
+                    <button *ngIf="!activa" class="btn btn-dark btn-block" disabled><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
+                    <button *ngIf="activa" class="btn btn-dark btn-block" (click)="request()"><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
+                </div>
+                <button *ngIf="categoria == 'Fisicos'" class="btn btn-dark btn-block" (click)="requestProd()"><i class="fa fa-cart-plus fa-lg"></i> <b> COMPRARLO</b></button>
+            </div>
+            <div *ngIf="categoria != 'Fisicos'" class="col-lg-3">
+                <br>
+                <h5>Juegos relacionados</h5>
+                <hr>
+                <div class="d-none d-lg-block d-xl-block">
+                    <div class="row row-cols-1 row-cols-md-2 relacionados">
+                        <div class="col mb-4" *ngFor="let juego of relacionados" (click)="openGame(juego.id)">
+                            <div class="card">
+                                <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-md-2 relacionados">
+                    <div class="col-12 mvl d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+                        <div class="row">
+                            <div class="col-6 mb-2" *ngFor="let juego of relacionados">
+                                <div class="card h-100 games" (click)="openGame(juego.id)">
+                                    <img [src]="juego.imageProd" class="card-img-top" alt="...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 mt-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <span class="nav-link" (click)="viewTabs('descripcion')">Descripción</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" (click)="viewTabs('ficha')">Ficha Técnica</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" (click)="viewTabs('comentarios')">Comentarios</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <br><br>
+        <!---------------------DESCRIPCION----------------------->
+        <div *ngIf="descrip" class="row" id="galeria">
+            <div class="col-lg-8">
+                <h4>
+                    <img src="../../../assets/img/detalle/product-description.png" width="50" class="img-fluid" alt="Responsive image"> DESCRIPCIÓN: <small><b>{{juego | uppercase}}</b></small></h4>
+                <p>{{descripcion}}</p>
+            </div>
+        </div>
+        <!---------------------FICHA TÉCNICA----------------------->
+        <div *ngIf="ficha" class="row" id="ficha">
+            <div class="col-lg-12">
+                <h4>FICHA TÉCNICA</h4>
+                <p><img src="../../../assets/img/detalle/ps4.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Categoría: <b>{{categoria}}</b></p>
+                <p><img src="../../../assets/img/detalle/deaf.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Idioma: <b>{{idioma}}</b></p>
+                <p><img src="../../../assets/img/detalle/hard-disk-drive.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Peso: <b>{{peso}}</b></p>
+                <p><img src="../../../assets/img/detalle/ps4logo.png" width="30" class="img-fluid" alt="Responsive image">&nbsp; - Tipo: <b>{{tipo | uppercase}}</b></p>
+            </div>
+        </div>
+        <!---------------------COMENTARIOS----------------------->
+        <div *ngIf="comentarios" class="row" id="comentario">
+            <div class="container mb-5">
+                <h4>COMENTARIOS <button data-toggle="modal" data-target="#comentarios" class="btn btn-primary ml-5">Comentar</button></h4>
+                <hr>
+                <div class="col-12 mt-3">
+                    <div *ngFor="let item of comentariosList">
+                        <h5><b>{{item.usuario}}</b></h5>
+                        <p>{{item.coment}}</p>
+                        <div class="text-right">
+                            <small>{{item.fecha | date}}</small>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="comentarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Envía tu comentario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <h5>Que quieres comentar de este juego:</h5>
+                <hr>
+                <input type="text" (change)='aliasComentario($event.target.value)' class="form-control" placeholder="Nombre / Alias">
+                <textarea class="form-control" (change)="comentarioJuego($event.target.value)" cols="30" rows="10"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" (click)="enviarComentario()" class="btn btn-primary" data-dismiss="modal">Enviar Comentario</button>
+            </div>
+        </div>
+    </div>
+</div>

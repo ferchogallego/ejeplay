@@ -1,0 +1,16 @@
+<app-admin-nav></app-admin-nav>
+<div class="container">
+    <div class="col-lg-12 mt-5">
+        <h2>Precio del dolar</h2>
+        <hr>
+        <h4>
+            Actual: <b>$ {{dll}}</b>
+        </h4>
+        <div class="col-lg-4">
+            <label>Ingrese el precio actual del dolar:</label>
+            <input type="number" (change)="precioDolar($event.target.value)" placeholder="Precio actual" class="form-control">
+            <br>
+            <button class="btn btn-dark" (click)="updateDolar(dollar[0].id)">Actualizar</button>
+        </div>
+    </div>
+</div>
